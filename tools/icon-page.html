@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'">
+  <title>Icônes de LifeLegend</title>
+  <!-- Page de rendu des icônes (tools/make-icons.js) : le logo de la barre du haut, sur fond nuit. -->
+  <style>@font-face { font-family: "Mona Sans"; src: url("fonts/Mona-Sans.woff2") format("woff2"); font-weight: 200 900; font-stretch: 75% 125%; }</style>
+</head>
+<body>
+<script>
+// Couleurs et typographie du logo .brand-word (lifelegend/style.css) : « LIFE » 400 espacé .16em, « LEGEND » 850 or
+// espacé .12em, à .12em de LIFE, police Mona Sans étendue (125 %).
+const NIGHT = '#0a0a0b', INK = '#f3f1ec', GOLD = '#f0c24b';
+
+function setFont(ctx, weight, px, spacing) {
+  ctx.font = `${weight} ${px}px "Mona Sans"`;
+  ctx.fontStretch = 'expanded';
+  ctx.letterSpacing = `${spacing * px}px`;
+}
+function measure(ctx, px) {
+  setFont(ctx, 400, px, 0.16); const life = ctx.measureText('LIFE').width;
+  setFont(ctx, 850, px, 0.12); const legend = ctx.measureText('LEGEND').width - 0.12 * px; // sans l'espace après la dernière lettre
+  return { life, legend, gap: 0.12 * px, total: life + 0.12 * px + legend };
+}
+// Carré nuit aux coins arrondis. Deux lignes (par défaut, plus lisible en petit) : LIFE au-dessus de LEGEND, centrés,
+// LEGEND sur 78 % de la largeur. Une ligne : le logo tel quel, sur 84 % de la largeur.
+function master(S, layout = 'deux-lignes') {
+  const c = document.createElement('canvas'); c.width = c.height = S;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = NIGHT; ctx.beginPath(); ctx.roundRect(0, 0, S, S, S * 0.18); ctx.fill();
+  if (layout === 'une-ligne') {
+    const px = 100 * (S * 0.84) / measure(ctx, 100).total;
+    const m = measure(ctx, px);
+    const x = (S - m.total) / 2, base = S / 2 + px * 0.36;
+    setFont(ctx, 400, px, 0.16); ctx.fillStyle = INK; ctx.fillText('LIFE', x, base);
+    setFont(ctx, 850, px, 0.12); ctx.fillStyle = GOLD; ctx.fillText('LEGEND', x + m.life + m.gap, base);
+    return c;
+  }
+  const px = 100 * (S * 0.78) / measure(ctx, 100).legend;
+  const m = measure(ctx, px);
+  setFont(ctx, 850, px, 0.12);
+  const cap = ctx.measureText('LEGEND').actualBoundingBoxAscent; // hauteur des capitales
+  const gap = cap * 0.55;
+  const top = (S - (2 * cap + gap)) / 2;
+  setFont(ctx, 400, px, 0.16); ctx.fillStyle = INK; ctx.fillText('LIFE', (S - (m.life - 0.16 * px)) / 2, top + cap);
+  setFont(ctx, 850, px, 0.12); ctx.fillStyle = GOLD; ctx.fillText('LEGEND', (S - m.legend) / 2, top + 2 * cap + gap);
+  return c;
+}
+// Réduction par moitiés successives (plus net qu'une seule réduction).
+function scaled(src, S) {
+  let cur = src;
+  while (cur.width / 2 >= S) {
+    const n = document.createElement('canvas'); n.width = n.height = cur.width / 2;
+    const x = n.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(cur, 0, 0, n.width, n.height); cur = n;
+  }
+  if (cur.width !== S) {
+    const n = document.createElement('canvas'); n.width = n.height = S;
+    const x = n.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(cur, 0, 0, S, S); cur = n;
+  }
+  return cur;
+}
+const b64 = (u8) => { let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
+
+// Pour make-icons.js : PNG 1024 et 256, pixels RGBA des petites tailles (pour les images BMP de l'.ico).
+async function renderIcons(sizes, layout) {
+  await document.fonts.load('850 100px "Mona Sans"');
+  await document.fonts.load('400 100px "Mona Sans"');
+  if (!document.fonts.check('850 100px "Mona Sans"')) throw new Error('police Mona Sans non chargée');
+  const big = master(1024, layout);
+  const raw = {};
+  for (const S of sizes) raw[S] = b64(new Uint8Array(scaled(big, S).getContext('2d').getImageData(0, 0, S, S).data.buffer));
+  return { png1024: big.toDataURL('image/png').split(',')[1], png256: scaled(big, 256).toDataURL('image/png').split(',')[1], raw };
+}
+</script>
+</body>
+</html>

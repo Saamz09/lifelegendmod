@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: file:; media-src 'self' file:; style-src 'self'; script-src 'self'">
+  <title>LifeLegend</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ll-shell">
+    <aside class="ll-rail">
+      <button class="ll-disc" id="ll-home">LL</button>
+      <div class="ll-capsule">
+        <nav class="tabs" id="tabs" aria-label="Sites"></nav>
+        <button class="sync-btn" id="sync-btn"><svg class="sync-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg><span class="tab-label" id="sync-label">Synchroniser</span></button>
+      </div>
+    </aside>
+    <div class="ll-panel">
+      <header class="ll-top">
+        <div class="ll-title" id="ll-title"></div>
+        <div class="ll-tools">
+          <button class="ll-round" id="settings-btn" title="Réglages" aria-label="Réglages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></button>
+          <button class="ll-round" id="ll-bell"></button>
+          <div class="ll-me" id="ll-me"></div>
+        </div>
+      </header>
+      <div class="ll-sheet"><div class="ll-view" id="ll-view"><main id="page"></main></div></div>
+    </div>
+  </div>
+  <div class="toast hidden" id="toast"></div>
+  <div class="synclog hidden" id="synclog"></div>
+  <div class="ai-hud hidden" id="ai-hud" role="status" aria-live="polite">
+    <div class="hud-top"><span class="hud-dot"></span><b id="hud-task">IA</b><span class="hud-time" id="hud-time">0:00</span></div>
+    <div class="hud-label" id="hud-label">…</div>
+    <div class="hud-bar"><i id="hud-fill"></i></div>
+    <div class="hud-sub" id="hud-sub"></div>
+  </div>
+  <script src="i18n/en.js"></script>
+  <script src="i18n/es.js"></script>
+  <script src="i18n/it.js"></script>
+  <script src="i18n/pt.js"></script>
+  <script src="i18n/de.js"></script>
+  <script src="emoji.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

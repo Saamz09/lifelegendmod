@@ -1,0 +1,76 @@
+LifeLegend — third-party notices / mentions des tiers
+=====================================================
+
+LifeLegend itself is released under the MIT licence (see LICENSE).
+LifeLegend est publié sous licence MIT (voir LICENSE). Ce fichier liste ce que LifeLegend reprend d'autres
+auteurs, avec leur licence ; les textes complets sont dans les fichiers indiqués.
+
+
+FONTS / POLICES  (lifelegend/fonts)
+-----------------------------------
+Manrope — © 2018 The Manrope Project Authors
+  SIL Open Font License 1.1 — lifelegend/fonts/OFL-manrope.txt — https://github.com/googlefonts/manrope
+The font files are used unmodified (woff2 files as distributed).
+
+
+ICONS / ICÔNES
+--------------
+Twemoji Country Flags (country-flag-emoji-polyfill 0.1.8) — font © 2022 TalkJS, a subset of Twemoji made by TalkJS; artwork © Twitter, Inc. and other contributors — CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); code MIT — lifelegend/fonts/LICENSE-TwemojiCountryFlags.txt
+Heroicons v2 (outline, 24 px) — © Tailwind Labs, Inc. — MIT — lifelegend/fonts/LICENSE-Heroicons.txt
+SVG paths are embedded in lifelegend/app.js and lifelegend/index.html.
+
+
+LAYOUTS / MISES EN PAGE
+-----------------------
+Kop: based on "Twitter UI practice" — © 2023 Roy Quilor — MIT — lifelegend/fonts/LICENSE-TwitterUIPractice.txt
+Mails: based on "SmartMail" — © 2021 Mienard Lumaad / ThemePixels — MIT — lifelegend/fonts/LICENSE-SmartMail.txt
+La Transversale: based on the free template "The Gazette" by uiCookies — credit kept in the page footer.
+Scoreline: layout inspired by the "Soccer scores" kit by Arotec.io (no code or images reused).
+All of these were rewritten in plain HTML/CSS for LifeLegend; no third-party images are included.
+
+
+VIDEO / VIDÉO  (lifelegend/media)
+---------------------------------
+Opening animation (intro.mp4): made by the LifeLegend author with Profounder (https://profounder.com), from a template.
+Animation d'ouverture (intro.mp4) : réalisée par l'auteur de LifeLegend avec Profounder (https://profounder.com), à partir
+d'un modèle. LifeLegend is not affiliated with, sponsored or endorsed by Profounder / LifeLegend n'est ni lié à
+Profounder, ni soutenu par lui.
+
+
+DATA / DONNÉES  (src/data)
+--------------------------
+clubAccounts.json, competitionAccounts.json: X/Twitter usernames of clubs, national teams and competitions,
+from Wikidata (property P2002) — CC0 1.0 (public domain).
+
+
+SOFTWARE / LOGICIELS
+--------------------
+Save decryption (src/save/pesCrypt.js) follows pesXdecrypter (https://github.com/the4chancup/pesXdecrypter),
+  released into the public domain.
+Electron — © Electron contributors, © GitHub Inc. — MIT. The portable build ships Electron's own licence
+  (LICENSE.electron.txt) and LICENSES.chromium.html (Chromium and its components) next to LifeLegend.exe.
+@anthropic-ai/sdk — © Anthropic — MIT
+  and its dependencies: json-schema-to-ts (MIT), @babel/runtime (MIT), ts-algebra (MIT),
+  standardwebhooks (MIT), @stablelib/base64 (MIT), fast-sha256 (Unlicense).
+  Their licence files are kept in resources/app/node_modules.
+
+
+GAME CONTENT / CONTENU DU JEU
+-----------------------------
+LifeLegend contains NO game file, no player database and no club crest. Player names, crests and competition
+logos are read at runtime from the user's own copy of eFootball PES 2021 (and patches such as Football Life)
+and stay on the user's computer.
+LifeLegend ne contient aucun fichier du jeu : noms des joueurs, écussons et logos sont lus sur l'ordinateur du joueur,
+dans son propre jeu, et y restent.
+
+eFootball PES 2021 is a trademark of Konami Digital Entertainment. LifeLegend is an unofficial fan-made mod,
+not affiliated with or endorsed by Konami, Football Life, any club, league, federation or player.
+
+
+REAL PEOPLE / VRAIES PERSONNES
+------------------------------
+LifeLegend is fiction. Real players, coaches and clubs appear because they are in the user's game, but every
+quote, post, reaction or email attributed to them is written by an AI and is NOT their words. Do not present
+these texts as real or attribute them to the people concerned outside LifeLegend.
+LifeLegend est une fiction : tout ce que les vraies personnes y disent ou font est écrit par l'IA, ce ne sont pas
+leurs propos. Ne présentez jamais ces textes comme vrais et ne les leur attribuez pas hors de LifeLegend.

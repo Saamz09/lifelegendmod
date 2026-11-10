@@ -1,0 +1,23 @@
+{
+  "name": "lifelegend",
+  "productName": "LifeLegend",
+  "version": "1.0.0",
+  "description": "LifeLegend : l'internet de ta carrière Become a Legend (SP Football Life 2027, eFootball PES 2021), écrit par l'IA à partir de ta sauvegarde.",
+  "main": "main.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "node node_modules/electron/install.js",
+    "start": "electron .",
+    "test": "node --test tests/",
+    "check-save": "node tools/check-save.js",
+    "dist": "node tools/build-portable.js",
+    "icons": "electron tools/make-icons.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0"
+  },
+  "devDependencies": {
+    "electron": "^44.7.2"
+  }
+}

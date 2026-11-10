@@ -1,0 +1,64 @@
+'use strict';
+
+const { contextBridge, ipcRenderer } = require('electron');
+
+const call = async (channel, arg) => {
+  const r = await ipcRenderer.invoke(channel, arg);
+  if (!r.ok) throw new Error(r.error);
+  return r.value;
+};
+
+contextBridge.exposeInMainWorld('live', {
+  getSettings: () => call('settings:get'),
+  saveSettings: (update) => call('settings:save', update),
+  detectSaves: () => call('saves:detect'),
+  browseSave: () => call('saves:browse'),
+  saveKeyCount: () => call('keys:count'),
+  addSaveKey: () => call('keys:add'),
+  detectGame: () => call('game:detect'),
+  browseGame: () => call('game:browse'),
+  defaultClipsDir: () => call('clips:default'),
+  browseClips: () => call('clips:browse'),
+  getState: () => call('state:get'),
+  getScores: () => call('scores:get'),
+  mentionDirectory: () => call('mentions:list'),
+  sync: () => call('sync'),
+  post: (text, quote = null, poll = null) => call('feed:post', { text, quote, poll }),
+  likePost: (postId, replyId) => call('feed:like', { postId, replyId }),
+  repostPost: (postId, replyId) => call('feed:repost', { postId, replyId }),
+  followAccount: (handle) => call('feed:follow', handle),
+  replyPost: (postId, replyId, text) => call('feed:reply', { postId, replyId, text }),
+  openPress: () => call('press:open'),
+  submitPress: (answers) => call('press:submit', answers),
+  skipPress: () => call('press:skip'),
+  transcribe: (audio) => call('dictation:transcribe', audio),
+  setAgentStance: (stance) => call('agent:stance', stance),
+  setTransferRequest: (club) => call('agent:request', club),
+  redirectOffer: (offerId, toRef) => call('offer:redirect', { offerId, toRef }),
+  influence: () => call('influence:get'),
+  influenceSearch: (query, pos) => call('influence:search', { query, pos }),
+  influenceRequest: (kind, params, message) => call('influence:request', { kind, params, message }),
+  influenceApply: (effectId) => call('influence:apply', effectId),
+  conductApply: () => call('conduct:apply'),
+  makeReport: (title) => call('report:make', { title }),
+  replyMail: (threadId, text) => call('mail:reply', { threadId, text }),
+  readMail: (threadId) => call('mail:read', threadId),
+  answerCoachAdvice: (choice) => call('coach:advice', choice),
+  answerSponsor: (choice) => call('sponsor:answer', choice),
+  sendDm: (handle, text) => call('dm:send', { handle, text }),
+  readDm: (handle) => call('dm:read', handle),
+  dmContacts: () => call('dm:contacts'),
+  sendHuddle: (text, groupId) => call('huddle:send', { text, groupId }),
+  readHuddle: (groupId) => call('huddle:read', groupId),
+  saveBio: (bio) => call('bio:save', bio),
+  newCareerInfo: () => call('career:new'),
+  saveLife: (facts) => call('life:save', facts),
+  saveProfile: (profile) => call('profile:save', profile),
+  paths: () => call('app:paths'),
+  emblemColors: (file) => call('emblem:colors', file),
+  playerFaces: (names) => call('faces:get', names),
+  onSyncLog: (fn) => ipcRenderer.on('sync:log', (_e, msg) => fn(msg)),
+  onAutoSync: (fn) => ipcRenderer.on('sync:auto', (_e, event) => fn(event)),
+  onMediaUpdate: (fn) => ipcRenderer.on('media:update', (_e, state) => fn(state)),
+  onProgress: (fn) => ipcRenderer.on('ai:progress', (_e, event) => fn(event)),
+});

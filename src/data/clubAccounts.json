@@ -1,0 +1,6384 @@
+{
+ "rev": "2026-10-20-fl",
+ "source": "Wikidata (CC0), propriété P2002 « nom d’utilisateur X », relevé le 17/10/2026 Sélections nationales : compte de l’équipe, sinon de sa fédération (Wikidata P2002), relevé le 18/10/2026. ; Football Life : comptes ajoutés le 20/10/2026 (même source)",
+ "clubs": [
+  {
+   "id": 1,
+   "name": "Irlande",
+   "short": "IRL",
+   "handle": "FAIreland",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 2,
+   "name": "Irlande du Nord",
+   "short": "NIR",
+   "handle": "OfficialIrishFA",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 3,
+   "name": "Écosse",
+   "short": "SCO",
+   "handle": "ScottishFA",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 4,
+   "name": "Pays de Galles",
+   "short": "WAL",
+   "handle": "FAWales",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 5,
+   "name": "Angleterre",
+   "short": "ENG",
+   "handle": "England",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 6,
+   "name": "Portugal",
+   "short": "POR",
+   "handle": "selecaoportugal",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 7,
+   "name": "Espagne",
+   "short": "ESP",
+   "handle": "SEFutbol",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 8,
+   "name": "France",
+   "short": "FRA",
+   "handle": "equipedefrance",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 9,
+   "name": "Belgique",
+   "short": "BEL",
+   "handle": "BelRedDevils",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 10,
+   "name": "Pays-Bas",
+   "short": "NED",
+   "handle": "OnsOranje",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 12,
+   "name": "Italie",
+   "short": "ITA",
+   "handle": "azzurri",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 13,
+   "name": "République Tchèque",
+   "short": "CZE",
+   "handle": "ceskarepre_cz",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 14,
+   "name": "Allemagne",
+   "short": "GER",
+   "handle": "DFB_Team",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 15,
+   "name": "Danemark",
+   "short": "DEN",
+   "handle": "dbufodbold",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 16,
+   "name": "Norvège",
+   "short": "NOR",
+   "handle": "NFF_info",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 18,
+   "name": "Finlande",
+   "short": "FIN",
+   "handle": "Huuhkajat",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 19,
+   "name": "Pologne",
+   "short": "POL",
+   "handle": "pzpn_pl",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 21,
+   "name": "Autriche",
+   "short": "AUT",
+   "handle": "oefb1904",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 26,
+   "name": "Roumanie",
+   "short": "ROU",
+   "handle": "hai_romania",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 28,
+   "name": "Grèce",
+   "short": "GRE",
+   "handle": "EthnikiOmada",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 29,
+   "name": "Turquie",
+   "short": "TUR",
+   "handle": "TFF_Org",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 31,
+   "name": "Russie",
+   "short": "RUS",
+   "handle": "TeamRussia",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 32,
+   "name": "Maroc",
+   "short": "MAR",
+   "handle": "EnMaroc",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 33,
+   "name": "Tunisie",
+   "short": "TUN",
+   "handle": "FTF_OFFICIELLE",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 34,
+   "name": "Égypte",
+   "short": "EGY",
+   "handle": "EgyptNT",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 35,
+   "name": "Nigeria",
+   "short": "NGA",
+   "handle": "NGSuperEagles",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 36,
+   "name": "Cameroun",
+   "short": "CMR",
+   "handle": "FecafootOfficie",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 38,
+   "name": "Sénégal",
+   "short": "SEN",
+   "handle": "FsfOfficielle",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 39,
+   "name": "États-Unis",
+   "short": "USA",
+   "handle": "USMNT",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 40,
+   "name": "Mexique",
+   "short": "MEX",
+   "handle": "miseleccionmx",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 41,
+   "name": "Jamaïque",
+   "short": "JAM",
+   "handle": "jff_football",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 42,
+   "name": "Costa Rica",
+   "short": "CRI",
+   "handle": "fedefutbolcrc",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 43,
+   "name": "Honduras",
+   "short": "HND",
+   "handle": "FenafuthOrg",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 44,
+   "name": "Colombie",
+   "short": "COL",
+   "handle": "FCFSeleccionCol",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 45,
+   "name": "Brésil",
+   "short": "BRA",
+   "handle": "CBF_Futebol",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 46,
+   "name": "Pérou",
+   "short": "PER",
+   "handle": "tufpf",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 47,
+   "name": "Chili",
+   "short": "CHL",
+   "handle": "LaRoja",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 48,
+   "name": "Paraguay",
+   "short": "PRY",
+   "handle": "Albirroja",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 49,
+   "name": "Uruguay",
+   "short": "URY",
+   "handle": "AUFseleccion",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 50,
+   "name": "Argentine",
+   "short": "ARG",
+   "handle": "Argentina",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 51,
+   "name": "Équateur",
+   "short": "ECU",
+   "handle": "FEFecuador",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 52,
+   "name": "Japon",
+   "short": "JPN",
+   "handle": "jfa_samuraiblue",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 53,
+   "name": "Corée du Sud",
+   "short": "KOR",
+   "handle": "thekfa",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 55,
+   "name": "Iran",
+   "short": "IRN",
+   "handle": "TeamMelliIran",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 56,
+   "name": "Arabie Saoudite",
+   "short": "SAU",
+   "handle": "saudiFF",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 57,
+   "name": "Australie",
+   "short": "AUS",
+   "handle": "Socceroos",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 59,
+   "name": "Lettonie",
+   "short": "LVA",
+   "handle": "kajbumba",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 100,
+   "name": "Manchester United",
+   "short": "MUN",
+   "handle": "ManUtd",
+   "alt": [
+    "Manchester United F.C.",
+    "Manchester United FC",
+    "Manchester United Football Club"
+   ],
+   "wikidata": "Q18656"
+  },
+  {
+   "id": 101,
+   "name": "Arsenal",
+   "short": "ARS",
+   "handle": "Arsenal",
+   "alt": [
+    "Arsenal F.C.",
+    "Arsenal FC",
+    "Arsenal Football Club"
+   ],
+   "wikidata": "Q9617"
+  },
+  {
+   "id": 102,
+   "name": "Chelsea FC",
+   "short": "CHE",
+   "handle": "ChelseaFC",
+   "alt": [
+    "Chelsea F.C.",
+    "Chelsea Football Club"
+   ],
+   "wikidata": "Q9616"
+  },
+  {
+   "id": 103,
+   "name": "Liverpool FC",
+   "short": "LIV",
+   "handle": "LFC",
+   "alt": [
+    "Liverpool F.C.",
+    "The Liverpool Football Club and Athletic Grounds Limited"
+   ],
+   "wikidata": "Q1130849"
+  },
+  {
+   "id": 104,
+   "name": "Leeds United FC",
+   "short": "LEE",
+   "handle": "LUFC",
+   "alt": [
+    "Leeds United F.C.",
+    "Leeds United",
+    "Leeds United Football Club"
+   ],
+   "wikidata": "Q1128631"
+  },
+  {
+   "id": 105,
+   "name": "West Ham United",
+   "short": "WHA",
+   "handle": "WestHam",
+   "alt": [
+    "West Ham United F.C.",
+    "West Ham United FC",
+    "West Ham United Football Club"
+   ],
+   "wikidata": "Q18747"
+  },
+  {
+   "id": 106,
+   "name": "Newcastle United",
+   "short": "NEW",
+   "handle": "NUFC",
+   "alt": [
+    "Newcastle United F.C.",
+    "Newcastle United FC",
+    "Newcastle United Football Club"
+   ],
+   "wikidata": "Q18716"
+  },
+  {
+   "id": 107,
+   "name": "Aston Villa",
+   "short": "ASV",
+   "handle": "AVFCOfficial",
+   "alt": [
+    "Aston Villa F.C.",
+    "Aston Villa FC",
+    "Aston Villa Football Club"
+   ],
+   "wikidata": "Q18711"
+  },
+  {
+   "id": 108,
+   "name": "FC Barcelona",
+   "short": "BAR",
+   "handle": "FCBarcelona",
+   "alt": [
+    "FC Barcelone",
+    "Futbol Club Barcelona"
+   ],
+   "wikidata": "Q7156"
+  },
+  {
+   "id": 109,
+   "name": "Real Madrid",
+   "short": "RMA",
+   "handle": "realmadrid",
+   "alt": [
+    "Real Madrid Club de Fútbol",
+    "Real Madrid CF"
+   ],
+   "wikidata": "Q8682"
+  },
+  {
+   "id": 110,
+   "name": "Valencia CF",
+   "short": "VAL",
+   "handle": "valenciacf",
+   "alt": [
+    "Valence CF"
+   ],
+   "wikidata": "Q10333"
+  },
+  {
+   "id": 112,
+   "name": "Monaco",
+   "short": "ASM",
+   "handle": "AS_Monaco",
+   "alt": [
+    "AS Monaco FC",
+    "Association sportive Monaco Football Club"
+   ],
+   "wikidata": "Q180305"
+  },
+  {
+   "id": 113,
+   "name": "Olympique Marseille",
+   "short": "OM",
+   "handle": "OM_Officiel",
+   "alt": [
+    "Olympique de Marseille"
+   ],
+   "wikidata": "Q132885"
+  },
+  {
+   "id": 114,
+   "name": "PSG",
+   "short": "PSG",
+   "handle": "PSG_inside",
+   "alt": [
+    "Paris Saint-Germain FC",
+    "Paris Saint-Germain Football Club",
+    "PARIS SAINT GERMAIN FOOTBALL"
+   ],
+   "wikidata": "Q483020"
+  },
+  {
+   "id": 115,
+   "name": "Bordeaux",
+   "short": "GDB",
+   "handle": "girondins",
+   "alt": [
+    "FC Girondins de Bordeaux",
+    "Girondins de Bordeaux",
+    "Football Club des Girondins de Bordeaux",
+    "Girondins"
+   ],
+   "wikidata": "Q172476"
+  },
+  {
+   "id": 116,
+   "name": "Ajax",
+   "short": "AJA",
+   "handle": "AFCAjax",
+   "alt": [
+    "AFC Ajax",
+    "Ajax Amsterdam",
+    "Amsterdamsche Football Club Ajax"
+   ],
+   "wikidata": "Q81888"
+  },
+  {
+   "id": 117,
+   "name": "Feyenoord",
+   "short": "FEY",
+   "handle": "feyenoord",
+   "alt": [
+    "Feyenoord Rotterdam"
+   ],
+   "wikidata": "Q134241"
+  },
+  {
+   "id": 118,
+   "name": "PSV",
+   "short": "PSV",
+   "handle": "PSV",
+   "alt": [
+    "PSV Eindhoven"
+   ],
+   "wikidata": "Q11938"
+  },
+  {
+   "id": 119,
+   "name": "Internazionale",
+   "short": "INT",
+   "handle": "Inter",
+   "alt": [
+    "Inter Milan",
+    "FC Internazionale Milano",
+    "Football Club Internazionale Milano"
+   ],
+   "wikidata": "Q631"
+  },
+  {
+   "id": 120,
+   "name": "Juventus",
+   "short": "JUV",
+   "handle": "juventusfc",
+   "alt": [
+    "Juventus FC"
+   ],
+   "wikidata": "Q1422"
+  },
+  {
+   "id": 121,
+   "name": "Milan",
+   "short": "MIL",
+   "handle": "acmilan",
+   "alt": [
+    "AC Milan",
+    "Associazione Calcio Milan"
+   ],
+   "wikidata": "Q1543"
+  },
+  {
+   "id": 122,
+   "name": "Lazio",
+   "short": "LAZ",
+   "handle": "OfficialSSLazio",
+   "alt": [
+    "SS Lazio",
+    "Società Sportiva Lazio"
+   ],
+   "wikidata": "Q2609"
+  },
+  {
+   "id": 124,
+   "name": "Fiorentina",
+   "short": "FIO",
+   "handle": "acffiorentina",
+   "alt": [
+    "ACF Fiorentina"
+   ],
+   "wikidata": "Q2052"
+  },
+  {
+   "id": 125,
+   "name": "Roma",
+   "short": "ROM",
+   "handle": "officialasroma",
+   "alt": [
+    "AS Roma",
+    "AS Rome",
+    "Associazione Sportiva Roma"
+   ],
+   "wikidata": "Q2739"
+  },
+  {
+   "id": 127,
+   "name": "FC Bayern München",
+   "short": "FCB",
+   "handle": "FCBayern",
+   "alt": [
+    "FC Bayern Munich",
+    "Bayern Munich"
+   ],
+   "wikidata": "Q15789"
+  },
+  {
+   "id": 128,
+   "name": "Bayer Leverkusen",
+   "short": "LEV",
+   "handle": "bayer04fussball",
+   "alt": [
+    "Bayer 04 Leverkusen"
+   ],
+   "wikidata": "Q104761"
+  },
+  {
+   "id": 130,
+   "name": "Galatasaray",
+   "short": "GS",
+   "handle": "GalatasaraySK",
+   "alt": [
+    "Galatasaray S.K.",
+    "Galatasaray SK"
+   ],
+   "wikidata": "Q495299"
+  },
+  {
+   "id": 131,
+   "name": "Celtic",
+   "short": "CEL",
+   "handle": "CelticFC",
+   "alt": [
+    "Celtic F.C.",
+    "Celtic FC"
+   ],
+   "wikidata": "Q19593"
+  },
+  {
+   "id": 132,
+   "name": "Rangers",
+   "short": "RAN",
+   "handle": "RangersFC",
+   "alt": [
+    "Rangers F.C.",
+    "Rangers FC"
+   ],
+   "wikidata": "Q19597"
+  },
+  {
+   "id": 134,
+   "name": "Dynamo Kyiv",
+   "short": "DYN",
+   "handle": "dynamokyiven",
+   "alt": [
+    "FC Dynamo Kyiv",
+    "Dynamo Kiev"
+   ],
+   "wikidata": "Q179075"
+  },
+  {
+   "id": 135,
+   "name": "Spartak Moskva",
+   "short": "SPM",
+   "handle": "fcsm_official",
+   "alt": [
+    "Spartak Moscow",
+    "Spartak Moscou"
+   ],
+   "wikidata": "Q29112"
+  },
+  {
+   "id": 136,
+   "name": "Vasco da Gama",
+   "short": "VAS",
+   "handle": "VascodaGama",
+   "alt": [
+    "CR Vasco da Gama",
+    "Club de Regatas Vasco da Gama"
+   ],
+   "wikidata": "Q5014111"
+  },
+  {
+   "id": 137,
+   "name": "Palmeiras",
+   "short": "PAL",
+   "handle": "Palmeiras",
+   "alt": [
+    "Sociedade Esportiva Palmeiras",
+    "SE Palmeiras"
+   ],
+   "wikidata": "Q80964"
+  },
+  {
+   "id": 138,
+   "name": "River Plate",
+   "short": "RIV",
+   "handle": "RiverPlate",
+   "alt": [
+    "Club Atlético River Plate"
+   ],
+   "wikidata": "Q15799"
+  },
+  {
+   "id": 139,
+   "name": "Boca Juniors",
+   "short": "BOC",
+   "handle": "BocaJrsOficial",
+   "alt": [
+    "Club Atlético Boca Juniors"
+   ],
+   "wikidata": "Q170703"
+  },
+  {
+   "id": 172,
+   "name": "Atlético de Madrid",
+   "short": "ATM",
+   "handle": "Atleti",
+   "alt": [
+    "Atlético Madrid",
+    "Club Atlético de Madrid"
+   ],
+   "wikidata": "Q8701"
+  },
+  {
+   "id": 173,
+   "name": "Manchester City",
+   "short": "MCI",
+   "handle": "ManCity",
+   "alt": [
+    "Manchester City F.C.",
+    "Manchester City FC",
+    "Manchester City Football Club"
+   ],
+   "wikidata": "Q50602"
+  },
+  {
+   "id": 174,
+   "name": "Anderlecht",
+   "short": "AND",
+   "handle": "rscanderlecht",
+   "alt": [
+    "R.S.C. Anderlecht",
+    "RSC Anderlecht",
+    "Royal Sporting Club Anderlecht"
+   ],
+   "wikidata": "Q187528"
+  },
+  {
+   "id": 175,
+   "name": "Sparta Praha",
+   "short": "SPA",
+   "handle": "ACSparta_CZ",
+   "alt": [
+    "AC Sparta Prague",
+    "AC Sparta Praha fotbal, a.s."
+   ],
+   "wikidata": "Q193481"
+  },
+  {
+   "id": 176,
+   "name": "Blackburn Rovers",
+   "short": "BLA",
+   "handle": "rovers",
+   "alt": [
+    "Blackburn Rovers F.C.",
+    "Blackburn Rovers FC",
+    "Blackburn Rovers Football Club"
+   ],
+   "wikidata": "Q19446"
+  },
+  {
+   "id": 177,
+   "name": "Everton FC",
+   "short": "EVE",
+   "handle": "Everton",
+   "alt": [
+    "Everton F.C.",
+    "Everton Football Club"
+   ],
+   "wikidata": "Q5794"
+  },
+  {
+   "id": 178,
+   "name": "Fulham FC",
+   "short": "FUL",
+   "handle": "FulhamFC",
+   "alt": [
+    "Fulham F.C.",
+    "Fulham Football Club"
+   ],
+   "wikidata": "Q18708"
+  },
+  {
+   "id": 179,
+   "name": "Tottenham Hotspur",
+   "short": "TOT",
+   "handle": "SpursOfficial",
+   "alt": [
+    "Tottenham Hotspur F.C.",
+    "Tottenham Hotspur Football Club"
+   ],
+   "wikidata": "Q18741"
+  },
+  {
+   "id": 180,
+   "name": "Auxerre",
+   "short": "AJA",
+   "handle": "AJA",
+   "alt": [
+    "AJ Auxerre",
+    "Association de la Jeunesse Auxerroise"
+   ],
+   "wikidata": "Q182876"
+  },
+  {
+   "id": 181,
+   "name": "Olympique Lyonnais",
+   "short": "OL",
+   "handle": "OL",
+   "alt": [
+    "Olympique lyonnais",
+    "OLYMPIQUE LYONNAIS"
+   ],
+   "wikidata": "Q704"
+  },
+  {
+   "id": 182,
+   "name": "RC Lens",
+   "short": "RCL",
+   "handle": "RCLens",
+   "alt": [
+    "R.C. Lens",
+    "Racing Club de Lens"
+   ],
+   "wikidata": "Q191843"
+  },
+  {
+   "id": 184,
+   "name": "Schalke 04",
+   "short": "S04",
+   "handle": "s04",
+   "alt": [
+    "FC Schalke 04",
+    "Fußballclub Gelsenkirchen-Schalke 04 e. V."
+   ],
+   "wikidata": "Q32494"
+  },
+  {
+   "id": 186,
+   "name": "Bologna",
+   "short": "BOL",
+   "handle": "BfcOfficialPage",
+   "alt": [
+    "Bologna F.C. 1909",
+    "Bologne FC 1909",
+    "Bologna Football Club 1909"
+   ],
+   "wikidata": "Q1893"
+  },
+  {
+   "id": 187,
+   "name": "Brescia",
+   "short": "BRE",
+   "handle": "BresciaOfficial",
+   "alt": [
+    "Brescia Calcio"
+   ],
+   "wikidata": "Q6651"
+  },
+  {
+   "id": 188,
+   "name": "Chievo",
+   "short": "CHI",
+   "handle": "ChievoVR",
+   "alt": [
+    "AC ChievoVerona",
+    "Associazione Calcio ChievoVerona"
+   ],
+   "wikidata": "Q2037"
+  },
+  {
+   "id": 190,
+   "name": "Udinese",
+   "short": "UDI",
+   "handle": "Udinese_1896",
+   "alt": [
+    "Udinese Calcio"
+   ],
+   "wikidata": "Q2798"
+  },
+  {
+   "id": 191,
+   "name": "Benfica",
+   "short": "SLB",
+   "handle": "SLBenfica",
+   "alt": [
+    "S.L. Benfica",
+    "SL Benfica"
+   ],
+   "wikidata": "Q131499"
+  },
+  {
+   "id": 192,
+   "name": "Porto",
+   "short": "POR",
+   "handle": "FCPorto",
+   "alt": [
+    "FC Porto",
+    "Futebol Clube do Porto"
+   ],
+   "wikidata": "Q128446"
+  },
+  {
+   "id": 193,
+   "name": "Sporting CP",
+   "short": "SCP",
+   "handle": "SportingCP",
+   "alt": [
+    "Sporting Clube de Portugal"
+   ],
+   "wikidata": "Q75729"
+  },
+  {
+   "id": 194,
+   "name": "Real Betis",
+   "short": "BET",
+   "handle": "RealBetis",
+   "alt": [
+    "Real Betis Balompié",
+    "Betis Balompié"
+   ],
+   "wikidata": "Q8723"
+  },
+  {
+   "id": 195,
+   "name": "Celta de Vigo",
+   "short": "CEL",
+   "handle": "rccelta",
+   "alt": [
+    "RC Celta de Vigo"
+   ],
+   "wikidata": "Q8749"
+  },
+  {
+   "id": 196,
+   "name": "Real Sociedad",
+   "short": "RSO",
+   "handle": "RealSociedad",
+   "alt": [
+    "Real Sociedad de Fútbol Sociedad Anónima Deportiva"
+   ],
+   "wikidata": "Q10315"
+  },
+  {
+   "id": 197,
+   "name": "Fenerbahçe",
+   "short": "FB",
+   "handle": "Fenerbahce",
+   "alt": [
+    "Fenerbahçe Istanbul"
+   ],
+   "wikidata": "Q6601875"
+  },
+  {
+   "id": 198,
+   "name": "Panathinaikos",
+   "short": "PAN",
+   "handle": "paofc_",
+   "alt": [
+    "Panathinaikos F.C.",
+    "Panathinaïkós",
+    "Παναθηναϊκός Αθλητικός Όμιλος Ποδοσφαιρική Ανώνυμος Εταιρεία"
+   ],
+   "wikidata": "Q4122219"
+  },
+  {
+   "id": 201,
+   "name": "Birmingham City FC",
+   "short": "BIR",
+   "handle": "BCFC",
+   "alt": [
+    "Birmingham City F.C.",
+    "Birmingham City Football Club"
+   ],
+   "wikidata": "Q19444"
+  },
+  {
+   "id": 204,
+   "name": "Leicester City",
+   "short": "LEI",
+   "handle": "lcfc",
+   "alt": [
+    "Leicester City F.C.",
+    "Leicester City FC",
+    "Leicester City Football Club"
+   ],
+   "wikidata": "Q19481"
+  },
+  {
+   "id": 205,
+   "name": "Middlesbrough",
+   "short": "MID",
+   "handle": "Boro",
+   "alt": [
+    "Middlesbrough F.C.",
+    "Middlesbrough FC",
+    "Middlesbrough Football Club"
+   ],
+   "wikidata": "Q18661"
+  },
+  {
+   "id": 207,
+   "name": "Southampton FC",
+   "short": "SOU",
+   "handle": "SouthamptonFC",
+   "alt": [
+    "Southampton F.C.",
+    "Southampton Football Club"
+   ],
+   "wikidata": "Q18732"
+  },
+  {
+   "id": 208,
+   "name": "Wolverhampton Wanderers",
+   "short": "WOL",
+   "handle": "Wolves",
+   "alt": [
+    "Wolverhampton Wanderers F.C."
+   ],
+   "wikidata": "Q19500"
+  },
+  {
+   "id": 209,
+   "name": "Ajaccio",
+   "short": "ACA",
+   "handle": "ACAjaccio",
+   "alt": [
+    "A.C. Ajaccio",
+    "Athletic club ajaccien",
+    "Athletic Club Ajaccio"
+   ],
+   "wikidata": "Q270051"
+  },
+  {
+   "id": 211,
+   "name": "Guingamp",
+   "short": "EAG",
+   "handle": "EAGuingamp",
+   "alt": [
+    "En Avant de Guingamp",
+    "En avant Guingamp"
+   ],
+   "wikidata": "Q459148"
+  },
+  {
+   "id": 213,
+   "name": "Lille",
+   "short": "LIL",
+   "handle": "losclive",
+   "alt": [
+    "Lille OSC",
+    "Lille Olympique Sporting Club",
+    "LOSC Lille Métropole",
+    "LOSC LILLE METROPOLE ASSOCIATION"
+   ],
+   "wikidata": "Q19516"
+  },
+  {
+   "id": 215,
+   "name": "Montpellier",
+   "short": "MON",
+   "handle": "MontpellierHSC",
+   "alt": [
+    "Montpellier Hérault Sport Club",
+    "Montpellier Hérault SC",
+    "Montpellier la Paillade Sport Club Littoral",
+    "Montpellier Littoral Sport Club"
+   ],
+   "wikidata": "Q19513"
+  },
+  {
+   "id": 216,
+   "name": "Nantes",
+   "short": "FCN",
+   "handle": "FCNantes",
+   "alt": [
+    "FC Nantes",
+    "Football Club de Nantes",
+    "Football Club de Nantes Atlantique"
+   ],
+   "wikidata": "Q192071"
+  },
+  {
+   "id": 217,
+   "name": "Nice",
+   "short": "OGC",
+   "handle": "ogcnice",
+   "alt": [
+    "OGC Nice",
+    "Gymnaste Club de Nice",
+    "Olympique Gymnaste Club de Nice"
+   ],
+   "wikidata": "Q185163"
+  },
+  {
+   "id": 218,
+   "name": "Rennes",
+   "short": "REN",
+   "handle": "staderennais",
+   "alt": [
+    "Stade Rennais F.C.",
+    "Stade rennais FC",
+    "Stade rennais",
+    "Stade rennais football club"
+   ],
+   "wikidata": "Q19509"
+  },
+  {
+   "id": 219,
+   "name": "Sochaux",
+   "short": "SOC",
+   "handle": "FCSM_officiel",
+   "alt": [
+    "FC Sochaux-Montbéliard",
+    "Football Club Sochaux-Montbéliard",
+    "Football Club Sochaux"
+   ],
+   "wikidata": "Q19512"
+  },
+  {
+   "id": 221,
+   "name": "Toulouse",
+   "short": "TFC",
+   "handle": "ToulouseFC",
+   "alt": [
+    "Toulouse FC",
+    "Toulouse Football Club",
+    "Union sportive de Toulouse"
+   ],
+   "wikidata": "Q19518"
+  },
+  {
+   "id": 234,
+   "name": "Atalanta",
+   "short": "ATA",
+   "handle": "Atalanta_BC",
+   "alt": [
+    "Atalanta BC",
+    "Atalanta Bergame",
+    "Atalanta Bergamasca Calcio"
+   ],
+   "wikidata": "Q1886"
+  },
+  {
+   "id": 235,
+   "name": "Empoli",
+   "short": "EMP",
+   "handle": "EmpoliFC",
+   "alt": [
+    "Empoli FC",
+    "Empoli Football Club"
+   ],
+   "wikidata": "Q6703"
+  },
+  {
+   "id": 239,
+   "name": "Reggina",
+   "short": "REG",
+   "handle": "Reggina_1914",
+   "alt": [
+    "AS Reggina 1914",
+    "Reggina 1914"
+   ],
+   "wikidata": "Q8476"
+  },
+  {
+   "id": 240,
+   "name": "Sampdoria",
+   "short": "SAM",
+   "handle": "sampdoria",
+   "alt": [
+    "U.C. Sampdoria",
+    "UC Sampdoria"
+   ],
+   "wikidata": "Q1457"
+  },
+  {
+   "id": 242,
+   "name": "AZ",
+   "short": "AZ",
+   "handle": "AZAlkmaar",
+   "alt": [
+    "AZ Alkmaar",
+    "Alkmaar Zaanstreek"
+   ],
+   "wikidata": "Q191264"
+  },
+  {
+   "id": 243,
+   "name": "Ado den Haag",
+   "short": "ADO",
+   "handle": "ADODenHaag",
+   "alt": [
+    "ADO Den Haag",
+    "ADO La Haye",
+    "Alles Door Oefening Den Haag"
+   ],
+   "wikidata": "Q24904"
+  },
+  {
+   "id": 244,
+   "name": "Groningen",
+   "short": "GRO",
+   "handle": "fcgroningen",
+   "alt": [
+    "FC Groningen",
+    "FC Groningue",
+    "Football Club Groningen"
+   ],
+   "wikidata": "Q24711"
+  },
+  {
+   "id": 245,
+   "name": "Heerenveen",
+   "short": "HEE",
+   "handle": "scHeerenveen",
+   "alt": [
+    "SC Heerenveen",
+    "Sportclub Heerenveen"
+   ],
+   "wikidata": "Q200321"
+  },
+  {
+   "id": 250,
+   "name": "Twente",
+   "short": "TWE",
+   "handle": "fctwente",
+   "alt": [
+    "FC Twente",
+    "Football Club Twente"
+   ],
+   "wikidata": "Q19603"
+  },
+  {
+   "id": 251,
+   "name": "Utrecht",
+   "short": "UTR",
+   "handle": "fcutrecht",
+   "alt": [
+    "FC Utrecht",
+    "Football Club Utrecht"
+   ],
+   "wikidata": "Q24680"
+  },
+  {
+   "id": 252,
+   "name": "Vitesse",
+   "short": "VIT",
+   "handle": "MijnVitesse",
+   "alt": [
+    "SBV Vitesse",
+    "Vitesse Arnhem",
+    "Stichting Betaald Voetbal Vitesse Fc"
+   ],
+   "wikidata": "Q219233"
+  },
+  {
+   "id": 254,
+   "name": "RKC Waalwijk",
+   "short": "RKC",
+   "handle": "RKCWAALWIJK",
+   "alt": [
+    "Rooms Katholieke Combinatie Waalwijk"
+   ],
+   "wikidata": "Q24699"
+  },
+  {
+   "id": 256,
+   "name": "Pec Zwolle",
+   "short": "ZWO",
+   "handle": "PECZwolle",
+   "alt": [
+    "PEC Zwolle",
+    "Prins Hendrik Ende Desespereert Nimmer Combinatie Zwolle"
+   ],
+   "wikidata": "Q269151"
+  },
+  {
+   "id": 258,
+   "name": "Athletic Club",
+   "short": "ATH",
+   "handle": "AthleticClub",
+   "alt": [
+    "Athletic Bilbao"
+   ],
+   "wikidata": "Q8687"
+  },
+  {
+   "id": 259,
+   "name": "RCD Espanyol Barcellona",
+   "short": "ESP",
+   "handle": "RCDEspanyol",
+   "alt": [
+    "RCD Espanyol de Barcelona",
+    "RCD Espanyol",
+    "Reial Club Deportiu Espanyol de Barcelona S.A.D."
+   ],
+   "wikidata": "Q8780"
+  },
+  {
+   "id": 260,
+   "name": "Málaga CF",
+   "short": "MAL",
+   "handle": "MalagaCF",
+   "alt": [
+    "Málaga Club de Fútbol"
+   ],
+   "wikidata": "Q8857"
+  },
+  {
+   "id": 261,
+   "name": "RCD Mallorca",
+   "short": "MLL",
+   "handle": "RCD_Mallorca",
+   "alt": [
+    "RCD Majorque",
+    "Real Club Deportivo Mallorca, S. A. D."
+   ],
+   "wikidata": "Q8835"
+  },
+  {
+   "id": 263,
+   "name": "CA Osasuna",
+   "short": "OSA",
+   "handle": "Osasuna",
+   "alt": [
+    "Club Atlético Osasuna"
+   ],
+   "wikidata": "Q10286"
+  },
+  {
+   "id": 265,
+   "name": "Sevilla FC",
+   "short": "SEV",
+   "handle": "SevillaFC",
+   "alt": [
+    "Sevilla Fútbol Club"
+   ],
+   "wikidata": "Q10329"
+  },
+  {
+   "id": 266,
+   "name": "Real Valladolid",
+   "short": "VLL",
+   "handle": "RealValladolid",
+   "alt": [],
+   "wikidata": "Q10319"
+  },
+  {
+   "id": 267,
+   "name": "Villarreal CF",
+   "short": "VIL",
+   "handle": "VillarrealCF",
+   "alt": [
+    "Villarreal Club de Fútbol"
+   ],
+   "wikidata": "Q12297"
+  },
+  {
+   "id": 268,
+   "name": "Real Saragozza",
+   "short": "SAR",
+   "handle": "RealZaragoza",
+   "alt": [
+    "Real Zaragoza",
+    "Real Saragosse"
+   ],
+   "wikidata": "Q10308"
+  },
+  {
+   "id": 269,
+   "name": "Club Brugge",
+   "short": "BRU",
+   "handle": "clubbrugge",
+   "alt": [
+    "Club Brugge K.V.",
+    "Club Bruges KV",
+    "Club Brugge Koninklijke Voetbalvereniging"
+   ],
+   "wikidata": "Q190916"
+  },
+  {
+   "id": 270,
+   "name": "AEK Athens",
+   "short": "AEK",
+   "handle": "AEK_FC_OFFICIAL",
+   "alt": [
+    "AEK Athens F.C.",
+    "AEK Athènes FC",
+    "Αθλητική Ένωσις Κωνσταντινουπόλεως Ποδοσφαιρική Ανώνυμη Εταιρεία"
+   ],
+   "wikidata": "Q201584"
+  },
+  {
+   "id": 271,
+   "name": "Lokomotiv Moskva",
+   "short": "LMO",
+   "handle": "fclokomotiv",
+   "alt": [
+    "FC Lokomotiv Moscow",
+    "Lokomotiv Moscou"
+   ],
+   "wikidata": "Q29115"
+  },
+  {
+   "id": 273,
+   "name": "Beşi̇ktaş",
+   "short": "BJK",
+   "handle": "Besiktas",
+   "alt": [
+    "Beşiktaş J.K.",
+    "Beşiktaş JK"
+   ],
+   "wikidata": "Q172567"
+  },
+  {
+   "id": 274,
+   "name": "Cruzeiro",
+   "short": "CRU",
+   "handle": "Cruzeiro",
+   "alt": [
+    "Cruzeiro E.C.",
+    "Cruzeiro EC"
+   ],
+   "wikidata": "Q188277"
+  },
+  {
+   "id": 295,
+   "name": "Beijing Guoan",
+   "short": "BJG",
+   "handle": "FCBeijingGuoan",
+   "alt": [
+    "Beijing Guoan F.C."
+   ],
+   "wikidata": "Q814738"
+  },
+  {
+   "id": 310,
+   "name": "Guangzhou Evergrande",
+   "short": "GZE",
+   "handle": "GZEvergrandeFC",
+   "alt": [
+    "Guangzhou F.C.",
+    "Guangzhou Football Club",
+    "广州足球俱乐部"
+   ],
+   "wikidata": "Q130521"
+  },
+  {
+   "id": 317,
+   "name": "Ascoli",
+   "short": "ASC",
+   "handle": "ascolicalciofc",
+   "alt": [
+    "Ascoli Calcio 1898 FC"
+   ],
+   "wikidata": "Q6630"
+  },
+  {
+   "id": 320,
+   "name": "Cagliari",
+   "short": "CAG",
+   "handle": "CagliariCalcio",
+   "alt": [
+    "Cagliari Calcio"
+   ],
+   "wikidata": "Q1900"
+  },
+  {
+   "id": 323,
+   "name": "Genoa",
+   "short": "GEN",
+   "handle": "GenoaCFC",
+   "alt": [
+    "Genoa CFC",
+    "Genoa Cricket and Football Club"
+   ],
+   "wikidata": "Q2074"
+  },
+  {
+   "id": 327,
+   "name": "Napoli",
+   "short": "NAP",
+   "handle": "sscnapoli",
+   "alt": [
+    "SSC Napoli",
+    "Società Sportiva Calcio Napoli"
+   ],
+   "wikidata": "Q2641"
+  },
+  {
+   "id": 328,
+   "name": "Pescara",
+   "short": "PES",
+   "handle": "PescaraCalcio",
+   "alt": [
+    "Delfino Pescara 1936",
+    "Delfino Pescara"
+   ],
+   "wikidata": "Q2710"
+  },
+  {
+   "id": 333,
+   "name": "Torino",
+   "short": "TOR",
+   "handle": "torinofc_1906",
+   "alt": [
+    "Torino FC",
+    "Torino Football Club"
+   ],
+   "wikidata": "Q2768"
+  },
+  {
+   "id": 336,
+   "name": "Hellas Verona",
+   "short": "VER",
+   "handle": "HellasVeronaFC",
+   "alt": [
+    "Hellas Verona FC",
+    "Hellas Vérone Football Club"
+   ],
+   "wikidata": "Q8639"
+  },
+  {
+   "id": 342,
+   "name": "Emmen",
+   "short": "EMM",
+   "handle": "FC_Emmen",
+   "alt": [
+    "FC Emmen",
+    "Football Club Emmen"
+   ],
+   "wikidata": "Q1061627"
+  },
+  {
+   "id": 345,
+   "name": "Fortuna Sittard",
+   "short": "FOR",
+   "handle": "FortunaSittard",
+   "alt": [
+    "Fortuna Sittard Combinatie"
+   ],
+   "wikidata": "Q854167"
+  },
+  {
+   "id": 349,
+   "name": "Heracles",
+   "short": "HER",
+   "handle": "HeraclesAlmelo",
+   "alt": [
+    "Heracles Almelo"
+   ],
+   "wikidata": "Q11961"
+  },
+  {
+   "id": 351,
+   "name": "Sparta Rotterdam",
+   "short": "SPA",
+   "handle": "spartarotterdam",
+   "alt": [],
+   "wikidata": "Q209895"
+  },
+  {
+   "id": 355,
+   "name": "VVV",
+   "short": "VVV",
+   "handle": "VVVVenlo",
+   "alt": [
+    "VVV-Venlo",
+    "VVV Venlo",
+    "Venlose Voetbal Vereniging Venlo"
+   ],
+   "wikidata": "Q24689"
+  },
+  {
+   "id": 357,
+   "name": "UD Almería",
+   "short": "ALM",
+   "handle": "U_D_Almeria",
+   "alt": [
+    "Unión Deportiva Almería"
+   ],
+   "wikidata": "Q10407"
+  },
+  {
+   "id": 361,
+   "name": "Elche CF",
+   "short": "ELC",
+   "handle": "elchecf",
+   "alt": [
+    "Elche Club de Fútbol"
+   ],
+   "wikidata": "Q10512"
+  },
+  {
+   "id": 362,
+   "name": "Getafe CF",
+   "short": "GET",
+   "handle": "GetafeCF",
+   "alt": [],
+   "wikidata": "Q8806"
+  },
+  {
+   "id": 363,
+   "name": "Sporting Gijón",
+   "short": "GIJ",
+   "handle": "RealSporting",
+   "alt": [
+    "Sporting de Gijón",
+    "Real Sporting de Gijón S.A.D."
+   ],
+   "wikidata": "Q12278"
+  },
+  {
+   "id": 364,
+   "name": "UD Las Palmas",
+   "short": "LAS",
+   "handle": "UDLP_deutsch",
+   "alt": [
+    "Unión Deportiva Las Palmas"
+   ],
+   "wikidata": "Q11979"
+  },
+  {
+   "id": 366,
+   "name": "Levante UD",
+   "short": "LEV",
+   "handle": "LevanteUD",
+   "alt": [],
+   "wikidata": "Q8823"
+  },
+  {
+   "id": 370,
+   "name": "Rayo Vallecano",
+   "short": "RAY",
+   "handle": "RayoVallecano",
+   "alt": [],
+   "wikidata": "Q10300"
+  },
+  {
+   "id": 377,
+   "name": "Brighton & Hove Albion",
+   "short": "BRG",
+   "handle": "OfficialBHAFC",
+   "alt": [
+    "Brighton & Hove Albion F.C.",
+    "Brighton & Hove",
+    "Brighton & Hove Albion Football Club"
+   ],
+   "wikidata": "Q19453"
+  },
+  {
+   "id": 378,
+   "name": "Burnley FC",
+   "short": "BUR",
+   "handle": "BurnleyOfficial",
+   "alt": [
+    "Burnley F.C.",
+    "Burnley Football Club"
+   ],
+   "wikidata": "Q19458"
+  },
+  {
+   "id": 379,
+   "name": "Cardiff City FC",
+   "short": "CAR",
+   "handle": "CardiffCityFC",
+   "alt": [
+    "Cardiff City F.C.",
+    "Cardiff City Football Club"
+   ],
+   "wikidata": "Q18662"
+  },
+  {
+   "id": 382,
+   "name": "Crystal Palace FC",
+   "short": "CRY",
+   "handle": "CPFC",
+   "alt": [
+    "Crystal Palace F.C.",
+    "Crystal Palace Football Club"
+   ],
+   "wikidata": "Q19467"
+  },
+  {
+   "id": 383,
+   "name": "Derby County",
+   "short": "DER",
+   "handle": "dcfcofficial",
+   "alt": [
+    "Derby County F.C.",
+    "Derby County FC",
+    "Derby County Football Club"
+   ],
+   "wikidata": "Q19470"
+  },
+  {
+   "id": 387,
+   "name": "Millwall FC",
+   "short": "MIL",
+   "handle": "MillwallFC",
+   "alt": [
+    "Millwall F.C.",
+    "Millwall Football Club"
+   ],
+   "wikidata": "Q19487"
+  },
+  {
+   "id": 388,
+   "name": "Norwich City",
+   "short": "NOR",
+   "handle": "NorwichCityFC",
+   "alt": [
+    "Norwich City F.C.",
+    "Norwich City FC",
+    "Norwich City Football Club"
+   ],
+   "wikidata": "Q18721"
+  },
+  {
+   "id": 389,
+   "name": "Nottingham Forest",
+   "short": "NOT",
+   "handle": "NFFC",
+   "alt": [
+    "Nottingham Forest F.C.",
+    "Nottingham Forest FC",
+    "Nottingham Forest Football Club"
+   ],
+   "wikidata": "Q19490"
+  },
+  {
+   "id": 391,
+   "name": "Reading FC",
+   "short": "RDG",
+   "handle": "readingfc",
+   "alt": [
+    "Reading F.C.",
+    "Reading Football Club"
+   ],
+   "wikidata": "Q18729"
+  },
+  {
+   "id": 394,
+   "name": "Sheffield Wednesday",
+   "short": "SHW",
+   "handle": "swfc",
+   "alt": [
+    "Sheffield Wednesday F.C.",
+    "Sheffield Wednesday FC",
+    "Sheffield Wednesday Football Club"
+   ],
+   "wikidata": "Q19498"
+  },
+  {
+   "id": 395,
+   "name": "Stoke City",
+   "short": "STK",
+   "handle": "stokecity",
+   "alt": [
+    "Stoke City F.C.",
+    "Stoke City FC",
+    "Stoke City Football Club"
+   ],
+   "wikidata": "Q18736"
+  },
+  {
+   "id": 398,
+   "name": "Watford FC",
+   "short": "WAT",
+   "handle": "WatfordFC",
+   "alt": [
+    "Watford F.C.",
+    "Watford Football Club"
+   ],
+   "wikidata": "Q2714"
+  },
+  {
+   "id": 399,
+   "name": "West Bromwich Albion",
+   "short": "WBA",
+   "handle": "wba",
+   "alt": [
+    "West Bromwich Albion F.C.",
+    "West Bromwich Albion Football Club"
+   ],
+   "wikidata": "Q18744"
+  },
+  {
+   "id": 403,
+   "name": "Angers",
+   "short": "SCO",
+   "handle": "AngersSCO",
+   "alt": [
+    "Angers SCO",
+    "Angers Sporting Club de l'Ouest",
+    "Sporting Club de l'Ouest",
+    "Sporting Club du Crédit de l'Ouest"
+   ],
+   "wikidata": "Q845137"
+  },
+  {
+   "id": 405,
+   "name": "Caen",
+   "short": "SMC",
+   "handle": "SMCaen",
+   "alt": [
+    "Stade Malherbe Caen",
+    "Stade Malherbe Caen Calvados Basse-Normandie",
+    "Stade Malherbe caennais"
+   ],
+   "wikidata": "Q193377"
+  },
+  {
+   "id": 406,
+   "name": "Châteauroux",
+   "short": "LBC",
+   "handle": "LaBerrichonne",
+   "alt": [
+    "LB Châteauroux",
+    "La Berrichonne",
+    "Berrichonne Avenir Club",
+    "La Berrichonne de Châteauroux"
+   ],
+   "wikidata": "Q845067"
+  },
+  {
+   "id": 407,
+   "name": "Clermont",
+   "short": "CLE",
+   "handle": "ClermontFoot",
+   "alt": [
+    "Clermont Foot 63",
+    "Clermont Foot",
+    "Clermont Foot Auvergne",
+    "Clermont Foot Auvergne 63"
+   ],
+   "wikidata": "Q870182"
+  },
+  {
+   "id": 413,
+   "name": "Le Havre",
+   "short": "HAC",
+   "handle": "HAC_Foot",
+   "alt": [
+    "Le Havre AC",
+    "Le Havre Athletic Club"
+   ],
+   "wikidata": "Q328658"
+  },
+  {
+   "id": 414,
+   "name": "Lorient",
+   "short": "FCL",
+   "handle": "FCLorient",
+   "alt": [
+    "F.C. Lorient",
+    "FC Lorient",
+    "Club des Supporters du Football Club Lorient",
+    "Football Club de Lorient"
+   ],
+   "wikidata": "Q48911"
+  },
+  {
+   "id": 415,
+   "name": "Nancy",
+   "short": "ASN",
+   "handle": "asnlofficiel",
+   "alt": [
+    "A.S. Nancy-Lorraine",
+    "AS Nancy-Lorraine",
+    "Association sportive lorraine",
+    "Association sportive Nancy-Lorraine"
+   ],
+   "wikidata": "Q19523"
+  },
+  {
+   "id": 416,
+   "name": "Niort",
+   "short": "NIO",
+   "handle": "ChamoisNiortais",
+   "alt": [
+    "Chamois Niortais F.C.",
+    "Chamois niortais",
+    "Chamois niortais Football Club"
+   ],
+   "wikidata": "Q626917"
+  },
+  {
+   "id": 418,
+   "name": "Saint-Étienne",
+   "short": "STE",
+   "handle": "ASSEofficiel",
+   "alt": [
+    "AS Saint-Étienne",
+    "Amicale des employés de la Société des magasins Casino",
+    "Amicale Sporting Club",
+    "Association sportive de Saint-Étienne"
+   ],
+   "wikidata": "Q19521"
+  },
+  {
+   "id": 420,
+   "name": "Troyes",
+   "short": "TRO",
+   "handle": "estac_officiel",
+   "alt": [
+    "ES Troyes AC",
+    "Association Troyes Aube Champagne",
+    "Espérance sportive Troyes Aube Champagne"
+   ],
+   "wikidata": "Q501693"
+  },
+  {
+   "id": 1010,
+   "name": "Irak",
+   "short": "IRQ",
+   "handle": "IRAQFA",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1011,
+   "name": "Jordanie",
+   "short": "JOR",
+   "handle": "JordanFA",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1013,
+   "name": "Koweït",
+   "short": "KWT",
+   "handle": "KuwaitFA",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1015,
+   "name": "Liban",
+   "short": "LBN",
+   "handle": "Lebanon_FA",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1032,
+   "name": "Émirats Arabes Unis",
+   "short": "ARE",
+   "handle": "uaefa_ae",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1040,
+   "name": "Algérie",
+   "short": "DZA",
+   "handle": "LesVerts",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1067,
+   "name": "Mali",
+   "short": "MLI",
+   "handle": "femafoot",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1083,
+   "name": "Zambie",
+   "short": "ZMB",
+   "handle": "FAZFootball",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1113,
+   "name": "Panama",
+   "short": "PAN",
+   "handle": "PanamaSeleccion",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1128,
+   "name": "Bolivie",
+   "short": "BOL",
+   "handle": "fbf_oficial",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1129,
+   "name": "Venezuela",
+   "short": "VEN",
+   "handle": "SeleVinotinto",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1141,
+   "name": "Nouvelle-Zélande",
+   "short": "NZL",
+   "handle": "nz_football",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1164,
+   "name": "Israël",
+   "short": "ISR",
+   "handle": "ISRAELFA",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1165,
+   "name": "Albanie",
+   "short": "ALB",
+   "handle": "FSHForg",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1167,
+   "name": "Arménie",
+   "short": "ARM",
+   "handle": "OfficialArmFF",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1169,
+   "name": "Biélorussie",
+   "short": "BLR",
+   "handle": "belarusff",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1170,
+   "name": "Bosnie-Herzégovine",
+   "short": "BIH",
+   "handle": "NFSBiH",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1171,
+   "name": "Chypre",
+   "short": "CYP",
+   "handle": "CyprusFA",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1184,
+   "name": "Ouzbékistan",
+   "short": "UZB",
+   "handle": "UzbekistanFA",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1195,
+   "name": "Genk",
+   "short": "GNK",
+   "handle": "KRCGenkofficial",
+   "alt": [
+    "K.R.C. Genk",
+    "KRC Genk",
+    "KILOS DE RUEDAS EN LA CHICANE GENK"
+   ],
+   "wikidata": "Q216032"
+  },
+  {
+   "id": 1196,
+   "name": "Gent",
+   "short": "GNT",
+   "handle": "kaagent",
+   "alt": [
+    "KAA Gent",
+    "La Gantoise",
+    "Koninklijke Atletiek Associatie Gent"
+   ],
+   "wikidata": "Q18232"
+  },
+  {
+   "id": 1197,
+   "name": "Standard Liège",
+   "short": "STA",
+   "handle": "Standard_RSCL",
+   "alt": [
+    "Standard de Liège",
+    "Royal Standard Club de Liège"
+   ],
+   "wikidata": "Q190561"
+  },
+  {
+   "id": 1200,
+   "name": "Mechelen",
+   "short": "KVM",
+   "handle": "kvmechelen",
+   "alt": [
+    "KV Mechelen",
+    "FC Malines",
+    "Yellow Red Koninklijke Voetbalclub Mechelen"
+   ],
+   "wikidata": "Q113000"
+  },
+  {
+   "id": 1203,
+   "name": "Dinamo Zagreb",
+   "short": "DZG",
+   "handle": "gnkdinamo",
+   "alt": [
+    "GNK Dinamo Zagreb"
+   ],
+   "wikidata": "Q172803"
+  },
+  {
+   "id": 1207,
+   "name": "København",
+   "short": "FCK",
+   "handle": "FCKobenhavn",
+   "alt": [
+    "F.C. Copenhagen",
+    "FC Copenhague"
+   ],
+   "wikidata": "Q188430"
+  },
+  {
+   "id": 1208,
+   "name": "Nordsjælland",
+   "short": "FCN",
+   "handle": "fcnordsjaelland",
+   "alt": [
+    "FC Nordsjælland",
+    "Football Club Nordsjælland"
+   ],
+   "wikidata": "Q210025"
+  },
+  {
+   "id": 1212,
+   "name": "Paok",
+   "short": "PAO",
+   "handle": "PAOK_FC",
+   "alt": [
+    "PAOK FC",
+    "PAOK Salonique",
+    "Πανθεσσαλονίκειος Αθλητικός Όμιλος Κωνσταντινουπολιτών Ποδοσφαιρική Ανώνυμη Εταιρεία"
+   ],
+   "wikidata": "Q204888"
+  },
+  {
+   "id": 1217,
+   "name": "Cska Moskva",
+   "short": "CSK",
+   "handle": "pfc_cska",
+   "alt": [
+    "PFC CSKA Moscow",
+    "CSKA Moscou",
+    "ЦСКА (Масква)"
+   ],
+   "wikidata": "Q176371"
+  },
+  {
+   "id": 1218,
+   "name": "Zenit",
+   "short": "ZSP",
+   "handle": "zenit_spb",
+   "alt": [
+    "FC Zenit Saint Petersburg",
+    "Zénith Saint-Pétersbourg",
+    "Зенит"
+   ],
+   "wikidata": "Q29108"
+  },
+  {
+   "id": 1219,
+   "name": "Aberdeen",
+   "short": "ABE",
+   "handle": "AberdeenFC",
+   "alt": [
+    "Aberdeen F.C.",
+    "Aberdeen FC",
+    "Aberdeen Football Club"
+   ],
+   "wikidata": "Q187326"
+  },
+  {
+   "id": 1220,
+   "name": "Dundee United",
+   "short": "DUD",
+   "handle": "dundeeunitedfc",
+   "alt": [
+    "Dundee United F.C.",
+    "Dundee United FC"
+   ],
+   "wikidata": "Q192873"
+  },
+  {
+   "id": 1222,
+   "name": "Hibernian",
+   "short": "HIB",
+   "handle": "HibernianFC",
+   "alt": [
+    "Hibernian F.C.",
+    "Hibernian Football Club"
+   ],
+   "wikidata": "Q192597"
+  },
+  {
+   "id": 1230,
+   "name": "Gençlerbi̇rli̇ği̇",
+   "short": "GEN",
+   "handle": "kirmizikara",
+   "alt": [
+    "Gençlerbirliği S.K.",
+    "Gençlerbirliği SK"
+   ],
+   "wikidata": "Q641373"
+  },
+  {
+   "id": 1232,
+   "name": "Shakhtar Donetsk",
+   "short": "SHK",
+   "handle": "FCShakhtar",
+   "alt": [
+    "FC Shakhtar Donetsk",
+    "Chakhtar Donetsk",
+    "Шахцёр (Данецк)"
+   ],
+   "wikidata": "Q172969"
+  },
+  {
+   "id": 1236,
+   "name": "Argentinos Juniors",
+   "short": "ARG",
+   "handle": "AAAJoficial",
+   "alt": [
+    "Asociación Atlética Argentinos Juniors"
+   ],
+   "wikidata": "Q220621"
+  },
+  {
+   "id": 1237,
+   "name": "Racing Club",
+   "short": "RAC",
+   "handle": "RacingClub",
+   "alt": [
+    "Racing Club de Avellaneda"
+   ],
+   "wikidata": "Q276533"
+  },
+  {
+   "id": 1238,
+   "name": "Estudiantes",
+   "short": "EST",
+   "handle": "EdelpOficial",
+   "alt": [
+    "Estudiantes de La Plata",
+    "Club Estudiantes de La Plata"
+   ],
+   "wikidata": "Q214940"
+  },
+  {
+   "id": 1239,
+   "name": "Gimnasia la Plata",
+   "short": "GIM",
+   "handle": "gimnasiaoficial",
+   "alt": [
+    "Club de Gimnasia y Esgrima La Plata",
+    "Gimnasia La Plata"
+   ],
+   "wikidata": "Q18640"
+  },
+  {
+   "id": 1240,
+   "name": "Independiente",
+   "short": "IND",
+   "handle": "Independiente",
+   "alt": [
+    "Club Atlético Independiente",
+    "CA Independiente"
+   ],
+   "wikidata": "Q214978"
+  },
+  {
+   "id": 1241,
+   "name": "Newell'S Old Boys",
+   "short": "NOB",
+   "handle": "CANOBoficial",
+   "alt": [
+    "Newell's Old Boys",
+    "Club Atlético Newell's Old Boys"
+   ],
+   "wikidata": "Q221882"
+  },
+  {
+   "id": 1242,
+   "name": "Rosario Central",
+   "short": "RC",
+   "handle": "CARCoficial",
+   "alt": [
+    "Club Atlético Rosario Central",
+    "CA Rosario Central"
+   ],
+   "wikidata": "Q318307"
+  },
+  {
+   "id": 1243,
+   "name": "San Lorenzo",
+   "short": "SLO",
+   "handle": "SanLorenzo",
+   "alt": [
+    "San Lorenzo de Almagro",
+    "CA San Lorenzo",
+    "Club Atlético San Lorenzo de Almagro"
+   ],
+   "wikidata": "Q218282"
+  },
+  {
+   "id": 1244,
+   "name": "Vélez Sarsfield",
+   "short": "VEL",
+   "handle": "Velez",
+   "alt": [
+    "Club Atlético Vélez Sarsfield",
+    "CA Vélez Sarsfield",
+    "Velez"
+   ],
+   "wikidata": "Q215163"
+  },
+  {
+   "id": 1245,
+   "name": "Atlético Mineiro",
+   "short": "CAM",
+   "handle": "Atletico",
+   "alt": [
+    "Clube Atlético Mineiro"
+   ],
+   "wikidata": "Q270995"
+  },
+  {
+   "id": 1246,
+   "name": "Botafogo",
+   "short": "BOT",
+   "handle": "Botafogo",
+   "alt": [
+    "Botafogo F.R.",
+    "Botafogo FR"
+   ],
+   "wikidata": "Q80958"
+  },
+  {
+   "id": 1247,
+   "name": "Corinthians",
+   "short": "COR",
+   "handle": "Corinthians",
+   "alt": [
+    "S.C. Corinthians Paulista",
+    "Corinthians Paulista"
+   ],
+   "wikidata": "Q35933"
+  },
+  {
+   "id": 1248,
+   "name": "Flamengo",
+   "short": "FLA",
+   "handle": "Flamengo",
+   "alt": [
+    "Clube de Regatas do Flamengo"
+   ],
+   "wikidata": "Q17479"
+  },
+  {
+   "id": 1249,
+   "name": "Fluminense",
+   "short": "FLU",
+   "handle": "OficialFlu",
+   "alt": [
+    "Fluminense F.C.",
+    "Fluminense FC"
+   ],
+   "wikidata": "Q80987"
+  },
+  {
+   "id": 1250,
+   "name": "Grêmio",
+   "short": "GRE",
+   "handle": "Gremio",
+   "alt": [
+    "Grêmio FBPA",
+    "Gremio Foot-Ball Porto Alegrense",
+    "Grêmio Foot-Ball Porto Alegrense"
+   ],
+   "wikidata": "Q221695"
+  },
+  {
+   "id": 1251,
+   "name": "Guarani",
+   "short": "GUA",
+   "handle": "oficialguarani",
+   "alt": [
+    "Guarani Futebol Clube"
+   ],
+   "wikidata": "Q1133475"
+  },
+  {
+   "id": 1252,
+   "name": "Internacional",
+   "short": "INT",
+   "handle": "SCInternacional",
+   "alt": [
+    "S.C. Internacional",
+    "SC Internacional"
+   ],
+   "wikidata": "Q80845"
+  },
+  {
+   "id": 1254,
+   "name": "Santos",
+   "short": "SAN",
+   "handle": "SantosFC",
+   "alt": [
+    "Santos F.C.",
+    "Santos FC"
+   ],
+   "wikidata": "Q80955"
+  },
+  {
+   "id": 1255,
+   "name": "São Paulo",
+   "short": "SAO",
+   "handle": "SaoPauloFC",
+   "alt": [
+    "São Paulo FC"
+   ],
+   "wikidata": "Q38568"
+  },
+  {
+   "id": 1256,
+   "name": "Colo Colo",
+   "short": "CC",
+   "handle": "colocolo",
+   "alt": [
+    "Club Social y Deportivo Colo-Colo",
+    "Colo-Colo"
+   ],
+   "wikidata": "Q207373"
+  },
+  {
+   "id": 1257,
+   "name": "América de Cali",
+   "short": "AME",
+   "handle": "AmericadeCali",
+   "alt": [],
+   "wikidata": "Q391987"
+  },
+  {
+   "id": 1258,
+   "name": "Millonarios",
+   "short": "MIL",
+   "handle": "MillosFCoficial",
+   "alt": [
+    "Club Deportivo Los Millonarios"
+   ],
+   "wikidata": "Q391984"
+  },
+  {
+   "id": 1327,
+   "name": "Queens Park Rangers",
+   "short": "QPR",
+   "handle": "QPR",
+   "alt": [
+    "Queens Park Rangers F.C.",
+    "QP Rangers",
+    "Queens Park Rangers Football Club"
+   ],
+   "wikidata": "Q18723"
+  },
+  {
+   "id": 1328,
+   "name": "Dijon",
+   "short": "DIJ",
+   "handle": "DFCO_Officiel",
+   "alt": [
+    "Dijon FCO",
+    "Dijon Football Côte-d'Or"
+   ],
+   "wikidata": "Q503317"
+  },
+  {
+   "id": 1329,
+   "name": "Brest",
+   "short": "SB",
+   "handle": "SB29",
+   "alt": [
+    "Stade Brestois 29",
+    "Stade brestois 29",
+    "Armoricaine de Brest",
+    "Brest Armorique FC"
+   ],
+   "wikidata": "Q218372"
+  },
+  {
+   "id": 1330,
+   "name": "Stade de Reims",
+   "short": "SDR",
+   "handle": "StadeDeReims",
+   "alt": [
+    "Stade de Reims Champagne",
+    "Stade de Reims Champagne Football Club"
+   ],
+   "wikidata": "Q208228"
+  },
+  {
+   "id": 1363,
+   "name": "Crotone",
+   "short": "CRO",
+   "handle": "fccrotoneoff",
+   "alt": [
+    "F.C. Crotone",
+    "Football Club Crotone"
+   ],
+   "wikidata": "Q6690"
+  },
+  {
+   "id": 1528,
+   "name": "Valenciennes",
+   "short": "VA",
+   "handle": "VAFC",
+   "alt": [
+    "Valenciennes F.C.",
+    "Valenciennes FC",
+    "Football Club Valenciennois",
+    "Union Sportive Valenciennes-Anzin"
+   ],
+   "wikidata": "Q212269"
+  },
+  {
+   "id": 1550,
+   "name": "Serbie",
+   "short": "SRB",
+   "handle": "FSSrbije",
+   "alt": [],
+   "kind": "national"
+  },
+  {
+   "id": 1595,
+   "name": "SD Ponferradina",
+   "short": "PON",
+   "handle": "SDP_1922",
+   "alt": [
+    "Sociedad Deportiva Ponferradina"
+   ],
+   "wikidata": "Q12168"
+  },
+  {
+   "id": 1600,
+   "name": "Spezia",
+   "short": "SPE",
+   "handle": "SpeziaCalcio",
+   "alt": [
+    "Spezia Calcio"
+   ],
+   "wikidata": "Q8615"
+  },
+  {
+   "id": 1706,
+   "name": "Basel",
+   "short": "BAS",
+   "handle": "FCBasel1893",
+   "alt": [
+    "FC Basel",
+    "FC Bâle"
+   ],
+   "wikidata": "Q189671"
+  },
+  {
+   "id": 1753,
+   "name": "Dinamo Moskva",
+   "short": "DMO",
+   "handle": "fcdynamo",
+   "alt": [
+    "FC Dinamo Moscow",
+    "Dynamo Moscou"
+   ],
+   "wikidata": "Q17497"
+  },
+  {
+   "id": 1760,
+   "name": "Bristol City FC",
+   "short": "BRI",
+   "handle": "bcfctweets",
+   "alt": [
+    "Bristol City F.C.",
+    "Bristol City Football Club"
+   ],
+   "wikidata": "Q19456"
+  },
+  {
+   "id": 1765,
+   "name": "Granada CF",
+   "short": "GRA",
+   "handle": "GranadaCF",
+   "alt": [
+    "Grenade CF"
+   ],
+   "wikidata": "Q8812"
+  },
+  {
+   "id": 1804,
+   "name": "Vitória Guimarães",
+   "short": "GUI",
+   "handle": "VitoriaSC1922",
+   "alt": [
+    "Vitória S.C.",
+    "Vitória Sport Clube"
+   ],
+   "wikidata": "Q223450"
+  },
+  {
+   "id": 1809,
+   "name": "Si̇vasspor",
+   "short": "SIV",
+   "handle": "Sivasspor",
+   "alt": [
+    "Sivasspor"
+   ],
+   "wikidata": "Q372599"
+  },
+  {
+   "id": 1818,
+   "name": "Aab",
+   "short": "AAB",
+   "handle": "aabsportdk",
+   "alt": [
+    "AaB Fodbold",
+    "Aalborg BK",
+    "Aalborg Boldspilklub"
+   ],
+   "wikidata": "Q11492669"
+  },
+  {
+   "id": 1832,
+   "name": "Brøndby",
+   "short": "BIF",
+   "handle": "BrondbyIF",
+   "alt": [
+    "Brøndby IF"
+   ],
+   "wikidata": "Q211906"
+  },
+  {
+   "id": 1909,
+   "name": "Swansea City AFC",
+   "short": "SWA",
+   "handle": "swansofficial",
+   "alt": [
+    "Swansea City A.F.C.",
+    "Swansea City Association Football Club"
+   ],
+   "wikidata": "Q18659"
+  },
+  {
+   "id": 1910,
+   "name": "Nîmes",
+   "short": "NIM",
+   "handle": "nimesolympique",
+   "alt": [
+    "Nîmes Olympique"
+   ],
+   "wikidata": "Q730809"
+  },
+  {
+   "id": 1919,
+   "name": "Sassuolo",
+   "short": "SAS",
+   "handle": "SassuoloUS",
+   "alt": [
+    "US Sassuolo Calcio",
+    "Unione Sportiva Sassuolo Calcio"
+   ],
+   "wikidata": "Q8603"
+  },
+  {
+   "id": 1920,
+   "name": "Cittadella",
+   "short": "CIT",
+   "handle": "ascittadella73",
+   "alt": [
+    "Associazione Sportiva Cittadella"
+   ],
+   "wikidata": "Q6673"
+  },
+  {
+   "id": 1921,
+   "name": "Arsenal",
+   "short": "ARS",
+   "handle": "ArsenalOficial",
+   "alt": [
+    "Arsenal Fútbol Club"
+   ],
+   "wikidata": "Q476836"
+  },
+  {
+   "id": 1922,
+   "name": "Huracán",
+   "short": "HUR",
+   "handle": "CAHuracan",
+   "alt": [
+    "Club Atlético Huracán",
+    "CA Huracán"
+   ],
+   "wikidata": "Q327172"
+  },
+  {
+   "id": 1923,
+   "name": "Colón",
+   "short": "COL",
+   "handle": "ColonOficial",
+   "alt": [
+    "Club Atlético Colón"
+   ],
+   "wikidata": "Q80897"
+  },
+  {
+   "id": 1924,
+   "name": "Godoy Cruz",
+   "short": "GOD",
+   "handle": "ClubGodoyCruz",
+   "alt": [
+    "Godoy Cruz Antonio Tomba",
+    "CD Godoy Cruz",
+    "Club Deportivo Godoy Cruz Antonio Tomba"
+   ],
+   "wikidata": "Q80882"
+  },
+  {
+   "id": 1927,
+   "name": "Banfield",
+   "short": "BAN",
+   "handle": "CAB_oficial",
+   "alt": [
+    "Club Atlético Banfield",
+    "CA Banfield"
+   ],
+   "wikidata": "Q692646"
+  },
+  {
+   "id": 1929,
+   "name": "Lanús",
+   "short": "LAN",
+   "handle": "clublanus",
+   "alt": [
+    "Club Atlético Lanús",
+    "CA Lanús"
+   ],
+   "wikidata": "Q324589"
+  },
+  {
+   "id": 1930,
+   "name": "Athletico Paranaense",
+   "short": "CAP",
+   "handle": "atleticopr",
+   "alt": [
+    "Club Athletico Paranaense",
+    "Clube Atlético Paranaense"
+   ],
+   "wikidata": "Q506832"
+  },
+  {
+   "id": 1931,
+   "name": "Coritiba",
+   "short": "CFC",
+   "handle": "Coritiba",
+   "alt": [
+    "Coritiba F.C.",
+    "Coritiba FC"
+   ],
+   "wikidata": "Q478317"
+  },
+  {
+   "id": 1932,
+   "name": "Figueirense",
+   "short": "FIG",
+   "handle": "figueirensefc",
+   "alt": [
+    "Figueirense Futebol Clube"
+   ],
+   "wikidata": "Q218334"
+  },
+  {
+   "id": 1933,
+   "name": "Goiás",
+   "short": "GOI",
+   "handle": "goiasoficial",
+   "alt": [
+    "Goiás Esporte Clube"
+   ],
+   "wikidata": "Q816779"
+  },
+  {
+   "id": 1935,
+   "name": "Náutico",
+   "short": "NAU",
+   "handle": "nauticope",
+   "alt": [
+    "Clube Náutico Capibaribe"
+   ],
+   "wikidata": "Q73971"
+  },
+  {
+   "id": 1936,
+   "name": "Sport Recife",
+   "short": "SPO",
+   "handle": "sportrecife",
+   "alt": [
+    "Sport Club do Recife"
+   ],
+   "wikidata": "Q219098"
+  },
+  {
+   "id": 1937,
+   "name": "Vitória",
+   "short": "VIT",
+   "handle": "ECVitoria",
+   "alt": [
+    "E.C. Vitória",
+    "Esporte Clube Vitória"
+   ],
+   "wikidata": "Q274465"
+  },
+  {
+   "id": 1941,
+   "name": "Rubin Kazan",
+   "short": "RKA",
+   "handle": "fcrk",
+   "alt": [],
+   "wikidata": "Q170040"
+  },
+  {
+   "id": 1944,
+   "name": "Nacional",
+   "short": "CDN",
+   "handle": "CDNacional",
+   "alt": [
+    "C.D. Nacional",
+    "Clube Desportivo Nacional"
+   ],
+   "wikidata": "Q216459"
+  },
+  {
+   "id": 1945,
+   "name": "Trabzonspor",
+   "short": "TS",
+   "handle": "Trabzonspor",
+   "alt": [],
+   "wikidata": "Q192641"
+  },
+  {
+   "id": 1950,
+   "name": "Young Boys",
+   "short": "YB",
+   "handle": "BSC_YB",
+   "alt": [
+    "BSC Young Boys",
+    "Berner Sport Club Young Boys"
+   ],
+   "wikidata": "Q190526"
+  },
+  {
+   "id": 1955,
+   "name": "Sion",
+   "short": "SIO",
+   "handle": "FCSion",
+   "alt": [
+    "FC Sion"
+   ],
+   "wikidata": "Q321061"
+  },
+  {
+   "id": 1956,
+   "name": "Vaduz",
+   "short": "VAD",
+   "handle": "VaduzFC",
+   "alt": [
+    "FC Vaduz"
+   ],
+   "wikidata": "Q216773"
+  },
+  {
+   "id": 1957,
+   "name": "Zürich",
+   "short": "FCZ",
+   "handle": "fc_zuerich",
+   "alt": [
+    "FC Zürich",
+    "FC Zurich"
+   ],
+   "wikidata": "Q206692"
+  },
+  {
+   "id": 1958,
+   "name": "Servette",
+   "short": "SER",
+   "handle": "ServetteFC",
+   "alt": [
+    "Servette FC"
+   ],
+   "wikidata": "Q219235"
+  },
+  {
+   "id": 1973,
+   "name": "Belenenses",
+   "short": "BEL",
+   "handle": "cfosbelenenses",
+   "alt": [
+    "C.F. Os Belenenses",
+    "CF Os Belenenses"
+   ],
+   "wikidata": "Q216510"
+  },
+  {
+   "id": 1974,
+   "name": "Sporting Braga",
+   "short": "BRA",
+   "handle": "SCBragaOficial",
+   "alt": [
+    "S.C. Braga",
+    "Sporting Clube de Braga"
+   ],
+   "wikidata": "Q75684"
+  },
+  {
+   "id": 1976,
+   "name": "Marítimo",
+   "short": "MAR",
+   "handle": "maritimomadeira",
+   "alt": [
+    "C.S. Marítimo",
+    "Club Sport Marítimo"
+   ],
+   "wikidata": "Q216503"
+  },
+  {
+   "id": 1978,
+   "name": "Paços de Ferreira",
+   "short": "PFE",
+   "handle": "fcpf",
+   "alt": [
+    "F.C. Paços de Ferreira",
+    "Futebol Clube Paços de Ferreira"
+   ],
+   "wikidata": "Q371136"
+  },
+  {
+   "id": 1979,
+   "name": "Rio Ave",
+   "short": "RAV",
+   "handle": "rioave_fc",
+   "alt": [
+    "Rio Ave F.C.",
+    "Rio Ave FC"
+   ],
+   "wikidata": "Q622432"
+  },
+  {
+   "id": 1985,
+   "name": "Kilmarnock",
+   "short": "KIL",
+   "handle": "KilmarnockFC",
+   "alt": [
+    "Kilmarnock F.C.",
+    "Kilmarnock Football Club"
+   ],
+   "wikidata": "Q210961"
+  },
+  {
+   "id": 1986,
+   "name": "Motherwell",
+   "short": "MOT",
+   "handle": "MotherwellFC",
+   "alt": [
+    "Motherwell F.C.",
+    "Motherwell Football Club"
+   ],
+   "wikidata": "Q216523"
+  },
+  {
+   "id": 1987,
+   "name": "ST. Mirren",
+   "short": "STM",
+   "handle": "saintmirrenfc",
+   "alt": [
+    "St. Mirren F.C.",
+    "St Mirren Football Club"
+   ],
+   "wikidata": "Q319136"
+  },
+  {
+   "id": 1989,
+   "name": "Antalyaspor",
+   "short": "ANT",
+   "handle": "antalyaspor",
+   "alt": [],
+   "wikidata": "Q43710"
+  },
+  {
+   "id": 1995,
+   "name": "İstanbul Başakşehi̇r",
+   "short": "BFK",
+   "handle": "ibfk2014",
+   "alt": [
+    "İstanbul Başakşehir F.K.",
+    "İstanbul BB"
+   ],
+   "wikidata": "Q857938"
+  },
+  {
+   "id": 1996,
+   "name": "Kayseri̇spor",
+   "short": "KAY",
+   "handle": "KayserisporFK",
+   "alt": [
+    "Kayserispor"
+   ],
+   "wikidata": "Q608122"
+  },
+  {
+   "id": 2009,
+   "name": "Cercle Brugge",
+   "short": "CER",
+   "handle": "cercleofficial",
+   "alt": [
+    "Cercle Brugge K.S.V.",
+    "Cercle Bruges KSV",
+    "Cercle Brugge Koninklijke Sportvereniging"
+   ],
+   "wikidata": "Q364698"
+  },
+  {
+   "id": 2010,
+   "name": "Sporting Charleroi",
+   "short": "CHA",
+   "handle": "SportCharleroi",
+   "alt": [
+    "Royal Charleroi S.C.",
+    "Royal Charleroi SC",
+    "Royal Charleroi Sporting Club",
+    "RSC Charleroi"
+   ],
+   "wikidata": "Q19585"
+  },
+  {
+   "id": 2013,
+   "name": "Kortrijk",
+   "short": "KVK",
+   "handle": "kvkofficieel",
+   "alt": [
+    "K.V. Kortrijk",
+    "KV Courtrai",
+    "Koninklijke Voetbalclub Kortrijk"
+   ],
+   "wikidata": "Q618620"
+  },
+  {
+   "id": 2019,
+   "name": "Zulte-Waregem",
+   "short": "ZUL",
+   "handle": "esseveeofficial",
+   "alt": [
+    "S.V. Zulte Waregem",
+    "SV Zulte Waregem",
+    "Sportvereniging Zulte Waregem"
+   ],
+   "wikidata": "Q376635"
+  },
+  {
+   "id": 2067,
+   "name": "Agf",
+   "short": "AGF",
+   "handle": "AGFFodbold",
+   "alt": [
+    "Aarhus Gymnastikforening",
+    "AGF Aarhus",
+    "Aarhus GF"
+   ],
+   "wikidata": "Q301431"
+  },
+  {
+   "id": 2069,
+   "name": "Midtjylland",
+   "short": "FCM",
+   "handle": "fcmidtjylland",
+   "alt": [
+    "FC Midtjylland"
+   ],
+   "wikidata": "Q618520"
+  },
+  {
+   "id": 2187,
+   "name": "Girona FC",
+   "short": "GIR",
+   "handle": "GironaFC",
+   "alt": [
+    "Girona Futbol Club S.A.D."
+   ],
+   "wikidata": "Q11945"
+  },
+  {
+   "id": 2188,
+   "name": "SD Huesca",
+   "short": "HUE",
+   "handle": "sdhuesca",
+   "alt": [
+    "Sociedad Deportiva Huesca"
+   ],
+   "wikidata": "Q11971"
+  },
+  {
+   "id": 2191,
+   "name": "Universidad Católica",
+   "short": "UC",
+   "handle": "cruzadossadp",
+   "alt": [
+    "Club Deportivo Universidad Católica",
+    "CD Universidad Católica"
+   ],
+   "wikidata": "Q427446"
+  },
+  {
+   "id": 2192,
+   "name": "Audax Italiano",
+   "short": "AUD",
+   "handle": "audaxitaliano",
+   "alt": [
+    "Audax Club Sportivo Italiano"
+   ],
+   "wikidata": "Q758689"
+  },
+  {
+   "id": 2193,
+   "name": "Atlético Nacional",
+   "short": "NAC",
+   "handle": "nacionaloficial",
+   "alt": [
+    "Atletico Nacional"
+   ],
+   "wikidata": "Q332605"
+  },
+  {
+   "id": 2194,
+   "name": "Cúcuta RN",
+   "short": "CUC",
+   "handle": "Cucutaoficial",
+   "alt": [
+    "Cúcuta Deportivo"
+   ],
+   "wikidata": "Q616380"
+  },
+  {
+   "id": 2208,
+   "name": "Everton",
+   "short": "EVE",
+   "handle": "evertonsadp",
+   "alt": [
+    "Everton de Viña del Mar",
+    "Corporacion Deportiva Everton de Viña del Mar",
+    "Everton de Viña del Mar S.A.D.P."
+   ],
+   "wikidata": "Q1103684"
+  },
+  {
+   "id": 2209,
+   "name": "Universidad de Chile",
+   "short": "UCH",
+   "handle": "udechile",
+   "alt": [
+    "Club Universidad de Chile",
+    "CF Universidad de Chili"
+   ],
+   "wikidata": "Q737753"
+  },
+  {
+   "id": 2210,
+   "name": "Independiente Medellín",
+   "short": "MED",
+   "handle": "DIM_Oficial",
+   "alt": [
+    "Deportivo Independiente Medellín"
+   ],
+   "wikidata": "Q332527"
+  },
+  {
+   "id": 2215,
+   "name": "Universitario",
+   "short": "UNI",
+   "handle": "Universitario",
+   "alt": [
+    "Club Universitario de Deportes"
+   ],
+   "wikidata": "Q19066"
+  },
+  {
+   "id": 2216,
+   "name": "Sporting Cristal",
+   "short": "SC",
+   "handle": "ClubSCristal",
+   "alt": [
+    "Club Sporting Cristal"
+   ],
+   "wikidata": "Q604581"
+  },
+  {
+   "id": 2229,
+   "name": "Rostov",
+   "short": "FCR",
+   "handle": "rostovfc",
+   "alt": [
+    "FC Rostov",
+    "FK Rostov",
+    "Ростов",
+    "Ростселмаш"
+   ],
+   "wikidata": "Q182930"
+  },
+  {
+   "id": 2284,
+   "name": "Once Caldas",
+   "short": "ONC",
+   "handle": "oncecaldas",
+   "alt": [
+    "CD Once Caldas"
+   ],
+   "wikidata": "Q47533"
+  },
+  {
+   "id": 2285,
+   "name": "Junior",
+   "short": "JUN",
+   "handle": "JuniorClubSA",
+   "alt": [
+    "Junior de Barranquilla",
+    "Junior Barranquilla"
+   ],
+   "wikidata": "Q332524"
+  },
+  {
+   "id": 2287,
+   "name": "Alianza Lima",
+   "short": "ALI",
+   "handle": "ClubAlianzaLima",
+   "alt": [
+    "Club Alianza Lima"
+   ],
+   "wikidata": "Q572957"
+  },
+  {
+   "id": 2293,
+   "name": "Borussia Dortmund",
+   "short": "BVB",
+   "handle": "BVB",
+   "alt": [
+    "BV 09 Borussia Dortmund"
+   ],
+   "wikidata": "Q41420"
+  },
+  {
+   "id": 2297,
+   "name": "VfL WOLFSBURG",
+   "short": "WOL",
+   "handle": "VfL_Wolfsburg",
+   "alt": [
+    "VfL Wolfsburg"
+   ],
+   "wikidata": "Q101859"
+  },
+  {
+   "id": 2298,
+   "name": "TSG 1899 Hoffenheim",
+   "short": "HOF",
+   "handle": "tsghoffenheim",
+   "alt": [],
+   "wikidata": "Q22707"
+  },
+  {
+   "id": 2300,
+   "name": "RB Leipzig",
+   "short": "LEI",
+   "handle": "RBLeipzig",
+   "alt": [],
+   "wikidata": "Q702455"
+  },
+  {
+   "id": 2301,
+   "name": "Borussia M'Gladbach",
+   "short": "MGL",
+   "handle": "borussia",
+   "alt": [
+    "Borussia Mönchengladbach"
+   ],
+   "wikidata": "Q101959"
+  },
+  {
+   "id": 2344,
+   "name": "Augsburg FC",
+   "short": "AUG",
+   "handle": "FCAugsburg",
+   "alt": [
+    "FC Augsburg",
+    "FC Augsbourg"
+   ],
+   "wikidata": "Q15755"
+  },
+  {
+   "id": 2346,
+   "name": "1. FC Union Berlin",
+   "short": "FCU",
+   "handle": "fcunion",
+   "alt": [
+    "1. Fußballclub Union Berlin e. V.",
+    "FC Union Berlin"
+   ],
+   "wikidata": "Q141971"
+  },
+  {
+   "id": 2347,
+   "name": "SC Freiburg",
+   "short": "FRE",
+   "handle": "scfreiburg",
+   "alt": [
+    "SC Fribourg"
+   ],
+   "wikidata": "Q106394"
+  },
+  {
+   "id": 2348,
+   "name": "SV Werder Bremen",
+   "short": "WBR",
+   "handle": "werderbremen",
+   "alt": [
+    "Werder Brême"
+   ],
+   "wikidata": "Q51976"
+  },
+  {
+   "id": 2349,
+   "name": "Hertha BSC",
+   "short": "HER",
+   "handle": "HerthaBSC",
+   "alt": [],
+   "wikidata": "Q102720"
+  },
+  {
+   "id": 2350,
+   "name": "RB Salzburg",
+   "short": "RBS",
+   "handle": "RedBullSalzburg",
+   "alt": [
+    "FC Red Bull Salzburg",
+    "Red Bull Salzbourg"
+   ],
+   "wikidata": "Q994811"
+  },
+  {
+   "id": 2351,
+   "name": "1. FSV Mainz 05",
+   "short": "MAI",
+   "handle": "1fsvmainz05",
+   "alt": [
+    "1. FSV Mayence 05",
+    "1. Fußball- und Sportverein Mainz 05 e. V.",
+    "FSV Mainz 05"
+   ],
+   "wikidata": "Q105254"
+  },
+  {
+   "id": 2352,
+   "name": "Ferencvárosi TC",
+   "short": "FER",
+   "handle": "Fradi_HU",
+   "alt": [],
+   "wikidata": "Q208396"
+  },
+  {
+   "id": 2353,
+   "name": "Arminia Bielefeld",
+   "short": "ARM",
+   "handle": "arminia",
+   "alt": [
+    "DSC Arminia Bielefeld"
+   ],
+   "wikidata": "Q105844"
+  },
+  {
+   "id": 2354,
+   "name": "1. FC Köln",
+   "short": "KOL",
+   "handle": "fckoeln",
+   "alt": [
+    "1. FC Cologne",
+    "1. Fußball-Club Köln 01/07 e. V.",
+    "FC Köln"
+   ],
+   "wikidata": "Q104770"
+  },
+  {
+   "id": 2356,
+   "name": "Eintracht Frankfurt",
+   "short": "FRK",
+   "handle": "eintracht",
+   "alt": [
+    "Eintracht Francfort",
+    "Eintracht Frankfurt e. V."
+   ],
+   "wikidata": "Q38245"
+  },
+  {
+   "id": 2357,
+   "name": "VFB Stuttgart",
+   "short": "STU",
+   "handle": "vfb",
+   "alt": [
+    "VfB Stuttgart"
+   ],
+   "wikidata": "Q4512"
+  },
+  {
+   "id": 2360,
+   "name": "Unión Española",
+   "short": "UE",
+   "handle": "UEoficial",
+   "alt": [
+    "Club de Deportes Unión Española"
+   ],
+   "wikidata": "Q1129059"
+  },
+  {
+   "id": 2361,
+   "name": "Deportes Tolima",
+   "short": "TOL",
+   "handle": "cdtolima",
+   "alt": [
+    "Club Deportes Tolima"
+   ],
+   "wikidata": "Q332532"
+  },
+  {
+   "id": 2365,
+   "name": "ST. Johnstone",
+   "short": "STJ",
+   "handle": "StJohnstone",
+   "alt": [
+    "St Johnstone F.C.",
+    "Saint Johnstone Football Club"
+   ],
+   "wikidata": "Q268776"
+  },
+  {
+   "id": 2369,
+   "name": "Portimonense",
+   "short": "PTM",
+   "handle": "PortimonenseSAD",
+   "alt": [
+    "Portimonense S.C.",
+    "Portimonense Sporting Clube"
+   ],
+   "wikidata": "Q621120"
+  },
+  {
+   "id": 2387,
+   "name": "Gil Vicente",
+   "short": "GIL",
+   "handle": "GilVicente_fc",
+   "alt": [
+    "Gil Vicente F.C.",
+    "Gil Vicente FC"
+   ],
+   "wikidata": "Q926438"
+  },
+  {
+   "id": 2391,
+   "name": "Santa Clara",
+   "short": "STA",
+   "handle": "cd_santaclara",
+   "alt": [
+    "C.D. Santa Clara",
+    "Clube Desportivo Santa Clara"
+   ],
+   "wikidata": "Q740637"
+  },
+  {
+   "id": 2393,
+   "name": "AD Alcorcón",
+   "short": "ALC",
+   "handle": "AD_Alcorcon",
+   "alt": [
+    "Agrupación Deportiva Alcorcón, S. A. D."
+   ],
+   "wikidata": "Q10383"
+  },
+  {
+   "id": 2450,
+   "name": "América Mineiro",
+   "short": "AME",
+   "handle": "AmericaMG",
+   "alt": [
+    "América Futebol Clube"
+   ],
+   "wikidata": "Q338285"
+  },
+  {
+   "id": 2451,
+   "name": "Atlético Go",
+   "short": "ACG",
+   "handle": "ACGOficial",
+   "alt": [
+    "Atlético Clube Goianiense"
+   ],
+   "wikidata": "Q198034"
+  },
+  {
+   "id": 2452,
+   "name": "Avaí",
+   "short": "AVA",
+   "handle": "AvaiFC",
+   "alt": [
+    "Avaí Futebol Clube"
+   ],
+   "wikidata": "Q374069"
+  },
+  {
+   "id": 2453,
+   "name": "Bahia",
+   "short": "BAH",
+   "handle": "ECBahia",
+   "alt": [
+    "Esporte Clube Bahia",
+    "EC Bahia"
+   ],
+   "wikidata": "Q198032"
+  },
+  {
+   "id": 2454,
+   "name": "Ceará",
+   "short": "CEA",
+   "handle": "CearaSC",
+   "alt": [
+    "Ceará Sporting Club"
+   ],
+   "wikidata": "Q1052219"
+  },
+  {
+   "id": 2459,
+   "name": "Red Bull Bragantino",
+   "short": "RBB",
+   "handle": "RedBullBraga",
+   "alt": [
+    "RB Bragantino"
+   ],
+   "wikidata": "Q541744"
+  },
+  {
+   "id": 2464,
+   "name": "Paraná",
+   "short": "PAR",
+   "handle": "ParanaClube",
+   "alt": [
+    "Paraná Clube"
+   ],
+   "wikidata": "Q838534"
+  },
+  {
+   "id": 2465,
+   "name": "Ponte Preta",
+   "short": "PON",
+   "handle": "aapp_oficial",
+   "alt": [
+    "Associação Atlética Ponte Preta"
+   ],
+   "wikidata": "Q219120"
+  },
+  {
+   "id": 2506,
+   "name": "CRB",
+   "short": "CRB",
+   "handle": "CRBoficial",
+   "alt": [
+    "Clube de Regatas Brasil"
+   ],
+   "wikidata": "Q1024264"
+  },
+  {
+   "id": 2523,
+   "name": "C. E. Sabadell",
+   "short": "SAB",
+   "handle": "CESabadell",
+   "alt": [
+    "Centre d'Esports Sabadell Futbol Club",
+    "CE Sabadell"
+   ],
+   "wikidata": "Q12260"
+  },
+  {
+   "id": 2538,
+   "name": "Unión",
+   "short": "CAU",
+   "handle": "clubaunion",
+   "alt": [
+    "Unión de Santa Fe",
+    "Club Atlético Unión"
+   ],
+   "wikidata": "Q80899"
+  },
+  {
+   "id": 2541,
+   "name": "O'Higgins",
+   "short": "OHI",
+   "handle": "OHigginsoficial",
+   "alt": [
+    "O'Higgins F.C.",
+    "Club Deportivo O'Higgins"
+   ],
+   "wikidata": "Q719722"
+  },
+  {
+   "id": 2546,
+   "name": "Unión la Calera",
+   "short": "ULC",
+   "handle": "ulcsadpoficial",
+   "alt": [
+    "Unión La Calera",
+    "Deportes Unión La Calera"
+   ],
+   "wikidata": "Q719383"
+  },
+  {
+   "id": 2610,
+   "name": "Huddersfield Town",
+   "short": "HUD",
+   "handle": "htafc",
+   "alt": [
+    "Huddersfield Town A.F.C.",
+    "Huddersfield Town Football Club",
+    "Huddersfield Town Association Football Club"
+   ],
+   "wikidata": "Q19473"
+  },
+  {
+   "id": 2614,
+   "name": "Tondela",
+   "short": "TON",
+   "handle": "cdtondela1933",
+   "alt": [
+    "CD Tondela",
+    "Clube Desportivo de Tondela"
+   ],
+   "wikidata": "Q1023227"
+  },
+  {
+   "id": 2616,
+   "name": "CD Mirandés",
+   "short": "MIR",
+   "handle": "CDMirandes",
+   "alt": [
+    "Club Deportivo Mirandés"
+   ],
+   "wikidata": "Q11997"
+  },
+  {
+   "id": 2618,
+   "name": "Krasnodar",
+   "short": "KRA",
+   "handle": "FCKrasnodar",
+   "alt": [
+    "FC Krasnodar",
+    "FK Krasnodar"
+   ],
+   "wikidata": "Q220854"
+  },
+  {
+   "id": 2622,
+   "name": "Ross County",
+   "short": "ROS",
+   "handle": "rosscounty",
+   "alt": [
+    "Ross County F.C.",
+    "Ross County FC"
+   ],
+   "wikidata": "Q180420"
+  },
+  {
+   "id": 2625,
+   "name": "Kasimpaşa",
+   "short": "KAS",
+   "handle": "kasimpasa",
+   "alt": [
+    "Kasımpaşa S.K.",
+    "Kasımpaşa SK"
+   ],
+   "wikidata": "Q138230"
+  },
+  {
+   "id": 2650,
+   "name": "Deportivo Cali",
+   "short": "CAL",
+   "handle": "asodeporcali",
+   "alt": [],
+   "wikidata": "Q663400"
+  },
+  {
+   "id": 2652,
+   "name": "Envigado",
+   "short": "ENV",
+   "handle": "envigadofc",
+   "alt": [
+    "Envigado Fútbol Club",
+    "Envigado FC"
+   ],
+   "wikidata": "Q332636"
+  },
+  {
+   "id": 2653,
+   "name": "Rionegro",
+   "short": "RIO",
+   "handle": "AguilasDoradas",
+   "alt": [
+    "Gold Eagles",
+    "Rionegro FC"
+   ],
+   "wikidata": "Q332833"
+  },
+  {
+   "id": 2655,
+   "name": "Patriotas Boyacá",
+   "short": "PAT",
+   "handle": "Patriotas_Boy",
+   "alt": [
+    "Boyacá Patriotas",
+    "Corporación Deportiva Patriotas Fútbol Club"
+   ],
+   "wikidata": "Q391600"
+  },
+  {
+   "id": 2657,
+   "name": "Santa Fe",
+   "short": "SFE",
+   "handle": "SantaFe",
+   "alt": [
+    "Independiente Santa Fe",
+    "Santa Fe Corporación Deportiva"
+   ],
+   "wikidata": "Q1424072"
+  },
+  {
+   "id": 2676,
+   "name": "Sport Boys",
+   "short": "SBA",
+   "handle": "sportboys",
+   "alt": [
+    "Sport Boys Association"
+   ],
+   "wikidata": "Q603060"
+  },
+  {
+   "id": 2699,
+   "name": "Ñublense",
+   "short": "NUB",
+   "handle": "nublenseSADP",
+   "alt": [
+    "Club Deportivo Ñublense",
+    "Deportivo Ñublense"
+   ],
+   "wikidata": "Q2317539"
+  },
+  {
+   "id": 2717,
+   "name": "Aldosivi",
+   "short": "ALD",
+   "handle": "clubaldosivi",
+   "alt": [
+    "Club Atlético Aldosivi"
+   ],
+   "wikidata": "Q971490"
+  },
+  {
+   "id": 2719,
+   "name": "Atlético Tucumán",
+   "short": "ATU",
+   "handle": "ATOficial",
+   "alt": [
+    "Club Atlético Tucumán"
+   ],
+   "wikidata": "Q757470"
+  },
+  {
+   "id": 2722,
+   "name": "Defensa y Justicia",
+   "short": "DYJ",
+   "handle": "ClubDefensayJus",
+   "alt": [
+    "CSD Defensa y Justicia",
+    "Club Social y Deportivo Defensa y Justicia"
+   ],
+   "wikidata": "Q1024338"
+  },
+  {
+   "id": 2730,
+   "name": "Sarmiento",
+   "short": "SAR",
+   "handle": "olimpo_oficial",
+   "alt": [
+    "Club Olimpo"
+   ],
+   "wikidata": "Q1074980"
+  },
+  {
+   "id": 4071,
+   "name": "AFC Bournemouth",
+   "short": "BOU",
+   "handle": "afcbournemouth",
+   "alt": [
+    "Boscombe Football Club",
+    "Bournemouth and Boscombe Athletic Football Club"
+   ],
+   "wikidata": "Q19568"
+  },
+  {
+   "id": 4086,
+   "name": "Farense",
+   "short": "FAR",
+   "handle": "SCFarense_",
+   "alt": [
+    "S.C. Farense",
+    "SC Farense"
+   ],
+   "wikidata": "Q744353"
+  },
+  {
+   "id": 4108,
+   "name": "Chapecoense",
+   "short": "CHA",
+   "handle": "ChapecoenseReal",
+   "alt": [
+    "Associação Chapecoense de Futebol"
+   ],
+   "wikidata": "Q2536715"
+  },
+  {
+   "id": 4123,
+   "name": "Metz",
+   "short": "FCM",
+   "handle": "FCMetz",
+   "alt": [
+    "FC Metz",
+    "Cercle athlétique messin",
+    "Club des Sports de Metz",
+    "Football Club de Metz"
+   ],
+   "wikidata": "Q221525"
+  },
+  {
+   "id": 4145,
+   "name": "Deportivo Alavés",
+   "short": "ALA",
+   "handle": "Alaves",
+   "alt": [],
+   "wikidata": "Q223620"
+  },
+  {
+   "id": 4146,
+   "name": "SD Eibar",
+   "short": "EIB",
+   "handle": "sdeibar",
+   "alt": [],
+   "wikidata": "Q770740"
+  },
+  {
+   "id": 4147,
+   "name": "CD Tenerife",
+   "short": "TEN",
+   "handle": "CDTOficial",
+   "alt": [
+    "C.D. Tenerife",
+    "Club Deportivo Tenerife"
+   ],
+   "wikidata": "Q216661"
+  },
+  {
+   "id": 4180,
+   "name": "Brentford FC",
+   "short": "BRE",
+   "handle": "brentfordfc",
+   "alt": [
+    "Brentford F.C.",
+    "Brentford Football Club"
+   ],
+   "wikidata": "Q19571"
+  },
+  {
+   "id": 4183,
+   "name": "Coventry City",
+   "short": "COV",
+   "handle": "Coventry_City",
+   "alt": [
+    "Coventry City F.C.",
+    "Coventry City FC",
+    "Coventry City Football Club"
+   ],
+   "wikidata": "Q19580"
+  },
+  {
+   "id": 4192,
+   "name": "Preston North End",
+   "short": "PNE",
+   "handle": "pnefc",
+   "alt": [
+    "Preston North End F.C.",
+    "Preston North End FC",
+    "Preston North End Football Club"
+   ],
+   "wikidata": "Q19612"
+  },
+  {
+   "id": 4193,
+   "name": "Rotherham United",
+   "short": "RTH",
+   "handle": "OfficialRUFC",
+   "alt": [
+    "Rotherham United F.C.",
+    "Rotherham United FC",
+    "Rotherham United Football Club"
+   ],
+   "wikidata": "Q48950"
+  },
+  {
+   "id": 4194,
+   "name": "Sheffield United",
+   "short": "SHU",
+   "handle": "SheffieldUnited",
+   "alt": [
+    "Sheffield United F.C.",
+    "Sheffield United FC",
+    "Sheffield United Football Club"
+   ],
+   "wikidata": "Q19607"
+  },
+  {
+   "id": 4200,
+   "name": "Amiens",
+   "short": "ASC",
+   "handle": "AmiensSC",
+   "alt": [
+    "Amiens SC",
+    "Amiens Sporting Club",
+    "Amiens Athlétic Club"
+   ],
+   "wikidata": "Q866884"
+  },
+  {
+   "id": 4206,
+   "name": "Dunkerque",
+   "short": "DKQ",
+   "handle": "usldunkerque",
+   "alt": [
+    "USL Dunkerque",
+    "Union sportive de Dunkerque",
+    "Olympique dunkerquois",
+    "Union Racing Dunkerque-Malo"
+   ],
+   "wikidata": "Q1815297"
+  },
+  {
+   "id": 4211,
+   "name": "Paris",
+   "short": "PFC",
+   "handle": "ParisFC",
+   "alt": [
+    "Paris FC",
+    "Paris Football Club",
+    "Paris Football Club 2000",
+    "Paris Football Club 83"
+   ],
+   "wikidata": "Q1051013"
+  },
+  {
+   "id": 4213,
+   "name": "Strasbourg",
+   "short": "RCS",
+   "handle": "RCSA",
+   "alt": [
+    "RC Strasbourg Alsace",
+    "Racing Club de Strasbourg",
+    "Rasensport-Club Straßburg",
+    "Fußball Club Neudorf"
+   ],
+   "wikidata": "Q126334"
+  },
+  {
+   "id": 4220,
+   "name": "Cremonese",
+   "short": "CRE",
+   "handle": "uscremonese",
+   "alt": [
+    "US Cremonese"
+   ],
+   "wikidata": "Q759482"
+  },
+  {
+   "id": 4225,
+   "name": "Reggiana",
+   "short": "RGA",
+   "handle": "Reggiana1919_IT",
+   "alt": [
+    "A.C. Reggiana 1919",
+    "AC Reggiana"
+   ],
+   "wikidata": "Q289707"
+  },
+  {
+   "id": 4229,
+   "name": "Venezia",
+   "short": "VNZ",
+   "handle": "VeneziaFC_IT",
+   "alt": [
+    "Venezia F.C.",
+    "Venise Football Club"
+   ],
+   "wikidata": "Q501245"
+  },
+  {
+   "id": 4230,
+   "name": "Virtus Entella",
+   "short": "ENT",
+   "handle": "V_Entella",
+   "alt": [],
+   "wikidata": "Q2276413"
+  },
+  {
+   "id": 4232,
+   "name": "Benevento",
+   "short": "BEN",
+   "handle": "bncalcio",
+   "alt": [
+    "Benevento Calcio",
+    "Bénévent Calcio"
+   ],
+   "wikidata": "Q652516"
+  },
+  {
+   "id": 4234,
+   "name": "Frosinone",
+   "short": "FRO",
+   "handle": "Frosinone1928",
+   "alt": [
+    "Frosinone Calcio"
+   ],
+   "wikidata": "Q845043"
+  },
+  {
+   "id": 4237,
+   "name": "Lecce",
+   "short": "LEC",
+   "handle": "officialuslecce",
+   "alt": [
+    "US Lecce",
+    "Unione Sportiva Lecce"
+   ],
+   "wikidata": "Q13391"
+  },
+  {
+   "id": 4241,
+   "name": "Pisa",
+   "short": "PIS",
+   "handle": "PisaSC",
+   "alt": [
+    "Pisa SC",
+    "Pisa Sporting Club"
+   ],
+   "wikidata": "Q289613"
+  },
+  {
+   "id": 4244,
+   "name": "Salernitana",
+   "short": "SAL",
+   "handle": "OfficialUSS1919",
+   "alt": [
+    "U.S. Salernitana 1919"
+   ],
+   "wikidata": "Q847587"
+  },
+  {
+   "id": 4260,
+   "name": "Real Oviedo",
+   "short": "OVI",
+   "handle": "RealOviedo",
+   "alt": [],
+   "wikidata": "Q271574"
+  },
+  {
+   "id": 4269,
+   "name": "CF Fuenlabrada",
+   "short": "FUE",
+   "handle": "Fuenla",
+   "alt": [],
+   "wikidata": "Q108708"
+  },
+  {
+   "id": 4272,
+   "name": "CD Leganés",
+   "short": "LEG",
+   "handle": "CDLeganes",
+   "alt": [
+    "Club Deportivo Leganés"
+   ],
+   "wikidata": "Q856119"
+  },
+  {
+   "id": 4302,
+   "name": "Albacete Balompié",
+   "short": "ALB",
+   "handle": "albaceteBPSAD",
+   "alt": [
+    "Albacete Balompié, S. A. D."
+   ],
+   "wikidata": "Q576285"
+  },
+  {
+   "id": 4308,
+   "name": "Cádiz CF",
+   "short": "CAD",
+   "handle": "Cadiz_CF",
+   "alt": [
+    "Cádiz Club de Fútbol"
+   ],
+   "wikidata": "Q460448"
+  },
+  {
+   "id": 4309,
+   "name": "F. C. Cartagena",
+   "short": "CTG",
+   "handle": "FcCartagena_efs",
+   "alt": [
+    "FC Cartagena",
+    "Fútbol Club Cartagena"
+   ],
+   "wikidata": "Q611653"
+  },
+  {
+   "id": 4323,
+   "name": "Boavista",
+   "short": "BOA",
+   "handle": "boavistaoficial",
+   "alt": [
+    "Boavista F.C.",
+    "Boavista FC"
+   ],
+   "wikidata": "Q219703"
+  },
+  {
+   "id": 4363,
+   "name": "Luton Town",
+   "short": "LUT",
+   "handle": "LutonTown",
+   "alt": [
+    "Luton Town F.C.",
+    "Luton Town Football Club"
+   ],
+   "wikidata": "Q18520"
+  },
+  {
+   "id": 4370,
+   "name": "Grenoble Foot 38",
+   "short": "GRB",
+   "handle": "GF38_Officiel",
+   "alt": [
+    "Football Club de Grenoble",
+    "Football Club Association Sportive de Grenoble",
+    "Football Club de Grenoble Dauphiné",
+    "Football Club de Grenoble Isère"
+   ],
+   "wikidata": "Q209509"
+  },
+  {
+   "id": 4372,
+   "name": "Rodez",
+   "short": "ROD",
+   "handle": "OfficielRAF",
+   "alt": [
+    "Rodez AF",
+    "Rodez Aveyron Football",
+    "Stade ruthénois"
+   ],
+   "wikidata": "Q292231"
+  },
+  {
+   "id": 4395,
+   "name": "CD Castellón",
+   "short": "CAS",
+   "handle": "cdcastellon",
+   "alt": [
+    "Club Deportivo Castellón",
+    "Club Deportivo Castellón S.A.D."
+   ],
+   "wikidata": "Q743557"
+  },
+  {
+   "id": 4914,
+   "name": "Monza",
+   "short": "MOB",
+   "handle": "ACMonza",
+   "alt": [
+    "AC Monza",
+    "Associazione Calcio Monza"
+   ],
+   "wikidata": "Q289482"
+  },
+  {
+   "id": 4923,
+   "name": "Spal",
+   "short": "SPA",
+   "handle": "spalferrara",
+   "alt": [
+    "Ars et Labor Ferrara Calcio",
+    "SPAL Ferrara"
+   ],
+   "wikidata": "Q13385"
+  },
+  {
+   "id": 4928,
+   "name": "Cosenza",
+   "short": "COS",
+   "handle": "cosenzaofficial",
+   "alt": [
+    "Cosenza Calcio"
+   ],
+   "wikidata": "Q1136016"
+  },
+  {
+   "id": 4937,
+   "name": "ST. Gallen",
+   "short": "SG",
+   "handle": "FCSG_1879",
+   "alt": [
+    "FC St. Gallen",
+    "FC Saint-Gall"
+   ],
+   "wikidata": "Q659212"
+  },
+  {
+   "id": 4962,
+   "name": "Luzern",
+   "short": "LUZ",
+   "handle": "FCL_1901",
+   "alt": [
+    "FC Luzern",
+    "FC Lucerne"
+   ],
+   "wikidata": "Q223262"
+  },
+  {
+   "id": 4964,
+   "name": "Lausanne Sport",
+   "short": "LAU",
+   "handle": "lausanne_sport",
+   "alt": [
+    "FC Lausanne-Sport"
+   ],
+   "wikidata": "Q309456"
+  },
+  {
+   "id": 4965,
+   "name": "Lugano",
+   "short": "LUG",
+   "handle": "FCLugano1908",
+   "alt": [
+    "FC Lugano"
+   ],
+   "wikidata": "Q633521"
+  },
+  {
+   "id": 4973,
+   "name": "Chambly",
+   "short": "CHB",
+   "handle": "FCCOISE",
+   "alt": [
+    "FC Chambly",
+    "Football Club de Chambly Oise",
+    "Football Club de Chambly",
+    "Football Club de Chambly Thelle"
+   ],
+   "wikidata": "Q3076567"
+  },
+  {
+   "id": 5028,
+   "name": "Famalicão",
+   "short": "FAM",
+   "handle": "fcf1931_oficial",
+   "alt": [
+    "FC Famalicão",
+    "Futebol Clube Famalicão"
+   ],
+   "wikidata": "Q1387105"
+  },
+  {
+   "id": 5046,
+   "name": "Talleres de Córdoba",
+   "short": "TAL",
+   "handle": "CATalleresdecba",
+   "alt": [
+    "Club Atlético Talleres"
+   ],
+   "wikidata": "Q1022939"
+  },
+  {
+   "id": 5047,
+   "name": "Brasil de Pelotas",
+   "short": "BRA",
+   "handle": "GEBrasilOficial",
+   "alt": [
+    "Grêmio Esportivo Brasil"
+   ],
+   "wikidata": "Q1474977"
+  },
+  {
+   "id": 5048,
+   "name": "Londrina",
+   "short": "LON",
+   "handle": "londrinaec",
+   "alt": [
+    "Londrina E.C."
+   ],
+   "wikidata": "Q1633430"
+  },
+  {
+   "id": 5096,
+   "name": "Wycombe Wanderers",
+   "short": "WYC",
+   "handle": "wwfcofficial",
+   "alt": [
+    "Wycombe Wanderers F.C.",
+    "Wycombe Wanderers FC",
+    "Wycombe Wanderers Football Club"
+   ],
+   "wikidata": "Q48953"
+  },
+  {
+   "id": 5099,
+   "name": "Pau",
+   "short": "PAU",
+   "handle": "PauFootballClub",
+   "alt": [
+    "Foot club de Pau",
+    "Pau Football Club",
+    "Football Club de Pau"
+   ],
+   "wikidata": "Q288419"
+  },
+  {
+   "id": 5137,
+   "name": "Juventude",
+   "short": "JUV",
+   "handle": "ECJuventude",
+   "alt": [
+    "Esporte Clube Juventude"
+   ],
+   "wikidata": "Q910453"
+  },
+  {
+   "id": 5141,
+   "name": "Csa",
+   "short": "CSA",
+   "handle": "CSAoficial",
+   "alt": [
+    "Centro Sportivo Alagoano"
+   ],
+   "wikidata": "Q928885"
+  },
+  {
+   "id": 5142,
+   "name": "Cuiabá",
+   "short": "CUI",
+   "handle": "cuiabaec",
+   "alt": [
+    "Cuiabá Esporte Clube"
+   ],
+   "wikidata": "Q2945011"
+  },
+  {
+   "id": 5143,
+   "name": "Fortaleza",
+   "short": "FOR",
+   "handle": "fortalezaec",
+   "alt": [
+    "Fortaleza E.C.",
+    "Fortaleza Esporte Clube"
+   ],
+   "wikidata": "Q188841"
+  },
+  {
+   "id": 5189,
+   "name": "Slavia Praha",
+   "short": "SLA",
+   "handle": "slaviaofficial",
+   "alt": [
+    "SK Slavia Prague",
+    "Sportovní klub Slavia Praha – fotbal a.s."
+   ],
+   "wikidata": "Q194393"
+  },
+  {
+   "id": 5190,
+   "name": "Kas Eupen",
+   "short": "EUP",
+   "handle": "kas_eupen",
+   "alt": [
+    "K.A.S. Eupen",
+    "KAS Eupen",
+    "Königliche AllgemeineSportvereinigung Eupen"
+   ],
+   "wikidata": "Q1423718"
+  },
+  {
+   "id": 5191,
+   "name": "Antwerp",
+   "short": "ANT",
+   "handle": "official_rafc",
+   "alt": [
+    "Royal Antwerp F.C.",
+    "Royal Antwerp FC",
+    "Royal Antwerp Football Club"
+   ],
+   "wikidata": "Q732002"
+  },
+  {
+   "id": 5192,
+   "name": "KV Oostende",
+   "short": "KVO",
+   "handle": "kvoostende",
+   "alt": [
+    "KV Ostende",
+    "Koninklijke Voetbalclub Oostende"
+   ],
+   "wikidata": "Q370206"
+  },
+  {
+   "id": 5193,
+   "name": "Royal Excel Mouscron",
+   "short": "REM",
+   "handle": "ExcelMouscron",
+   "alt": [],
+   "wikidata": "Q2195773"
+  },
+  {
+   "id": 5194,
+   "name": "Sint-Truiden",
+   "short": "STV",
+   "handle": "stvv",
+   "alt": [
+    "Sint-Truidense V.V.",
+    "K Saint-Trond VV",
+    "Koninklijke Sint-Truidense Voetbalvereniging"
+   ],
+   "wikidata": "Q138248"
+  },
+  {
+   "id": 5195,
+   "name": "Waasland-Beveren",
+   "short": "WBE",
+   "handle": "skbeveren",
+   "alt": [
+    "Sportkring Beveren",
+    "Koninklijke Voetbalclub Red Star Waasland-Sportkring-Beveren"
+   ],
+   "wikidata": "Q509170"
+  },
+  {
+   "id": 5196,
+   "name": "Akhmat Grozny",
+   "short": "AKH",
+   "handle": "akhmatgrozny",
+   "alt": [
+    "FC Akhmat Grozny"
+   ],
+   "wikidata": "Q240444"
+  },
+  {
+   "id": 5197,
+   "name": "Arsenal Tula",
+   "short": "ARS",
+   "handle": "pfc_arsenal",
+   "alt": [
+    "FC Arsenal Tula",
+    "Arsenal Toula"
+   ],
+   "wikidata": "Q2817362"
+  },
+  {
+   "id": 5200,
+   "name": "Ufa",
+   "short": "UFA",
+   "handle": "UfaFc",
+   "alt": [
+    "FC Ufa",
+    "FK Oufa"
+   ],
+   "wikidata": "Q2137561"
+  },
+  {
+   "id": 5201,
+   "name": "Ural",
+   "short": "FCU",
+   "handle": "FCURAL",
+   "alt": [
+    "FC Ural Yekaterinburg",
+    "Oural Iekaterinbourg",
+    "Урал",
+    "Урал (Екацярынбург)"
+   ],
+   "wikidata": "Q889348"
+  },
+  {
+   "id": 5202,
+   "name": "Alanyaspor",
+   "short": "ALA",
+   "handle": "Alanyaspor",
+   "alt": [],
+   "wikidata": "Q1636019"
+  },
+  {
+   "id": 5203,
+   "name": "Göztepe",
+   "short": "GOZ",
+   "handle": "Goztepe",
+   "alt": [
+    "Göztepe S.K.",
+    "Göztepe SK"
+   ],
+   "wikidata": "Q1423118"
+  },
+  {
+   "id": 5204,
+   "name": "Konyaspor",
+   "short": "KON",
+   "handle": "konyaspor",
+   "alt": [],
+   "wikidata": "Q513840"
+  },
+  {
+   "id": 5206,
+   "name": "Yeni̇ Malatyaspor",
+   "short": "YMA",
+   "handle": "ymskulubu",
+   "alt": [
+    "Yeni Malatyaspor"
+   ],
+   "wikidata": "Q303121"
+  },
+  {
+   "id": 5208,
+   "name": "Atlético Bucaramanga",
+   "short": "BUC",
+   "handle": "ABucaramanga",
+   "alt": [
+    "Club Atlético Bucaramanga Corporación Deportiva"
+   ],
+   "wikidata": "Q757418"
+  },
+  {
+   "id": 5210,
+   "name": "Jaguares de Córdoba",
+   "short": "JAG",
+   "handle": "JaguaresdeCord",
+   "alt": [
+    "Jaguares de Córdoba Fútbol Club"
+   ],
+   "wikidata": "Q5924752"
+  },
+  {
+   "id": 5216,
+   "name": "Beerschot",
+   "short": "BEE",
+   "handle": "kbeerschotva",
+   "alt": [
+    "K Beerschot VA"
+   ],
+   "wikidata": "Q2268833"
+  },
+  {
+   "id": 5217,
+   "name": "Oh Leuven",
+   "short": "OHL",
+   "handle": "OHLeuven",
+   "alt": [
+    "Oud-Heverlee Leuven",
+    "Oud-Heverlee Louvain"
+   ],
+   "wikidata": "Q916199"
+  },
+  {
+   "id": 5296,
+   "name": "Sochi",
+   "short": "SOC",
+   "handle": "pfcsochi",
+   "alt": [
+    "PFC Sochi",
+    "FK Sotchi"
+   ],
+   "wikidata": "Q54834034"
+  },
+  {
+   "id": 5298,
+   "name": "Khimki",
+   "short": "KHI",
+   "handle": "fc_khimki",
+   "alt": [
+    "FC Khimki",
+    "FK Khimki"
+   ],
+   "wikidata": "Q727147"
+  },
+  {
+   "id": 5302,
+   "name": "Rotor Volgograd",
+   "short": "RVG",
+   "handle": "RotorOfficial",
+   "alt": [
+    "FC Rotor Volgograd"
+   ],
+   "wikidata": "Q1059186"
+  },
+  {
+   "id": 5312,
+   "name": "Hamilton Academical",
+   "short": "HAM",
+   "handle": "acciesfc",
+   "alt": [
+    "Hamilton Academical F.C.",
+    "Hamilton Academical FC"
+   ],
+   "wikidata": "Q498473"
+  },
+  {
+   "id": 5319,
+   "name": "Livingston",
+   "short": "LIV",
+   "handle": "livifcofficial",
+   "alt": [
+    "Livingston F.C.",
+    "Livingston Football Club"
+   ],
+   "wikidata": "Q867921"
+  },
+  {
+   "id": 5354,
+   "name": "Ri̇zespor",
+   "short": "RIZ",
+   "handle": "crizesporas",
+   "alt": [
+    "Çaykur Rizespor"
+   ],
+   "wikidata": "Q272712"
+  },
+  {
+   "id": 5356,
+   "name": "Gazi̇antep FK",
+   "short": "GZT",
+   "handle": "gaziantepfk",
+   "alt": [
+    "Gaziantep F.K.",
+    "Gaziantep Büyükşehir Belediyespor"
+   ],
+   "wikidata": "Q824850"
+  },
+  {
+   "id": 5360,
+   "name": "Ankaragücü",
+   "short": "ANK",
+   "handle": "ankaragucu",
+   "alt": [
+    "MKE Ankaragücü"
+   ],
+   "wikidata": "Q492826"
+  },
+  {
+   "id": 5370,
+   "name": "Deportivo Pereira",
+   "short": "DPR",
+   "handle": "DeporPereiraFC",
+   "alt": [
+    "Deportiva Pereira"
+   ],
+   "wikidata": "Q515178"
+  },
+  {
+   "id": 5401,
+   "name": "Port",
+   "short": "POR",
+   "handle": "PortFC_Official",
+   "alt": [
+    "Port F.C.",
+    "Thai Port Football Club"
+   ],
+   "wikidata": "Q580378"
+  },
+  {
+   "id": 5405,
+   "name": "Suphanburi",
+   "short": "SUP",
+   "handle": "suphanburifc14",
+   "alt": [
+    "Suphanburi F.C.",
+    "Suphanburi FC"
+   ],
+   "wikidata": "Q849179"
+  },
+  {
+   "id": 5452,
+   "name": "Hatayspor",
+   "short": "HTY",
+   "handle": "Hatayspor_FK",
+   "alt": [],
+   "wikidata": "Q1110567"
+  },
+  {
+   "id": 5454,
+   "name": "Platense",
+   "short": "CAP",
+   "handle": "caplatense",
+   "alt": [
+    "Club Atlético Platense"
+   ],
+   "wikidata": "Q151907"
+  },
+  {
+   "id": 5652,
+   "name": "Fati̇h Karagümrük",
+   "short": "FKS",
+   "handle": "karagumruk_sk",
+   "alt": [
+    "Fatih Karagümrük S.K.",
+    "Fatih Karagümrük SK"
+   ],
+   "wikidata": "Q1398111"
+  },
+  {
+   "id": 65686,
+   "name": "F.C. Tokyo",
+   "short": "TOK",
+   "handle": "fctokyoofficial",
+   "alt": [
+    "FC Tokyo",
+    "Football Club Tokyo"
+   ],
+   "wikidata": "Q856619"
+  },
+  {
+   "id": 65688,
+   "name": "Yokohama F. Marinos",
+   "short": "YFM",
+   "handle": "prompt_fmarinos",
+   "alt": [
+    "Yokohama F·Marinos"
+   ],
+   "wikidata": "Q854932"
+  },
+  {
+   "id": 65694,
+   "name": "Vissel Kobe",
+   "short": "KBE",
+   "handle": "visselkobe",
+   "alt": [],
+   "wikidata": "Q844271"
+  },
+  {
+   "id": 65813,
+   "name": "Suwon Samsung Bluewings",
+   "short": "SSB",
+   "handle": "bluewingsfc",
+   "alt": [
+    "Suwon Samsung Bluewings FC",
+    "Suwon Samsung Bluewings Football Club",
+    "수원 삼성 블루윙즈 축구단"
+   ],
+   "wikidata": "Q482449"
+  },
+  {
+   "id": 65815,
+   "name": "Jeonbuk Hyundai Motors",
+   "short": "JEO",
+   "handle": "Jeonbuk_hyundai",
+   "alt": [
+    "Jeonbuk Hyundai Motors FC",
+    "Jeonbuk Hyundai Motors Football Club",
+    "전북 현대 모터스 축구단"
+   ],
+   "wikidata": "Q483152"
+  },
+  {
+   "id": 65818,
+   "name": "Seoul",
+   "short": "SEO",
+   "handle": "FCSEOUL",
+   "alt": [
+    "FC Seoul",
+    "Football Club Séoul",
+    "Football Club Seoul",
+    "서울 프로 축구단"
+   ],
+   "wikidata": "Q482406"
+  },
+  {
+   "id": 66871,
+   "name": "Al Ain",
+   "short": "AIN",
+   "handle": "alainfcae",
+   "alt": [
+    "Al Ain FC",
+    "Al-Aïn Football Club"
+   ],
+   "wikidata": "Q812720"
+  },
+  {
+   "id": 66885,
+   "name": "Al Ahli Saudi",
+   "short": "AHL",
+   "handle": "ALAHLI_FC",
+   "alt": [
+    "Al Ahli FC",
+    "Al-Ahli SC",
+    "Al Ahli SFC"
+   ],
+   "wikidata": "Q44441"
+  },
+  {
+   "id": 67025,
+   "name": "Al Hilal",
+   "short": "HIL",
+   "handle": "Alhilal_FC",
+   "alt": [
+    "Al Hilal SFC",
+    "Al-Hilal SFC",
+    "نادي الهلال السعودي",
+    "AlHilal Saudi Club"
+   ],
+   "wikidata": "Q73965"
+  },
+  {
+   "id": 67114,
+   "name": "Sydney",
+   "short": "SYD",
+   "handle": "SydneyFC",
+   "alt": [
+    "Sydney FC",
+    "Sydney Football Club"
+   ],
+   "wikidata": "Q330143"
+  },
+  {
+   "id": 68103,
+   "name": "Al Duhail",
+   "short": "DUH",
+   "handle": "duhailsc",
+   "alt": [
+    "Al-Duhail SC",
+    "Al-Duhail Sports Club"
+   ],
+   "wikidata": "Q1056948"
+  },
+  {
+   "id": 68113,
+   "name": "Al Nassr",
+   "short": "NSR",
+   "handle": "AlNassrFC",
+   "alt": [
+    "Al-Nassr",
+    "Al Nasr Riyad",
+    "نادي النصر"
+   ],
+   "wikidata": "Q482764"
+  },
+  {
+   "id": 68116,
+   "name": "Al Taawoun",
+   "short": "TAA",
+   "handle": "altaawounfc",
+   "alt": [
+    "Al-Taawon FC",
+    "Al-Taawoun"
+   ],
+   "wikidata": "Q2613971"
+  },
+  {
+   "id": 69703,
+   "name": "Melbourne Victory",
+   "short": "MEL",
+   "handle": "gomvfc",
+   "alt": [
+    "Melbourne Victory FC",
+    "Melbourne Victory Football Club"
+   ],
+   "wikidata": "Q316789"
+  },
+  {
+   "id": 69710,
+   "name": "Ulsan Hyundai",
+   "short": "ULS",
+   "handle": "ulsanFC",
+   "alt": [
+    "Ulsan HD FC",
+    "Ulsan HD Football Club",
+    "울산 HD 축구단"
+   ],
+   "wikidata": "Q129673"
+  },
+  {
+   "id": 69712,
+   "name": "Shabab Al Ahli Dubai",
+   "short": "AHD",
+   "handle": "Shabab_AlAhliFC",
+   "alt": [
+    "Shabab AlAhli Dubai Club",
+    "Al-Ahli Dubaï"
+   ],
+   "wikidata": "Q424943"
+  },
+  {
+   "id": 70484,
+   "name": "Johor Darul Ta'Zim",
+   "short": "JDT",
+   "handle": "OfficialJohor",
+   "alt": [
+    "Johor Darul Ta'zim F.C."
+   ],
+   "wikidata": "Q72521"
+  },
+  {
+   "id": 70487,
+   "name": "Persepolis",
+   "short": "PER",
+   "handle": "persepolis_fc",
+   "alt": [
+    "Persepolis F.C.",
+    "Persépolis Football Club"
+   ],
+   "wikidata": "Q242260"
+  },
+  {
+   "id": 71200,
+   "name": "Perth Glory",
+   "short": "PEG",
+   "handle": "PerthGloryFC",
+   "alt": [
+    "Perth Glory FC",
+    "Perth Glory Football Club"
+   ],
+   "wikidata": "Q852033"
+  },
+  {
+   "id": 71212,
+   "name": "Sharjah",
+   "short": "SHJ",
+   "handle": "SharjahFC",
+   "alt": [
+    "Sharjah FC",
+    "Sharjah SC"
+   ],
+   "wikidata": "Q286801"
+  },
+  {
+   "id": 396,
+   "name": "Sunderland AFC",
+   "short": "SUN",
+   "handle": "SunderlandAFC",
+   "alt": [
+    "Sunderland A.F.C.",
+    "Sunderland Association Football Club"
+   ],
+   "wikidata": "Q18739",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4219,
+   "name": "Como 1907",
+   "short": "COM",
+   "handle": "Como_1907",
+   "alt": [
+    "Côme 1907"
+   ],
+   "wikidata": "Q1120838",
+   "patch": "Football Life"
+  },
+  {
+   "id": 246,
+   "name": "NAC Breda",
+   "short": "NAC",
+   "handle": "NACnl",
+   "alt": [
+    "Nooit Opgeven Altijd Doorzetten Aangenaam Door Vermaak En Nuttig Door Ontspanning Combinatie Breda"
+   ],
+   "wikidata": "Q332642",
+   "patch": "Football Life"
+  },
+  {
+   "id": 344,
+   "name": "Excelsior Rotterdam",
+   "short": "EXC",
+   "handle": "excelsiorrdam",
+   "alt": [
+    "Stichting Betaald Voetbal Excelsior",
+    "Rotterdamse Voetbal en Atletiek Vereniging Excelsior"
+   ],
+   "wikidata": "Q370712",
+   "patch": "Football Life"
+  },
+  {
+   "id": 346,
+   "name": "Go Ahead Eagles",
+   "short": "GAE",
+   "handle": "gaeagles",
+   "alt": [],
+   "wikidata": "Q749589",
+   "patch": "Football Life"
+  },
+  {
+   "id": 247,
+   "name": "NEC Nijmegen",
+   "short": "NEC",
+   "handle": "necnijmegen",
+   "alt": [
+    "N.E.C.",
+    "NEC Nimègue",
+    "Nijmegen Eendracht Combinatie"
+   ],
+   "wikidata": "Q318348",
+   "patch": "Football Life"
+  },
+  {
+   "id": 352,
+   "name": "SC Telstar",
+   "short": "TEL",
+   "handle": "telstar1963nv",
+   "alt": [
+    "Telstar 1963 NV"
+   ],
+   "wikidata": "Q1071713",
+   "patch": "Football Life"
+  },
+  {
+   "id": 253,
+   "name": "FC Volendam",
+   "short": "VOL",
+   "handle": "fcvolendam",
+   "alt": [
+    "Football Club Volendam"
+   ],
+   "wikidata": "Q738060",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2380,
+   "name": "FC Arouca",
+   "short": "FCA",
+   "handle": "OficialFCArouca",
+   "alt": [
+    "F.C. Arouca",
+    "Futebol Clube de Arouca"
+   ],
+   "wikidata": "Q1386869",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5633,
+   "name": "Casa Pia AC",
+   "short": "CP",
+   "handle": "casapiaac",
+   "alt": [
+    "Casa Pia A.C.",
+    "Casa Pia Atlético Clube"
+   ],
+   "wikidata": "Q1046440",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2383,
+   "name": "GD Estoril Praia",
+   "short": "EST",
+   "handle": "estorilpraiasad",
+   "alt": [
+    "G.D. Estoril Praia",
+    "Grupo Desportivo Estoril Praia"
+   ],
+   "wikidata": "Q634829",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5657,
+   "name": "CA Barracas Central",
+   "short": "BAR",
+   "handle": "barracascentral",
+   "alt": [
+    "Real Madrid",
+    "Barracas Central"
+   ],
+   "wikidata": "Q2469894",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2536,
+   "name": "Club Atlético Belgrano",
+   "short": "BEL",
+   "handle": "Belgrano",
+   "alt": [
+    "CA Belgrano"
+   ],
+   "wikidata": "Q59962",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2726,
+   "name": "Independiente Rivadavia",
+   "short": "IND",
+   "handle": "CSIRoficial",
+   "alt": [
+    "Club Sportivo Independiente Rivadavia"
+   ],
+   "wikidata": "Q2454482",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2727,
+   "name": "Instituto AC Córdoba",
+   "short": "INS",
+   "handle": "InstitutoACC",
+   "alt": [
+    "Instituto Atlético Central Córdoba",
+    "Instituto Córdoba",
+    "Instituto Atletico Central Cordoba"
+   ],
+   "wikidata": "Q1421829",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1926,
+   "name": "Club Atlético Tigre",
+   "short": "TIG",
+   "handle": "catigreoficial",
+   "alt": [],
+   "wikidata": "Q80886",
+   "patch": "Football Life"
+  },
+  {
+   "id": 129,
+   "name": "Hamburger SV",
+   "short": "HSV",
+   "handle": "HSV",
+   "alt": [
+    "Hambourg SV",
+    "Hamburger Sport-Verein"
+   ],
+   "wikidata": "Q51974",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5009,
+   "name": "FC Heidenheim 1846",
+   "short": "FCH",
+   "handle": "fch1846",
+   "alt": [
+    "1. FC Heidenheim 1846"
+   ],
+   "wikidata": "Q162251",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4139,
+   "name": "FC St. Pauli",
+   "short": "STP",
+   "handle": "fcstpauli",
+   "alt": [
+    "FC Sankt Pauli"
+   ],
+   "wikidata": "Q6463",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5736,
+   "name": "Atlanta United FC",
+   "short": "ATL",
+   "handle": "ATLUTD",
+   "alt": [],
+   "wikidata": "Q16836317",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5740,
+   "name": "Austin FC",
+   "short": "AFC",
+   "handle": "AustinFC",
+   "alt": [
+    "Austin Football Club"
+   ],
+   "wikidata": "Q60643348",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4148,
+   "name": "Chicago Fire FC",
+   "short": "CHI",
+   "handle": "ChicagoFire",
+   "alt": [
+    "Fire de Chicago",
+    "Chicago Fire Football Club",
+    "Chicago Fire Soccer Club"
+   ],
+   "wikidata": "Q308683",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5737,
+   "name": "FC Cincinnati",
+   "short": "FCC",
+   "handle": "fccincinnati",
+   "alt": [
+    "Football Club Cincinnati"
+   ],
+   "wikidata": "Q20855983",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4151,
+   "name": "Columbus Crew",
+   "short": "CLB",
+   "handle": "ColumbusCrew",
+   "alt": [
+    "Crew de Columbus"
+   ],
+   "wikidata": "Q457163",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4153,
+   "name": "FC Dallas",
+   "short": "FCD",
+   "handle": "FCDallas",
+   "alt": [],
+   "wikidata": "Q642291",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5738,
+   "name": "Inter Miami CF",
+   "short": "MIA",
+   "handle": "InterMiamiCF",
+   "alt": [
+    "Club Internacional de Fútbol Miami"
+   ],
+   "wikidata": "Q16844931",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5741,
+   "name": "Los Angeles FC",
+   "short": "LA",
+   "handle": "LAFC",
+   "alt": [
+    "Los Angeles Football Club"
+   ],
+   "wikidata": "Q18380286",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4155,
+   "name": "Los Angeles Galaxy",
+   "short": "LAG",
+   "handle": "lagalaxy",
+   "alt": [
+    "LA Galaxy",
+    "Galaxy de Los Angeles"
+   ],
+   "wikidata": "Q204357",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4156,
+   "name": "CF Montréal",
+   "short": "MTL",
+   "handle": "clubdefootmtl",
+   "alt": [
+    "Club de Foot Montréal"
+   ],
+   "wikidata": "Q167615",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5739,
+   "name": "Nashville SC",
+   "short": "NSC",
+   "handle": "NashvilleSC",
+   "alt": [
+    "Nashville Soccer Club"
+   ],
+   "wikidata": "Q47518754",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4157,
+   "name": "New England Revolution",
+   "short": "NER",
+   "handle": "NERevolution",
+   "alt": [
+    "Revolution de la Nouvelle-Angleterre"
+   ],
+   "wikidata": "Q309095",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5061,
+   "name": "New York City",
+   "short": "NYC",
+   "handle": "NYCFC",
+   "alt": [
+    "New York City FC"
+   ],
+   "wikidata": "Q13361030",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4158,
+   "name": "New York RB",
+   "short": "NYR",
+   "handle": "NewYorkRedBulls",
+   "alt": [
+    "Red Bull New York",
+    "Red Bulls de New York",
+    "MetroStars",
+    "New York / New Jersey MetroStars"
+   ],
+   "wikidata": "Q204220",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5062,
+   "name": "Orlando City",
+   "short": "ORL",
+   "handle": "OrlandoCitySC",
+   "alt": [
+    "Orlando City SC",
+    "Orlando City Soccer Club"
+   ],
+   "wikidata": "Q15214308",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4160,
+   "name": "Portland Timbers",
+   "short": "POR",
+   "handle": "TimbersFC",
+   "alt": [
+    "Timbers de Portland"
+   ],
+   "wikidata": "Q1031200",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4162,
+   "name": "San Jose Earthquakes",
+   "short": "SJE",
+   "handle": "SJEarthquakes",
+   "alt": [
+    "Earthquakes de San José"
+   ],
+   "wikidata": "Q575370",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4163,
+   "name": "Seattle Sounders",
+   "short": "SEA",
+   "handle": "SoundersFC",
+   "alt": [
+    "Seattle Sounders FC",
+    "Sounders de Seattle"
+   ],
+   "wikidata": "Q632511",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4164,
+   "name": "Sporting Kansas City",
+   "short": "SKC",
+   "handle": "SportingKC",
+   "alt": [
+    "Sporting de Kansas City",
+    "Kansas City Wiz",
+    "Kansas City Wizards"
+   ],
+   "wikidata": "Q329812",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4166,
+   "name": "Vancouver Whitecaps",
+   "short": "VW",
+   "handle": "WhitecapsFC",
+   "alt": [
+    "Vancouver Whitecaps FC",
+    "Whitecaps de Vancouver"
+   ],
+   "wikidata": "Q196107",
+   "patch": "Football Life"
+  },
+  {
+   "id": 169,
+   "name": "Avispa Fukuoka",
+   "short": "AVI",
+   "handle": "AvispaF",
+   "alt": [],
+   "wikidata": "Q791164",
+   "patch": "Football Life"
+  },
+  {
+   "id": 168,
+   "name": "Cerezo Osaka",
+   "short": "COS",
+   "handle": "crz_official",
+   "alt": [],
+   "wikidata": "Q855809",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1881,
+   "name": "Fagiano Okayama",
+   "short": "FAG",
+   "handle": "fagiano_koho",
+   "alt": [],
+   "wikidata": "Q595489",
+   "patch": "Football Life"
+  },
+  {
+   "id": 157,
+   "name": "Gamba Osaka",
+   "short": "GAM",
+   "handle": "GAMBA_OFFICIAL",
+   "alt": [],
+   "wikidata": "Q738423",
+   "patch": "Football Life"
+  },
+  {
+   "id": 148,
+   "name": "JEF United Chiba",
+   "short": "JEF",
+   "handle": "jef_united",
+   "alt": [
+    "JEF United Ichihara Chiba"
+   ],
+   "wikidata": "Q646204",
+   "patch": "Football Life"
+  },
+  {
+   "id": 146,
+   "name": "Kashima Antlers",
+   "short": "KAA",
+   "handle": "atlrs_official",
+   "alt": [],
+   "wikidata": "Q16932",
+   "patch": "Football Life"
+  },
+  {
+   "id": 149,
+   "name": "Kashiwa Reysol",
+   "short": "KAS",
+   "handle": "REYSOL_Official",
+   "alt": [],
+   "wikidata": "Q844931",
+   "patch": "Football Life"
+  },
+  {
+   "id": 163,
+   "name": "Kawasaki Frontale",
+   "short": "KAF",
+   "handle": "frontale_staff",
+   "alt": [],
+   "wikidata": "Q874016",
+   "patch": "Football Life"
+  },
+  {
+   "id": 156,
+   "name": "Kyoto Sanga",
+   "short": "KYT",
+   "handle": "sangafc",
+   "alt": [
+    "Kyoto Sanga FC",
+    "Kyoto Sanga Football Club"
+   ],
+   "wikidata": "Q1047535",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2372,
+   "name": "Machida Zelvia",
+   "short": "ZEL",
+   "handle": "FCMachidaZelvia",
+   "alt": [
+    "FC Machida Zelvia"
+   ],
+   "wikidata": "Q1366905",
+   "patch": "Football Life"
+  },
+  {
+   "id": 161,
+   "name": "Mito Hollyhock",
+   "short": "MIT",
+   "handle": "hollyhock_staff",
+   "alt": [
+    "Mito HollyHock"
+   ],
+   "wikidata": "Q1060184",
+   "patch": "Football Life"
+  },
+  {
+   "id": 155,
+   "name": "Nagoya Grampus",
+   "short": "NGY",
+   "handle": "nge_official",
+   "alt": [
+    "Нагоя Грампус"
+   ],
+   "wikidata": "Q249662",
+   "patch": "Football Life"
+  },
+  {
+   "id": 159,
+   "name": "Sanfrecce Hiroshima",
+   "short": "SAH",
+   "handle": "sanfrecce_SFC",
+   "alt": [],
+   "wikidata": "Q630279",
+   "patch": "Football Life"
+  },
+  {
+   "id": 153,
+   "name": "Shimizu S-Pulse",
+   "short": "SMZ",
+   "handle": "spulse_official",
+   "alt": [],
+   "wikidata": "Q823384",
+   "patch": "Football Life"
+  },
+  {
+   "id": 151,
+   "name": "Tokyo Verdy",
+   "short": "TOK",
+   "handle": "TokyoVerdySTAFF",
+   "alt": [],
+   "wikidata": "Q620499",
+   "patch": "Football Life"
+  },
+  {
+   "id": 147,
+   "name": "Urawa Red Diamonds",
+   "short": "URD",
+   "handle": "REDSOFFICIAL",
+   "alt": [],
+   "wikidata": "Q218883",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2373,
+   "name": "V-Varen Nagasaki",
+   "short": "VVN",
+   "handle": "v_varenstaff",
+   "alt": [],
+   "wikidata": "Q3029309",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5980,
+   "name": "Deportes Limache",
+   "short": "LIM",
+   "handle": "CDLimache",
+   "alt": [
+    "Club de Deportes Limache"
+   ],
+   "wikidata": "Q105144613",
+   "patch": "Football Life"
+  },
+  {
+   "name": "Universidad de Concepción",
+   "short": "UCO",
+   "handle": "FutbolUdeC",
+   "alt": [
+    "C.D. Universidad de Concepción",
+    "CD Universidad de Concepción"
+   ],
+   "wikidata": "Q721560",
+   "patch": "Football Life"
+  },
+  {
+   "id": 203,
+   "name": "Charlton Athletic",
+   "short": "CHA",
+   "handle": "CAFCofficial",
+   "alt": [
+    "Charlton Athletic F.C.",
+    "Charlton Athletic FC",
+    "Charlton Athletic Football Club"
+   ],
+   "wikidata": "Q19462",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1589,
+   "name": "Hull City",
+   "short": "HUL",
+   "handle": "HullCity",
+   "alt": [
+    "Hull City A.F.C.",
+    "Hull City AFC",
+    "Hull City Association Football Club"
+   ],
+   "wikidata": "Q19477",
+   "patch": "Football Life"
+  },
+  {
+   "id": 386,
+   "name": "Ipswich Town",
+   "short": "IPS",
+   "handle": "Official_ITFC",
+   "alt": [
+    "Ipswich Town F.C.",
+    "Ipswich Town FC",
+    "Ipswich Town Football Club"
+   ],
+   "wikidata": "Q9653",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5086,
+   "name": "Oxford United",
+   "short": "OXF",
+   "handle": "OUFCofficial",
+   "alt": [
+    "Oxford United F.C.",
+    "Oxford United Football Club"
+   ],
+   "wikidata": "Q48946",
+   "patch": "Football Life"
+  },
+  {
+   "id": 6069,
+   "name": "Wrexham AFC",
+   "short": "WRE",
+   "handle": "wrexham_afc",
+   "alt": [
+    "Wrexham A.F.C.",
+    "Wrexham FC",
+    "Wrexham Association Football Club"
+   ],
+   "wikidata": "Q18529",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5644,
+   "name": "FC Andorra",
+   "short": "RAC",
+   "handle": "AndorraCF",
+   "alt": [
+    "Andorra CF"
+   ],
+   "wikidata": "Q2253360",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4247,
+   "name": "Burgos CF",
+   "short": "BRG",
+   "handle": "Burgos_CF",
+   "alt": [],
+   "wikidata": "Q852079",
+   "patch": "Football Life"
+  },
+  {
+   "id": 359,
+   "name": "Córdoba CF",
+   "short": "COR",
+   "handle": "cordobacfsad",
+   "alt": [],
+   "wikidata": "Q10499",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4252,
+   "name": "Cultural Leonesa",
+   "short": "CDL",
+   "handle": "CyDLeonesa",
+   "alt": [
+    "Cultural y Deportiva Leonesa B"
+   ],
+   "wikidata": "Q5193427",
+   "patch": "Football Life"
+  },
+  {
+   "id": 111,
+   "name": "Deportivo La Coruña",
+   "short": "DEP",
+   "handle": "RCDeportivo",
+   "alt": [
+    "Deportivo de A Coruña",
+    "Deportivo LC"
+   ],
+   "wikidata": "Q8760",
+   "patch": "Football Life"
+  },
+  {
+   "id": 264,
+   "name": "Racing Santander",
+   "short": "RRC",
+   "handle": "realracingclub",
+   "alt": [
+    "Racing de Santander"
+   ],
+   "wikidata": "Q12236",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5685,
+   "name": "FC Annecy",
+   "short": "ANN",
+   "handle": "FCAnnecy",
+   "alt": [
+    "F.C. Annecy",
+    "Football Club d'Annecy",
+    "Annecy Football Club"
+   ],
+   "wikidata": "Q1140695",
+   "patch": "Football Life"
+  },
+  {
+   "id": 210,
+   "name": "SC Bastia",
+   "short": "SCB",
+   "handle": "SCBastia",
+   "alt": [
+    "Sporting Club bastiais",
+    "Sporting Étoile Club Bastia"
+   ],
+   "wikidata": "Q208399",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4201,
+   "name": "US Boulogne",
+   "short": "USB",
+   "handle": "usbco_officiel",
+   "alt": [
+    "US Boulogne CO",
+    "Union sportive Boulogne Côte d'Opale",
+    "Union sportive boulonnaise",
+    "Union sportive du Grand Boulogne"
+   ],
+   "wikidata": "Q309400",
+   "patch": "Football Life"
+  },
+  {
+   "id": 412,
+   "name": "Stade Lavallois",
+   "short": "LAV",
+   "handle": "stadelavallois",
+   "alt": [
+    "Stade Lavallois MFC",
+    "Stade lavallois",
+    "Stade lavallois Football Club",
+    "Stade lavallois Mayenne Football Club"
+   ],
+   "wikidata": "Q760736",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4212,
+   "name": "Red Star FC",
+   "short": "RST",
+   "handle": "RedStarFC",
+   "alt": [
+    "Red Star F.C.",
+    "Red Star Football Club",
+    "Association sportive Red Star",
+    "Association sportive Red Star 93"
+   ],
+   "wikidata": "Q522283",
+   "patch": "Football Life"
+  },
+  {
+   "id": 319,
+   "name": "SSC Bari",
+   "short": "BAR",
+   "handle": "sscalciobari",
+   "alt": [],
+   "wikidata": "Q6641",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4218,
+   "name": "Carrarese Calcio",
+   "short": "CAR",
+   "handle": "CarrareseCalcio",
+   "alt": [],
+   "wikidata": "Q650365",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4233,
+   "name": "US Catanzaro",
+   "short": "USC",
+   "handle": "uscatanzaro1929",
+   "alt": [
+    "Unione Sportiva Catanzaro"
+   ],
+   "wikidata": "Q501372",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1362,
+   "name": "Cesena FC",
+   "short": "CES",
+   "handle": "calciocesenafc",
+   "alt": [
+    "Cesena Football Club"
+   ],
+   "wikidata": "Q16848949",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2517,
+   "name": "SS Juve Stabia",
+   "short": "STA",
+   "handle": "ssjuvestabiaspa",
+   "alt": [
+    "S.S. Juve Stabia",
+    "Società Sportiva Juve Stabia"
+   ],
+   "wikidata": "Q6748",
+   "patch": "Football Life"
+  },
+  {
+   "id": 237,
+   "name": "Modena FC",
+   "short": "MOD",
+   "handle": "Modena_FC_1912",
+   "alt": [
+    "Modena F.C.",
+    "Modène Football Club"
+   ],
+   "wikidata": "Q8408",
+   "patch": "Football Life"
+  },
+  {
+   "id": 238,
+   "name": "Palermo FC",
+   "short": "PAL",
+   "handle": "palermofficial",
+   "alt": [
+    "Palermo F.C.",
+    "Palermo Football Club"
+   ],
+   "wikidata": "Q2674",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4228,
+   "name": "FC Südtirol",
+   "short": "SAA",
+   "handle": "fclubsuedtirol",
+   "alt": [
+    "F.C. Südtirol"
+   ],
+   "wikidata": "Q1387710",
+   "patch": "Football Life"
+  },
+  {
+   "id": 3099,
+   "name": "FCV Dender",
+   "short": "DEN",
+   "handle": "fcdender",
+   "alt": [
+    "F.C. Verbroedering Dender Eendracht Hekelgem",
+    "FCV Dender EH",
+    "Football Club Verbroedering Dender Eendracht Hekelgem"
+   ],
+   "wikidata": "Q1065328",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5220,
+   "name": "Union Saint Gilloise",
+   "short": "USG",
+   "handle": "UnionStGilloise",
+   "alt": [
+    "Royale Union Saint-Gilloise"
+   ],
+   "wikidata": "Q196160",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5221,
+   "name": "KVC Westerlo",
+   "short": "WES",
+   "handle": "KVCWesterlo",
+   "alt": [
+    "K.V.C. Westerlo",
+    "Koninklijke Voetbal ClubWesterlo"
+   ],
+   "wikidata": "Q849544",
+   "patch": "Football Life"
+  },
+  {
+   "id": 9016,
+   "name": "Akron Tolyatti",
+   "short": "AKR",
+   "handle": "fcakron",
+   "alt": [
+    "FC Akron Tolyatti",
+    "Akron Togliatti"
+   ],
+   "wikidata": "Q65124755",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5295,
+   "name": "Baltika Kaliningrad",
+   "short": "FKB",
+   "handle": "fcbaltika",
+   "alt": [
+    "FC Baltika Kaliningrad"
+   ],
+   "wikidata": "Q795978",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4143,
+   "name": "Krylya Sovetov Samara",
+   "short": "KRY",
+   "handle": "fckssamara",
+   "alt": [
+    "FC Krylia Sovetov Samara",
+    "Krylia Sovetov Samara"
+   ],
+   "wikidata": "Q274778",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5301,
+   "name": "FC Orenburg",
+   "short": "TOR",
+   "handle": "fcorenburg",
+   "alt": [
+    "FK Orenbourg"
+   ],
+   "wikidata": "Q2095484",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4202,
+   "name": "Football Bourg-en-Bresse Péronnas 01",
+   "short": "BOU",
+   "handle": "FBBP01",
+   "alt": [
+    "Football Club Bourg-Péronnas",
+    "Union sportive Bourg-Péronnas",
+    "Union sportive de Péronnas"
+   ],
+   "wikidata": "Q74030",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5097,
+   "name": "US Concarneau",
+   "short": "CON",
+   "handle": "USConcarneau",
+   "alt": [
+    "Union sportive concarnoise"
+   ],
+   "wikidata": "Q3550532",
+   "patch": "Football Life"
+  },
+  {
+   "id": 4210,
+   "name": "US Orléans",
+   "short": "ORL",
+   "handle": "US_Orleans",
+   "alt": [
+    "Union sportive Orléans",
+    "Union sportive Orléans Loiret football",
+    "Union sportive d'Orléans",
+    "Union sportive d'Orléans 45"
+   ],
+   "wikidata": "Q369349",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5100,
+   "name": "Quevilly Rouen Métropole",
+   "short": "QRM",
+   "handle": "QRM",
+   "alt": [
+    "US Quevilly",
+    "Union sportive Quevilly-Rouen Métropole",
+    "Union sportive quevillaise",
+    "Union sportive Quevilly Rouen Métropole"
+   ],
+   "wikidata": "Q1465560",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5687,
+   "name": "Stade Briochin",
+   "short": "SBR",
+   "handle": "StadeBriochin",
+   "alt": [
+    "Stade briochin",
+    "Saint-Brieuc-Côtes-d'Armor",
+    "Stade briochin université club",
+    "Stade et Véloce Club Briochin"
+   ],
+   "wikidata": "Q1621755",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5821,
+   "name": "Kocaelispor",
+   "short": "KOC",
+   "handle": "Kocaelispor",
+   "alt": [],
+   "wikidata": "Q513237",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5361,
+   "name": "Samsunspor",
+   "short": "SAM",
+   "handle": "Samsunspor",
+   "alt": [
+    "Samsunspor FC",
+    "Samsunspor Futbol Kulübü Anonim Şirketi"
+   ],
+   "wikidata": "Q430107",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5371,
+   "name": "Fortaleza CEIF",
+   "short": "FOR",
+   "handle": "FortalezaCEIF",
+   "alt": [
+    "Fortaleza Fútbol Club",
+    "Corporación Deportiva Fortaleza Fútbol Club"
+   ],
+   "wikidata": "Q5472511",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2654,
+   "name": "Internacional de Bogotá",
+   "short": "INT",
+   "handle": "InterBogOficial",
+   "alt": [],
+   "wikidata": "Q137324985",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5373,
+   "name": "Llaneros FC",
+   "short": "LFC",
+   "handle": "clubllanerosfc",
+   "alt": [
+    "Llaneros",
+    "Llaneros Fútbol Club"
+   ],
+   "wikidata": "Q6661327",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1221,
+   "name": "Heart of Midlothian",
+   "short": "HEA",
+   "handle": "JamTarts",
+   "alt": [
+    "Heart of Midlothian F.C.",
+    "Heart of Midlothian Football Club"
+   ],
+   "wikidata": "Q202093",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2070,
+   "name": "Odense Boldklub",
+   "short": "OB",
+   "handle": "Odense_Boldklub",
+   "alt": [],
+   "wikidata": "Q211912",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1902,
+   "name": "Al Ettifaq FC",
+   "short": "ETT",
+   "handle": "Ettifaq",
+   "alt": [
+    "Al-Ettifaq FC",
+    "Al-Ettifaq Football Club"
+   ],
+   "wikidata": "Q72844",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1350,
+   "name": "Al Ittihad Club",
+   "short": "ITT",
+   "handle": "ittihad",
+   "alt": [
+    "Al Ittihad FC",
+    "Ittihad FC",
+    "نادي العميد"
+   ],
+   "wikidata": "Q309480",
+   "patch": "Football Life"
+  },
+  {
+   "id": 9012,
+   "name": "Al Qadsiah FC",
+   "short": "QAD",
+   "handle": "Alqadsiah",
+   "alt": [
+    "Al-Qadsiah Football Club",
+    "نادي القادسية السعودي",
+    "AlQadsiah Saudi Club"
+   ],
+   "wikidata": "Q286191",
+   "patch": "Football Life"
+  },
+  {
+   "id": 9002,
+   "name": "Al Riyadh SC",
+   "short": "RIY",
+   "handle": "RiyadhFC",
+   "alt": [
+    "Al-Riyadh SC",
+    "Al-Riyadh Football Club"
+   ],
+   "wikidata": "Q2655899",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1348,
+   "name": "Al Shabab Club",
+   "short": "SHA",
+   "handle": "AlShababSaudiFC",
+   "alt": [
+    "Al-Shabab Football Club",
+    "Al-Shabab Riyad"
+   ],
+   "wikidata": "Q2636005",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2460,
+   "name": "Criciúma EC",
+   "short": "CEC",
+   "handle": "CriciumaEC",
+   "alt": [
+    "Criciúma Esporte Clube"
+   ],
+   "wikidata": "Q598834",
+   "patch": "Football Life"
+  },
+  {
+   "id": 5768,
+   "name": "Grêmio Novorizontino",
+   "short": "GEN",
+   "handle": "Oficial_Tigre",
+   "alt": [],
+   "wikidata": "Q10292312",
+   "patch": "Football Life"
+  },
+  {
+   "id": 133,
+   "name": "Olympiakos Piraeus",
+   "short": "OLY",
+   "handle": "olympiacosfc",
+   "alt": [
+    "Olympiacos F.C.",
+    "Olympiakós",
+    "Ολυμπιακός Σύνδεσμος Φιλάθλων Πειραιώς Ποδοσφαιρική Ανώνυμη Εταιρεία"
+   ],
+   "wikidata": "Q19628",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1263,
+   "name": "CA Peñarol",
+   "short": "PEN",
+   "handle": "OficialCAP",
+   "alt": [
+    "Club Atlético Peñarol"
+   ],
+   "wikidata": "Q16320",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1260,
+   "name": "Club Cerro Porteño",
+   "short": "CER",
+   "handle": "CCP1912oficial",
+   "alt": [
+    "Cerro Porteño"
+   ],
+   "wikidata": "Q914086",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2283,
+   "name": "Bolívar La Paz",
+   "short": "BOL",
+   "handle": "Bolivar_Oficial",
+   "alt": [
+    "Club Bolívar"
+   ],
+   "wikidata": "Q128024",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1778,
+   "name": "CF Monterrey",
+   "short": "MON",
+   "handle": "Rayados",
+   "alt": [
+    "Club de Fútbol Monterrey"
+   ],
+   "wikidata": "Q768253",
+   "patch": "Football Life"
+  },
+  {
+   "id": 2659,
+   "name": "Independiente Del Valle",
+   "short": "IND",
+   "handle": "IDV_EC",
+   "alt": [
+    "Independiente del Valle"
+   ],
+   "wikidata": "Q249648",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1261,
+   "name": "Olimpia Asunción",
+   "short": "OLI",
+   "handle": "elClubOlimpia",
+   "alt": [
+    "Club Olimpia"
+   ],
+   "wikidata": "Q604589",
+   "patch": "Football Life"
+  },
+  {
+   "id": 1782,
+   "name": "Tigres UANL",
+   "short": "TIG",
+   "handle": "TigresOficial",
+   "alt": [
+    "Tigres de la UANL"
+   ],
+   "wikidata": "Q849823",
+   "patch": "Football Life"
+  },
+  {
+   "id": 71450,
+   "name": "Gwangju FC",
+   "short": "GWA",
+   "handle": "GWANGJU_FC",
+   "alt": [
+    "Gwangju Football Club",
+    "광주 시민 프로 축구단"
+   ],
+   "wikidata": "Q168364",
+   "patch": "Football Life"
+  },
+  {
+   "id": 71134,
+   "name": "Lion City Sailors",
+   "short": "VFL",
+   "handle": "lioncitysailors",
+   "alt": [
+    "Lion City Sailors F.C.",
+    "Lion City Sailors FC"
+   ],
+   "wikidata": "Q1140598",
+   "patch": "Football Life"
+  },
+  {
+   "id": 65817,
+   "name": "Pohang Steelers",
+   "short": "POH",
+   "handle": "pohangfc",
+   "alt": [
+    "FC Pohang Steelers",
+    "Football Club Pohang Steelers",
+    "포항 스틸러스 축구단"
+   ],
+   "wikidata": "Q169985",
+   "patch": "Football Life"
+  }
+ ]
+}

@@ -1,0 +1,110 @@
+LifeLegend 1.0.0 — mode d'emploi
+=======================================
+
+LifeLegend lit ta sauvegarde Become a Legend de SP Football Life 2027 et en tire un monde qui réagit à chaque match :
+un quotidien national (La Transversale), le blog des supporters de ton club, un réseau social (Kop), une boîte mail
+(Mails : ton agent, ton coach, la presse, tes proches), le groupe privé de ton club (Vestiaire), un site de statistiques
+(Scoreline) et ta page d'encyclopédie (Panthéon).
+
+LIFELEGEND EST UNE FICTION. Les vrais joueurs, entraîneurs et clubs viennent de ton jeu, mais tout ce qu'on leur fait
+dire ou faire (citations, posts, réactions, mails) est écrit par l'IA : ce ne sont pas leurs propos. Ne présente
+jamais ces textes comme vrais et ne les leur attribue pas hors de LifeLegend. Mod de fan non officiel, sans lien avec
+Konami, Football Life, les clubs, les compétitions ni les joueurs.
+
+
+
+NOUVEAU DANS CETTE VERSION
+--------------------------
+- Une interface entièrement refaite : tous les sites dans un même cadre, avec le menu à gauche.
+- Mails : le Dossier de carrière (contrat, marché, parcours) et Influence (tes demandes à ton entraîneur et à ton club).
+- Les visages des joueurs et des entraîneurs, lus dans ton jeu.
+- Les offres d'équipementier : les marques du jeu te proposent un contrat dans Mails. C'est fictif, le jeu n'en sait rien.
+
+
+CE QU'IL TE FAUT
+----------------
+- Windows 10 ou 11, 64 bits.
+- SP Football Life 2027, avec une carrière Become a Legend (« Vers une Légende »).
+  eFootball PES 2021 SEASON UPDATE reste pris en charge, mais c'est sur Football Life 2027 que LifeLegend est suivi.
+- La clé de sauvegarde de Football Life 2027 : un fichier de 64 octets, que LifeLegend ne fournit pas. Télécharge-la
+  sur le site de PES Smoke Patch, rubrique « Edit File Encryption », lien « Download FL27 Encryption Key » :
+  https://www.pessmokepatch.com/p/customizations-and-mods.html
+  Sans elle, ta sauvegarde reste verrouillée. PES 2021 n'en a pas besoin.
+- Une clé d'IA. Gratuites : Google AI Studio (https://aistudio.google.com) ou Groq (https://console.groq.com).
+  Payantes : Anthropic (Claude), OpenAI, OpenRouter, ou tout service compatible OpenAI.
+- Une connexion Internet pendant les synchros.
+
+
+INSTALLER
+---------
+1. Décompresse le dossier LifeLegend-1.0.0-win-x64 où tu veux (Documents, Bureau, une clé USB…), mais pas dans
+   « Program Files ». Rien n'est installé dans Windows.
+2. Lance LifeLegend.exe.
+3. Windows peut afficher « Windows a protégé votre ordinateur » : LifeLegend n'est pas signé numériquement.
+   Clique sur « Informations complémentaires », puis « Exécuter quand même ».
+4. Si tu veux, crée un raccourci : clic droit sur LifeLegend.exe › « Afficher d'autres options » › « Créer un raccourci ».
+
+
+PREMIER LANCEMENT
+-----------------
+Une fenêtre de configuration te guide :
+1. Ta sauvegarde : dans le jeu, lance Vers une Légende, crée ton joueur et sauvegarde ta carrière. LifeLegend cherche
+   tes carrières dans Documents\SPGAME\Football Life\2027\save. Choisis la tienne (BL00000000 pour « Vers une Légende
+   01 », BL00000001 pour la 02…). Si elle est verrouillée, ajoute la clé de sauvegarde avec le bouton qui s'affiche.
+2. L'IA qui écrit ton monde : choisis le fournisseur, colle ta clé.
+3. Ton joueur : si tu veux, dis s'il est créé ou réel, et écris la biographie de ton joueur créé.
+4. Clique sur « Publier la première édition ». La première synchro prend quelques minutes : l'IA écrit toute la
+   première édition.
+La langue se change dans les Réglages (la roue dentée en haut à droite). Elle vaut pour l'interface et pour tout ce que
+l'IA écrit.
+
+
+ENSUITE
+-------
+- Après chaque match : sauvegarde dans le jeu, puis synchronise avec le bouton doré en bas à gauche. Sans nouveauté, aucune requête n'est envoyée à l'IA.
+- Synchro automatique (Réglages › Ta sauvegarde) : LifeLegend synchronise tout seul dès que le jeu sauvegarde.
+  Active aussi la sauvegarde automatique du jeu pour ne plus rien avoir à faire.
+- Sur Kop, tu peux poster quand tu veux : les réponses arrivent tout de suite.
+- Après tes matchs, les journalistes t'attendent parfois en conférence de presse : une fenêtre s'ouvre sur La Transversale.
+
+
+TA SAUVEGARDE ET TES DONNÉES
+----------------------------
+- LifeLegend LIT ta sauvegarde, il ne la modifie pas. Seules exceptions, désactivées par défaut : la « Réorientation
+  d'offres » (expérimentale) et « Influence : effets réels dans le jeu » (formation vérifiée dans Football Life 2027,
+  transfert expérimental), dans Réglages › Ta sauvegarde. Si tu les actives, LifeLegend peut écrire dans ta sauvegarde (jeu fermé uniquement) et en garde une copie. Laisse-les décochées
+  si tu ne veux prendre aucun risque.
+- Tes réglages et tes carrières sont dans %APPDATA%\LiveTweet\data (colle ce chemin dans l'Explorateur).
+- Ta clé d'IA est chiffrée avec ton compte Windows et n'est envoyée qu'au fournisseur choisi. Ta clé de sauvegarde reste
+  sur ce PC et n'est envoyée nulle part.
+- À chaque synchro, LifeLegend envoie à ce fournisseur les faits de ta carrière (matchs, statistiques, noms des
+  joueurs et des clubs) et tes posts, pour qu'il écrive. Ce que tu écris sur Kop, dans Mails et dans le Vestiaire lui est
+  envoyé aussi, pour qu'on te réponde. Si tu dictes une réponse en conférence de presse, ta voix part chez Google
+  (Gemini) pour être transcrite, et seulement quand tu utilises le micro. Rien d'autre ne quitte ton ordinateur.
+- LifeLegend ne contient aucun fichier du jeu : noms, écussons, visages et chaussures sont lus dans ton jeu et restent chez toi.
+
+
+DÉSINSTALLER
+------------
+Supprime le dossier LifeLegend-1.0.0-win-x64, et si tu veux effacer tes carrières, le dossier %APPDATA%\LiveTweet.
+
+
+SI QUELQUE CHOSE NE VA PAS
+--------------------------
+- « Clé refusée » : vérifie ta clé d'IA dans les réglages.
+- Modèles surchargés : c'est passager, réessaie dans quelques minutes. LifeLegend change déjà de modèle tout seul.
+- Quota du jour épuisé : une clé Google gratuite a une limite de requêtes par jour, renouvelée vers 9 h (heure de Paris).
+  En attendant, tu peux prendre une clé Groq, gratuite elle aussi.
+- Aucune sauvegarde trouvée : dans Réglages › Ta sauvegarde, « Choisir un autre fichier… ».
+- « Sauvegarde verrouillée » : il manque la clé de sauvegarde de Football Life 2027 (voir CE QU'IL TE FAUT).
+- Noms des joueurs absents : Réglages › Noms des joueurs › « Choisir le dossier du jeu… » (celui de Football Life,
+  ou de PES 2021).
+- Un problème : Réglages › À propos › « Préparer le rapport ». LifeLegend enregistre un fichier texte (version,
+  réglages utiles, derniers messages d'erreur), sans ta clé d'IA, ton adresse e-mail ni tes textes. Relis-le, puis
+  envoie-le avec ta version du jeu et ce que tu faisais. Rien ne part tout seul.
+
+
+LICENCE
+-------
+LifeLegend est publié sous licence MIT (LICENSE.txt). Polices, icônes, mises en page reprises et logiciels inclus
+ont leurs propres licences : THIRD-PARTY-NOTICES.txt, LICENSE.electron.txt et LICENSES.chromium.html.

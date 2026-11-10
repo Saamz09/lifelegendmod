@@ -1,0 +1,12 @@
+# Dépendances et dossiers construits
+node_modules/
+dist/
+
+# Copies de carrières pour les tests (données personnelles : sauvegardes, états)
+tests/fixtures/
+
+# Journaux et fichiers temporaires
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

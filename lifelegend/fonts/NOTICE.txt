@@ -1,0 +1,21 @@
+LifeLegend : l'interface de la mod, charte graphique (lifelegend/style.css). L'ancienne interface, LegendLife,
+est archivée dans archives/legendlife-2026-10-21.
+
+Manrope-*.woff2
+Manrope, © 2018 The Manrope Project Authors — SIL Open Font License 1.1 (OFL-manrope.txt, https://github.com/googlefonts/manrope).
+Police de tout LifeLegend, à graisse variable de 400 à 700, en alphabets latin et latin étendu.
+
+TwemojiCountryFlags.woff2
+Twemoji Country Flags (country-flag-emoji-polyfill 0.1.8, © 2022 TalkJS) : drapeaux de pays de Twemoji (© Twitter, Inc. et contributeurs),
+sous-ensemble fait par TalkJS, dessins sous licence CC BY 4.0 (LICENSE-TwemojiCountryFlags.txt, https://creativecommons.org/licenses/by/4.0/).
+Dans le Vestiaire, parce que Windows écrit les drapeaux de pays en lettres.
+
+Icônes Heroicons v2.2.0, contour 24 px (© Tailwind Labs, Inc.) — licence MIT (LICENSE-Heroicons.txt).
+Tracés SVG intégrés à app.js et index.html.
+
+Mises en page reprises de l’ancienne interface, et crédits conservés dans les pages : La Transversale d'après le modèle gratuit
+« The Gazette » de uiCookies ; Kop d'après « Twitter UI practice » (© 2023 Roy Quilor, licence MIT, LICENSE-TwitterUIPractice.txt) ; MailBox d'après
+« SmartMail » (© 2021 Mienard Lumaad / ThemePixels, licence MIT, LICENSE-SmartMail.txt) ;
+Scoreline d'après le kit « Soccer scores » d'Arotec.io.
+
+Liste complète des tiers et de leurs licences : THIRD-PARTY-NOTICES.txt, à la racine de l’application.

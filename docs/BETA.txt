@@ -1,0 +1,67 @@
+LifeLegend 1.0.0-beta.2 — bêta-test / beta test
+===============================================
+
+Merci d'essayer LifeLegend ! Mode d'emploi : LISEZMOI.txt. Voici ce qu'on aimerait savoir.
+Thanks for trying LifeLegend! How to use it: README.txt. Here is what we would like to know (English below).
+
+
+À ESSAYER
+---------
+ 1. Installation : le dossier se décompresse et LifeLegend.exe se lance (avertissement de Windows compris ?).
+ 2. Réglages : ta sauvegarde est-elle trouvée toute seule ? Les noms des joueurs apparaissent-ils ?
+ 3. Première synchro avec TA clé d'IA (fournisseur et modèle utilisés ?) : durée, erreurs éventuelles.
+ 4. Trois ou quatre matchs joués et synchronisés : articles, posts, mails cohérents avec tes vrais matchs ?
+ 5. Kop : poste quelque chose, réponds à quelqu'un, mentionne un coéquipier (@).
+ 6. Mails : réponds à un mail (agent, coach, journaliste).
+ 7. Conférence de presse après un match (fenêtre sur La Transversale).
+ 8. Langue : passe LifeLegend dans une autre langue (Réglages › Langue) et fais une synchro.
+ 9. Synchro automatique (Réglages › Ta sauvegarde), avec la sauvegarde automatique du jeu.
+10. Si tu joues avec Football Life : noms, écussons, visages et compétitions sont-ils bons ?
+11. Mails › Influence : fais une demande à ton entraîneur et lis sa réponse.
+12. Mails › Dossier de carrière : ton contrat et ton calendrier sont-ils justes ?
+13. Offre d'équipementier : si une marque t'écrit dans Mails, réponds avec les boutons.
+14. La nouvelle interface : thème clair et sombre (Réglages), fenêtre petite et grande. Un texte coupé ou illisible ?
+
+Ne coche PAS « Réorientation d'offres » ni « Influence : effets réels dans le jeu » : ces deux options écrivent dans ta
+sauvegarde ; seule la formation d'Influence a été vérifiée sur Football Life 2027. Laisse-les décochées, sauf si on te
+le demande.
+
+
+TON RETOUR
+----------
+- Ta configuration : Windows 10 ou 11 ; version du jeu ; fournisseur d'IA et modèle ;
+  langue choisie.
+- Ce qui marche, ce qui coince, ce qui sonne faux (textes, chiffres, mise en page), avec une capture d'écran si possible.
+- Le rapport de Réglages › À propos › « Préparer le rapport » : un fichier texte à relire, sans ta clé d'IA, ton
+  adresse e-mail ni tes textes.
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+WHAT TO TRY
+-----------
+ 1. Install: the folder unzips and LifeLegend.exe starts (Windows warning understood?).
+ 2. Settings: is your save found automatically? Do player names show up?
+ 3. First sync with YOUR AI key (which provider and model?): how long, any errors.
+ 4. Three or four matches played and synced: do articles, posts and emails match your real matches?
+ 5. Kop: post something, reply to someone, mention a teammate (@).
+ 6. Mails: reply to an email (agent, coach, journalist).
+ 7. A post-match press conference (window on La Transversale).
+ 8. Language: switch LifeLegend to another language (Settings › Language) and sync.
+ 9. Automatic sync (Settings › Your save), with the game's autosave on.
+10. If you play with Football Life: are names, crests, faces and competitions right?
+11. Mails › Influence: make a request to your coach and read the answer.
+12. Mails › Career file: are your contract and your calendar right?
+13. Boot deal: if a brand writes to you in Mails, answer with the buttons.
+14. The new interface: light and dark themes (Settings), small and large window. Any text cut off or hard to read?
+
+Do NOT tick "Offer redirection" or "Influence: real effects in the game": these two options write to your save; only
+the Influence formation has been verified on Football Life 2027. Leave them unticked unless asked.
+
+
+YOUR FEEDBACK
+-------------
+- Your setup: Windows 10 or 11; game version; AI provider and model; language.
+- What works, what doesn't, what reads wrong (texts, numbers, layout), with a screenshot if you can.
+- The report from Settings › About › "Prepare the report": a text file to read first, without your AI key, your
+  email address or your texts.
