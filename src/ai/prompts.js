@@ -5,9 +5,56 @@ const LANGUAGES = {
   fr: 'French', en: 'English', es: 'Spanish', it: 'Italian', pt: 'Portuguese', de: 'German',
 };
 
+// La langue (2026-11-14, joueurs réglés en anglais qui recevaient du français) : une consigne nette en fin de chaque
+// requête, système et utilisateur, quand la langue n'est pas le français. Les faits, la mémoire, les styles et les
+// exemples peuvent être en français : des données, jamais une raison de changer de langue. En français : rien.
+function languageRule(settings) {
+  const lang = settings?.language !== 'fr' && LANGUAGES[settings?.language];
+  if (!lang) return '';
+  return `LANGUAGE — ${lang.toUpperCase()} ONLY: everything you write (headlines, deks, articles, posts, replies, bios, names of new accounts' bios, emails, subjects, messages, chapters, reasons, corrections) is in ${lang}, from the first word to the last. FACTS, MEMORY, PLAN, KOP_PLAN, the posts, threads and messages you are given, the styles of the accounts and the examples in these instructions may be in French or in another language: they are data and examples, never a reason to write in another language; take their meaning, not their words. Even when the earlier messages of a thread are in French, the new ones are in ${lang}. Keep proper names as they are (players, clubs, competitions, stadiums, the names of LifeLegend's sites and papers) and the values of fields such as "kind" and "type" exactly as listed.`;
+}
+// Les indications du code gardées en français dans la carrière (façons d'écrire des comptes Kop, rôle visé par un
+// transfert) : en anglais dans la requête, seulement quand elles sont une valeur entière entre guillemets.
+const CUES_EN = { ...require('../world/tribunePlan').STYLE_EN, ambitieux: 'ambitious', 'au moins remplaçant': 'at least a substitute', 'titulaire probable': 'likely starter' };
+// Une réponse écrite en français alors qu'il joue dans une autre langue (vu le 2026-11-14 dans le Vestiaire : le modèle
+// léger suivait l'historique du groupe, tout en français). Chaque texte de la réponse (entre guillemets, assez long) est
+// regardé : des mots-outils propres au français, plus nombreux que ceux de sa langue. Deux textes en français suffisent ;
+// un seul quand la réponse en compte quatre au plus (un message du Vestiaire, une réponse sur Kop).
+const FR_WORDS = new Set(['le', 'les', 'des', 'du', 'une', 'est', 'pas', 'avec', 'pour', 'dans', 'sur', 'qui', 'aux', 'et', 'ses', 'très', 'elle', 'cette', 'nous', 'vous', 'je', 'mon', 'ton', 'notre', 'sont', 'été', 'fait', 'après', 'avant', 'encore', 'merci', 'allez', 'ça', 'au', 'ils', 'leur', 'plus', 'être', 'peut', 'faut', 'mais', 'même', 'chaque', 'pendant', 'qu', 'à', 'ce', 'soir', 'trop', 'rien', 'toujours', 'jamais', 'déjà', 'aussi', 'comme', 'quand', 'parce', 'alors', 'donc', 'tous', 'tout', 'exactement', 'espérons',
+  // l'écrit des supporters (essai réel du 2026-11-14 : « c clair 5 c payé mais basilio ns a sauvés »)
+  'c', 'ns', 'mdr', 'jsp', 'tkt', 'frr', 'ptdr', 'wsh', 'bcp', 'pk', 'qd', 'chui', 'jvais']);
+const OWN_WORDS = {
+  en: ['the', 'and', 'of', 'to', 'is', 'in', 'his', 'with', 'for', 'a', 'on', 'he', 'it', 'not', 'we', 'you', 'this', 'that', 'was', 'are', 'our', 'my', 'at', 'but', 'be', 'up', 'lads', 'bro'],
+  de: ['der', 'die', 'das', 'und', 'ist', 'nicht', 'mit', 'für', 'ein', 'eine', 'wir', 'ich', 'du', 'auf', 'zu', 'den', 'dem', 'es', 'sie', 'auch', 'noch', 'schon', 'heute'],
+  es: ['el', 'los', 'las', 'que', 'de', 'en', 'y', 'es', 'un', 'una', 'por', 'con', 'para', 'no', 'se', 'lo', 'su', 'al', 'del', 'muy', 'hoy', 'pero'],
+  it: ['il', 'di', 'che', 'e', 'la', 'per', 'non', 'un', 'una', 'del', 'della', 'con', 'si', 'lo', 'gli', 'al', 'ma', 'anche', 'oggi', 'sono'],
+  pt: ['o', 'os', 'as', 'que', 'de', 'em', 'e', 'é', 'um', 'uma', 'por', 'com', 'para', 'não', 'se', 'do', 'da', 'no', 'na', 'hoje', 'mas'],
+};
+function wrongLanguage(text, language) {
+  const own = OWN_WORDS[language];
+  if (!own || language === 'fr') return false;
+  const mine = new Set(own);
+  const strings = [...String(text || '').matchAll(/"((?:[^"\\]|\\.){20,})"/g)].map((m) => m[1]);
+  const french = strings.filter((s) => {
+    const ws = s.toLowerCase().replace(/[’']/g, ' ').split(/[^a-zà-ÿœß]+/).filter(Boolean);
+    const fr = new Set(ws.filter((w) => FR_WORDS.has(w))), ownHits = new Set(ws.filter((w) => mine.has(w)));
+    return fr.size >= 3 && fr.size > ownHits.size;
+  }).length;
+  return french >= 2 || (french >= 1 && strings.length <= 4);
+}
+// En tête de la seconde demande, quand la première est revenue en français.
+const languageRetry = (settings) => `YOUR PREVIOUS ANSWER WAS WRITTEN IN FRENCH. Write it again, entirely in ${LANGUAGES[settings.language]}: every message, post, reply, email and article, even if the history below is in French.`;
+function withLanguage(settings, opts) {
+  const rule = languageRule(settings);
+  if (!rule) return opts;
+  let user = String(opts.user || '');
+  for (const [fr, en] of Object.entries(CUES_EN)) user = user.split(JSON.stringify(fr)).join(JSON.stringify(en));
+  return { ...opts, system: `${opts.system}\n\n${rule}`, user: `${user}\n\n(Reminder: write everything in ${LANGUAGES[settings.language]}.)` };
+}
+
 const BRANDS = `Fictional brands of this world (use these names, never real media or companies):
 - "La Transversale": the national sports daily and website.
-- The local paper: the supporters' paper of his current club, a daily written for the club's fans, named in MEMORY.local_paper. When it is missing (first edition, or the player has just joined a new club), or when MEMORY.local_paper.rename is true, name it in French after the club's best-known nickname or its supporters' nickname (e.g. Saint-Étienne « L'Écho des Verts », Nantes « Le Cri des Canaris », Lille « La Voix des Dogues », a club known as « die Roten Bullen » « Le Journal des Taureaux »), or after the club's own name when it has no well-established nickname (e.g. « Allez Brest ! »). Only a nickname you are sure of; never the name of a real newspaper or fanzine; never a generic city daily. It has its own beat writer (on a rename, the same one); city = the club's city.
+- The local paper: the supporters' paper of his current club, a daily written for the club's fans, named in MEMORY.local_paper. When it is missing (first edition, or the player has just joined a new club), or when MEMORY.local_paper.rename is true, name it in the language you write in, after the club's best-known nickname or its supporters' nickname (French examples: Saint-Étienne « L'Écho des Verts », Nantes « Le Cri des Canaris », Lille « La Voix des Dogues », a club known as « die Roten Bullen » « Le Journal des Taureaux »), or after the club's own name when it has no well-established nickname (e.g. « Allez Brest ! »). Only a nickname you are sure of; never the name of a real newspaper or fanzine; never a generic city daily. It has its own beat writer (on a rename, the same one); city = the club's city.
 - "Kop": the social network (posts, replies, handles starting with @).
 - "Mails": the email service.
 - "Scoreline": the stats site.`;
@@ -372,7 +419,7 @@ function agentMailSystem(settings, occasion = 'offer') {
 
 ${CORE_RULES}
 
-${o.task} Never say an offer is accepted, refused or improved (the game has no way to refuse an offer: he can only accept it in the game, otherwise it does not go through); you may advise signing it or letting it go. Never invent a fee, a bonus, a meeting, a date or another club. Short and personal, like a real agent. The subject is specific to this email (the club that made the offer, the window, the deadline), 60 characters at most, never a generic « Point mercato… » template and never one of MEMORY.recent_mail_subjects. Write dates the natural way ("31 août 2025"), never as 2025-08-31, and sign with the agent's name only. Write in ${lang}.
+${o.task} Never say an offer is accepted, refused or improved (the game has no way to refuse an offer: he can only accept it in the game, otherwise it does not go through); you may advise signing it or letting it go. Never invent a fee, a bonus, a meeting, a date or another club. Short and personal, like a real agent. The subject is specific to this email (the club that made the offer, the window, the deadline), 60 characters at most, never a generic « Point mercato… » template and never one of MEMORY.recent_mail_subjects. Write dates the natural way (in French "31 août 2025", in English "31 August 2025": the way of the language you write in), never as 2025-08-31, and sign with the agent's name only. Write in ${lang}.
 
 If FACTS.fan_mood.level is 3 and the anger targets him, mention the pressure from the fans calmly, as part of your read of his situation (clubs notice it; what it means for staying or leaving), without dramatizing.
 
@@ -562,7 +609,10 @@ POSTS: ${JSON.stringify(posts)}`;
 }
 
 // Dictée d'une réponse : transcrire sans rien changer. Les noms propres du contexte aident à les écrire correctement.
-function dictationPrompt(names) {
+function dictationPrompt(names, language = 'fr') {
+  if (language !== 'fr') return `Transcribe this recording word for word, in the language that is spoken (probably ${LANGUAGES[language] || 'English'}). Punctuate normally.
+Never translate, never rephrase, never correct what is said, never answer it, never add a comment.
+${names.length ? `If these names are spoken, write them like this: ${names.join(', ')}.\n` : ''}If no speech can be heard, answer exactly: (rien)`;
   return `Transcris mot pour mot la parole de cet enregistrement, dans la langue parlée. Ponctue normalement.
 Ne traduis pas, ne reformule pas, ne corrige pas les propos, ne réponds pas à ce qui est dit, n'ajoute aucun commentaire.
 ${names.length ? `Si ces noms sont prononcés, écris-les ainsi : ${names.join(', ')}.\n` : ''}Si on n'entend aucune parole, réponds exactement : (rien)`;
@@ -570,6 +620,6 @@ ${names.length ? `Si ces noms sont prononcés, écris-les ainsi : ${names.join('
 
 module.exports = {
   dictationPrompt, discussionsSystem, discussionsUser, transversaleSystem, transversaleUser, transversaleRepairSystem, transversaleRepairUser, TRANSVERSALE_KINDS, ARTICLE_SIZES,
-  LANGUAGES, editionSystem, editionUser, repliesSystem, repliesUser, threadSystem, threadUser, mailSystem, mailUser, dmSystem, dmUser, huddleSystem, huddleUser, agentMailSystem, agentMailUser, influenceMailSystem, influenceMailUser, factcheckSystem, factcheckUser,
+  LANGUAGES, languageRule, withLanguage, wrongLanguage, languageRetry, editionSystem, editionUser, repliesSystem, repliesUser, threadSystem, threadUser, mailSystem, mailUser, dmSystem, dmUser, huddleSystem, huddleUser, agentMailSystem, agentMailUser, influenceMailSystem, influenceMailUser, factcheckSystem, factcheckUser,
   pressQuestionsSystem, pressQuestionsUser, pressWriteupSystem, pressWriteupUser,
 };

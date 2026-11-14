@@ -1773,5 +1773,13 @@ window.LL_I18N.de = {
   "Revoir": "Noch einmal ansehen",
   "La courte vidéo qui ouvre LifeLegend au premier lancement.": "Das kurze Video, mit dem LifeLegend beim ersten Start beginnt.",
   "La courte vidéo qui ouvre LifeLegend au premier lancement. Animation réalisée avec Profounder (profounder.com), qui n’a pas de lien avec LifeLegend.": "Das kurze Video, mit dem LifeLegend beim ersten Start beginnt. Animation erstellt mit Profounder (profounder.com), das nicht mit LifeLegend verbunden ist.",
+  "Mises à jour": "Updates",
+  "Vérifier les mises à jour": "Nach Updates suchen",
+  "LifeLegend regarde la dernière version publiée sur sa page GitHub, seulement quand tu cliques. Rien d’autre n’est envoyé.": "LifeLegend sieht nur auf deinen Klick hin auf seiner GitHub-Seite nach der neuesten Version. Sonst wird nichts gesendet.",
+  "Vérification…": "Wird geprüft…",
+  "La version {v} est disponible.": "Version {v} ist verfügbar.",
+  "La télécharger": "Herunterladen",
+  "Tu as la dernière version ({v}).": "Du hast die neueste Version ({v}).",
+  "Impossible de vérifier pour l’instant. Réessaie plus tard.": "Gerade nicht möglich. Versuch es später noch einmal.",
   "Ce que le monde sait de ton joueur. Son nom, son pseudo, son poste et sa photo se changent sur Kop : Profil › Éditer le profil.": "Was die Welt über deinen Spieler weiß. Name, Nutzername, Position und Foto änderst du auf Kop unter Profil › Profil bearbeiten.",
 };

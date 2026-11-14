@@ -393,3 +393,37 @@ test('la vie des championnats : un championnat différent à chaque édition, pu
   assert.strictEqual(new Set(seq).size, 8, 'huit éditions, huit sujets différents');
   assert.ok(seq.every((s) => /FACTS\.world_football/.test(s) && /Take a side/.test(s)));
 });
+
+test('éditos du journal mondial : deux championnats, les moins traités d’abord, puis le sujet suivant (2026-11-12)', () => {
+  const { worldDebates } = require(path.join(ROOT, 'src/world/worldFootball.js'));
+  const comp = (name, teams) => ({
+    competition: name,
+    table_top: teams.map((team, i) => ({ pos: i + 1, team, pts: 40 - 3 * i, p: 20 })),
+    table_bottom: [{ pos: 18, team: `${name} 18`, pts: 14 }, { pos: 19, team: `${name} 19`, pts: 12 }, { pos: 20, team: `${name} 20`, pts: 9 }],
+    top_scorers: [{ player: `${name} buteur`, team: teams[0], goals: 15 }, { player: `${name} second`, team: teams[1], goals: 12 }],
+  });
+  const w = { competitions: ['Premier League', 'LaLiga', 'Serie A', 'Bundesliga'].map((n) => comp(n, ['A', 'B', 'C', 'D', 'E', 'F'].map((x) => `${n} ${x}`))) };
+  // Aucun édito paru : les deux premiers, la course au titre, avec ses deux clubs.
+  const first = worldDebates(w);
+  assert.deepStrictEqual(first.map((d) => d.competition), ['Premier League', 'LaLiga']);
+  assert.match(first[0].subject, /lead Premier League by 3 points/);
+  assert.deepStrictEqual(first[0].teams, ['Premier League A', 'Premier League B']);
+  // La Premier League et LaLiga viennent d'avoir le leur : la Serie A et la Bundesliga.
+  assert.deepStrictEqual(worldDebates(w, { recent: ['Premier League', 'LaLiga'] }).map((d) => d.competition), ['Serie A', 'Bundesliga']);
+  // Tous traités : les plus anciens d'abord ; la Premier League une seconde fois : les places européennes, plus le titre.
+  const again = worldDebates(w, { recent: ['Bundesliga', 'Serie A', 'LaLiga', 'Premier League'] });
+  assert.deepStrictEqual(again.map((d) => d.competition), ['Premier League', 'LaLiga']);
+  assert.match(again[0].subject, /European places in Premier League/);
+  assert.deepStrictEqual(again[0].teams, ['Premier League C', 'Premier League D']);
+  // Son championnat est candidat aussi.
+  const own = { competition: 'Ligue 2 BKT', focus: 'competition', topics: [{ subject: 'Who will go down in Ligue 2 BKT? Take a side', teams: [] }] };
+  assert.deepStrictEqual(worldDebates(w, { recent: ['Premier League', 'LaLiga', 'Serie A'], extra: [own] }).map((d) => [d.competition, d.focus]), [['Bundesliga', 'world'], ['Ligue 2 BKT', 'competition']]);
+  // Le plan : deux éditos, chacun avec sa compétition (sa rubrique) et ses clubs, par deux plumes différentes ; 7 articles.
+  const plan = world.transversalePlan(desk10, { after: match, before: null }, 'POST-MATCH', 0, { world: { stories: FIVE, debates: first, awards: null } });
+  const eds = plan.filter((p) => p.kind === 'édito');
+  assert.strictEqual(plan.length, 7);
+  assert.deepStrictEqual(eds.map((p) => p.competition), ['Premier League', 'LaLiga']);
+  assert.ok(eds.every((p) => p.focus === 'world' && p.teams?.length === 2 && /An opinion piece, NOT a match report/.test(p.subject)));
+  assert.notStrictEqual(eds[0].author, eds[1].author);
+  assert.ok(plan.filter((p) => p.kind === TOUR_KIND).length >= 1, 'les scores gardent leur place');
+});

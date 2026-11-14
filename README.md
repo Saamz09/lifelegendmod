@@ -22,13 +22,13 @@ compétitions et visages des joueurs sont lus dans les fichiers de ton jeu à ch
 aucun. Un souci ? Réglages › À propos › « Préparer le rapport » (un fichier à relire, sans clé ni données
 personnelles ; rien ne part tout seul).
 
-> **Version 1.0.0.** LifeLegend est une fiction : les vrais joueurs, entraîneurs et clubs viennent de ton jeu,
+> **Version 1.0.1.** LifeLegend est une fiction : les vrais joueurs, entraîneurs et clubs viennent de ton jeu,
 > mais tout ce qu'on leur fait dire est écrit par l'IA. Ce ne sont pas leurs propos ; ne les leur attribue pas hors de
 > LifeLegend. Mod de fan non officiel, sans lien avec Konami, les auteurs de Football Life, les clubs ni les joueurs.
 
 ## Installer (joueurs)
 
-Télécharge le dossier portable de la dernière version (`LifeLegend-1.0.0-win-x64.zip`, page **Releases** du dépôt), décompresse-le
+Télécharge le dossier portable de la dernière version (`LifeLegend-1.0.1-win-x64.zip`, page **Releases** du dépôt), décompresse-le
 où tu veux et lance `LifeLegend.exe`. Le mode d'emploi complet est dans [docs/LISEZMOI.txt](docs/LISEZMOI.txt) (copié
 dans le dossier portable). Ce qui change d'une version à l'autre : [CHANGELOG.md](CHANGELOG.md).
 
@@ -108,11 +108,11 @@ Portuguese and German (Settings › Appearance).
 Light or dark theme on every site, your own colours (five palettes or a colour picker). Crests, competition logos and
 player faces are read from your game files at each sync: LifeLegend ships none of them.
 
-**Version 1.0.0.** LifeLegend is fiction: real players, coaches and clubs come from your game, but everything
+**Version 1.0.1.** LifeLegend is fiction: real players, coaches and clubs come from your game, but everything
 they say here is written by AI and is not their words; never attribute it to them outside LifeLegend. Unofficial fan
 mod, not affiliated with Konami, the makers of Football Life, any club or player.
 
-Players: download the latest build (`LifeLegend-1.0.0-win-x64.zip`, **Releases** page), unzip it anywhere and run
+Players: download the latest build (`LifeLegend-1.0.1-win-x64.zip`, **Releases** page), unzip it anywhere and run
 `LifeLegend.exe`; see [docs/README.txt](docs/README.txt). By default LifeLegend only reads your save; two options
 (Settings › Save) let it write Influence effects (a formation agreed with your coach, verified in Football Life 2027; a
 transfer, still experimental) and offer redirects (experimental), with the game closed and a backup each time. Developers: `npm install`, `npm start`, `npm test`, `npm run dist`. MIT licence.

@@ -66,13 +66,13 @@ function applyCorrections(out, corrections) {
 async function factCheck(out, { settings, apiKey, facts, changes, flags = [], log, onProgress }) {
   const draft = draftItems(out);
   if (!draft.length) return { checked: true, corrections: [] };
-  const text = await providers.complete(settings, apiKey, {
+  const text = await providers.complete(settings, apiKey, prompts.withLanguage(settings, {
     system: prompts.factcheckSystem(settings),
     user: prompts.factcheckUser({ facts, changes, draft, flags }),
     maxTokens: 6000,
     log,
     onProgress,
-  });
+  }));
   const result = providers.parseJson(text);
   return { checked: true, corrections: applyCorrections(out, result.corrections) };
 }

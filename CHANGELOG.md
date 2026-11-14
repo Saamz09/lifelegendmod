@@ -1,5 +1,26 @@
 # Journal des changements
 
+## 1.0.1 — 2026-11-14
+
+### Langue
+- **Les textes de l'IA restent dans la langue choisie.** Réglé en anglais (ou dans une autre langue que le français),
+  des articles, des posts Kop, des réponses ou le Vestiaire pouvaient revenir en français, surtout après quelques
+  échanges. La consigne de langue accompagne maintenant chaque requête, les indications données à l'IA ne sont plus en
+  français, et une réponse revenue en français est redemandée une fois (une requête de plus, seulement dans ce cas). La
+  dictée vocale ne traduit plus en français.
+
+### La Transversale
+- **Deux éditos par édition**, sur deux championnats différents : ceux dont le journal n'a pas parlé depuis le plus
+  longtemps (le tien compris), avec un sujet qui change (titre, places européennes, maintien, buteurs). Chaque édito
+  entre dans la rubrique de son championnat.
+- **Nouvelles vignettes** : fond sobre, liseré aux couleurs des clubs, score dans un cadre net (plus d'écussons floutés).
+- **La vignette d'un joueur refaite** : son visage net, l'écusson de son club en filigrane et, sur les grandes
+  vignettes, son nom en titre.
+
+### Réglages
+- **Vérifier les mises à jour** (Réglages › À propos) : LifeLegend regarde la dernière version publiée sur sa page
+  GitHub, seulement quand tu cliques.
+
 ## 1.0.0 — 2026-11-10 · première version publique
 
 ### Deux sites renommés

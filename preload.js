@@ -41,6 +41,7 @@ contextBridge.exposeInMainWorld('live', {
   influenceApply: (effectId) => call('influence:apply', effectId),
   conductApply: () => call('conduct:apply'),
   makeReport: (title) => call('report:make', { title }),
+  checkUpdate: () => call('update:check'),
   replyMail: (threadId, text) => call('mail:reply', { threadId, text }),
   readMail: (threadId) => call('mail:read', threadId),
   answerCoachAdvice: (choice) => call('coach:advice', choice),

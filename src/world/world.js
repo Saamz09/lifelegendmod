@@ -7,11 +7,23 @@ const path = require('path');
 const { readCareer, competitionMatches } = require('../save/blReader');
 const { detectGameFolders, loadGameDb, matchRate } = require('../save/gameDb');
 const { buildSnapshot, diffSnapshots, hasNews, sameMatch } = require('./snapshot');
-const { complete, transcribe, parseJson } = require('../ai/providers');
+const { complete: completeRaw, transcribe, parseJson } = require('../ai/providers');
+// Chaque requête porte la consigne de langue quand la langue n'est pas le français (prompts.withLanguage). Une réponse
+// revenue en français quand même (le modèle léger qui suit un historique en français) est redemandée une fois, avec le
+// modèle choisi et la consigne en tête : une requête de plus, seulement dans ce cas.
+async function complete(settings, apiKey, opts) {
+  const out = await completeRaw(settings, apiKey, prompts.withLanguage(settings, opts));
+  if (!prompts.wrongLanguage(out, settings.language)) return out;
+  opts.log?.('Réponse revenue en français : redemandée dans la langue choisie.');
+  try {
+    const again = await completeRaw(settings, apiKey, prompts.withLanguage(settings, { ...opts, light: false, user: `${prompts.languageRetry(settings)}\n\n${opts.user}` }));
+    return prompts.wrongLanguage(again, settings.language) ? out : again;
+  } catch { return out; }
+}
 const prompts = require('../ai/prompts');
 const { factCheck } = require('../ai/factcheck');
 const { buildScores } = require('./scores');
-const { worldFootball, worldStories, worldDebate, worldBrief, potmSummary, worldTotw } = require('./worldFootball');
+const { worldFootball, worldStories, worldDebate, worldDebates, worldBrief, potmSummary, worldTotw } = require('./worldFootball');
 const { processMedia, savedReplaysFacts } = require('./media');
 const { archiveSeason, careerFacts } = require('./seasons');
 const { clubMap, detectTransfers, windowOpen } = require('./mercato');
@@ -45,7 +57,7 @@ const { fanMood } = require('./fanMood');
 const { toneContext } = require('./toneContext');
 const { postLikes, repostsFor, replyLikes } = require('./engagement');
 const { clubPosts } = require('./clubPosts');
-const { tribunePlan, newVoices, renameInvented, playingTime, styleOf, isStyleText } = require('./tribunePlan');
+const { tribunePlan, newVoices, renameInvented, playingTime, styleOf, isStyleText, styleIn } = require('./tribunePlan');
 
 // Ton du monde (pression médiatique, drame) : calculé sur la situation, transmis aux consignes de l'IA.
 const toneOf = (state) => state.tone || (state.snapshot ? toneContext({ snapshot: state.snapshot, state }) : { market: 50, drama: 25, why: { market: [], drama: [] } });
@@ -857,7 +869,7 @@ async function writeDiscussions({ state, settings, apiKey, facts, fresh, people,
   const posts = [...fresh.map((p) => brief(p, true)), ...[...older.filter((p) => p.author.isMe).slice(-3), ...older.filter((p) => !p.author.isMe).slice(-6)].map((p) => brief(p, false))];
   if (!posts.length) return { threads: 0, messages: 0 };
   const memory = memoryFor(state);
-  const voices = state.snapshot ? newVoices({ state, snapshot: state.snapshot, clubLeague }) : [];
+  const voices = state.snapshot ? newVoices({ state, snapshot: state.snapshot, clubLeague }).map((v) => ({ ...v, style: styleIn(v.style, settings.language) })) : [];
   // De courts échanges entre comptes : le modèle léger suffit et ménage le quota du modèle choisi.
   const out = parseJson(await complete(settings, apiKey, {
     light: true,
@@ -1035,7 +1047,9 @@ function worldPaperPlan(desk, press, kind, n, angles) {
   // d'article qui raconte la vie des championnats, un peu plus souvent ») ; les chiffres ou le consultant prennent ce qui reste.
   // Le football mondial : deux « tour des terrains » au plus (avant : jusqu'à cinq, des scores partout), les autres
   // compétitions dans un article commun quand il reste une place.
-  const room = Math.max(1, PAPER_MAX - club.length - awards.length - (angles.world.debate ? 1 : 0));
+  // Les éditos (2026-11-12) : deux championnats différents, choisis par worldDebates (ancien format : un seul sujet).
+  const topics = angles.world.debates || (angles.world.debate ? [{ subject: angles.world.debate, focus: 'world' }] : []);
+  const room = Math.max(1, PAPER_MAX - club.length - awards.length - topics.length);
   const stories = angles.world.stories;
   const own = stories.slice(0, Math.min(TOURS_MAX, room >= 3 ? 2 : 1));
   const rest = room > own.length ? stories.slice(own.length) : [];
@@ -1048,12 +1062,15 @@ function worldPaperPlan(desk, press, kind, n, angles) {
   if (rest.length) {
     world.push({ author: pick(5), kind: WORLD_KIND, focus: 'world', competition: rest[0].competition, teams: rest[0].teams, subject: `the other big competitions since the last edition (${rest.map((s) => s.competition).join(', ')}), only from FACTS.world_football: for each one, first its biggest result or performance (${rest.map((s) => s.story).join('; ')}), then what it changes at the top` });
   }
-  const debate = angles.world.debate ? { author: w(2), kind: 'édito', focus: 'world', subject: `${angles.world.debate}. An opinion piece, NOT a match report` } : null;
+  // Le premier édito à l'éditorialiste, le second au correspondant de son championnat.
+  const debates = topics.map((d, k) => ({ author: k ? pick(beatOf(d.competition)) : w(2), kind: 'édito', focus: d.focus || 'world', ...(d.competition ? { competition: d.competition } : {}), ...(d.teams?.length ? { teams: d.teams } : {}), subject: `${d.subject}. An opinion piece, NOT a match report` }));
   const numbers = { author: w(1), kind: 'les chiffres', focus: 'world', subject: 'the numbers of the moment in the big competitions, only from FACTS.world_football: the scorer races, the gaps at the top and at the bottom, the standout performances' };
   const opinion = [];
   const room2 = { author: w(3), kind: 'regard de consultant', focus: 'world', subject: 'the dressing-room view of the biggest result of the week in FACTS.world_football: what the players of both clubs live after it' };
-  const filler = [debate, ...(awards.length || !(n % 2) ? [room2, numbers] : [numbers, room2])].filter(Boolean); // l'édito d'abord ; les récompenses et les chiffres ont la même plume
+  const filler = awards.length || !(n % 2) ? [room2, numbers] : [numbers, room2]; // les récompenses et les chiffres ont la même plume
   const count = () => club.length + world.length + awards.length + opinion.length;
+  // Les éditos d'abord : leur place est gardée.
+  for (const d of debates) if (count() < PAPER_MAX) opinion.push(d);
   for (const f of filler) { if (count() >= PAPER_MAX || (opinion.length && count() >= PAPER_MIN)) break; if (!opinion.some((o) => o.kind === f.kind)) opinion.push(f); }
   // La une : son article quand il fait l'actualité, sinon la plus grosse compétition.
   const plan = big ? [...club, ...world, ...awards, ...opinion] : poty ? [...awards, ...club, ...world, ...opinion] : !world.length ? [...club, ...world, ...awards, ...opinion] : [world[0], ...club, ...world.slice(1), ...awards, ...opinion];
@@ -1203,7 +1220,7 @@ function articleProblems(article, earlier = [], { nextOpponent = null, coverage 
   if (repeated.size) { problems.push(`passages repeated in the article (say each thing once): ${[...repeated].slice(0, 3).map((g) => `« ${g}… »`).join(', ')}`); score += 2 * Math.min(3, repeated.size); }
   const others = new Set(earlier.flatMap((o) => grams(plainWords(o.body), 10)));
   if (grams(plainWords(article.body), 10).filter((g) => others.has(g)).length > 3) { problems.push('copies passages of another article of this edition: write your own text, on your own subject'); score += 6; }
-  if (/[぀-ヿ㐀-鿿가-힯Ѐ-ӿ]/.test(`${article.headline}${article.dek}${article.body}`)) { problems.push('contains words in another alphabet: write everything in French'); score += 3; }
+  if (/[぀-ヿ㐀-鿿가-힯Ѐ-ӿ]/.test(`${article.headline}${article.dek}${article.body}`)) { problems.push('contains words in another alphabet: write everything in the language of the paper'); score += 3; }
   return { problems, score };
 }
 
@@ -1217,8 +1234,26 @@ function transversaleOutline({ state, snapshot, rawChanges, kind, world = null }
   const stories = competitionStories(snapshot);
   const n = state.editions.length;
   const stories2 = worldStories(world);
-  const angles = { tour: tourAngle(snapshot, press, stories), story: longViewAngle(stories, n), debate: debateAngle(stories, n, snapshot.club?.name), big: bigEdition(snapshot, rawChanges, press), world: stories2.length || world?.awards?.player_of_the_year ? { stories: stories2, debate: worldDebate(world, n), awards: world.awards || null } : null };
+  const debate = debateAngle(stories, n, snapshot.club?.name);
+  const league = snapshot.league?.name;
+  // Son championnat est aussi candidat aux éditos du journal mondial (sa vie : le titre, les séries, le maintien).
+  const own = debate && league ? [{ competition: league, focus: 'competition', topics: [{ subject: debate, teams: [] }] }] : [];
+  const names = [...(world?.competitions || []).map((c) => c.competition), league].filter(Boolean);
+  const angles = { tour: tourAngle(snapshot, press, stories), story: longViewAngle(stories, n), debate, big: bigEdition(snapshot, rawChanges, press), world: stories2.length || world?.awards?.player_of_the_year ? { stories: stories2, debates: worldDebates(world, { recent: recentDebates(state, names, league), extra: own }), awards: world.awards || null } : null };
   return { desk, press, plan: transversalePlan(desk, press, kind, n, angles) };
+}
+
+// Les championnats des éditos déjà parus, du plus récent au plus ancien : sa compétition ; pour un ancien édito qui n'en
+// porte pas, celle que nomme son titre (le journal mondial) ou son championnat à lui.
+function recentDebates(state, names, league) {
+  const named = (text, name) => [name, name.split(' ').slice(0, 2).join(' '), name.split(' ')[0].length >= 6 ? name.split(' ')[0] : null].filter(Boolean).some((x) => text.includes(x));
+  const out = [];
+  for (const e of [...(state.editions || [])].reverse()) for (const a of [...(e.national || [])].reverse()) {
+    if (a.kind !== 'édito') continue;
+    const c = a.competition || (a.focus === 'world' ? names.find((x) => named(`${a.headline || ''} ${a.dek || ''}`, x)) : league);
+    if (c) out.push(c);
+  }
+  return out;
 }
 
 // Une édition qui compte (un quatrième article) : son but ou sa passe, une note de 7,5 ou plus, homme du match, trois buts
@@ -1738,11 +1773,11 @@ async function syncInner({ store, settings, log, t }) {
   // Le championnat de chaque club du monde (scores du jeu) : les nouveaux comptes prennent les prénoms de son pays.
   let clubLeague = null;
   try { clubLeague = clubLeagues(scoresNow()); } catch { /* sans scores : les prénoms du championnat du joueur */ }
-  const plan = tribunePlan({ state, snapshot, changes, handle: state.profile.handle, world: kopWorld, clubLeague });
+  const plan = tribunePlan({ state, snapshot, changes, handle: state.profile.handle, world: kopWorld, clubLeague }).map((p) => ({ ...p, style: styleIn(p.style, settings.language) }));
   // Rumeur mercato (src/world/rumors.js) : un créneau de plus, tenu par l'insider de son niveau de fiabilité.
   const rumor = pickRumor({ state, snapshot });
   const rumorHandle = rumor && INSIDERS[rumor.tier].handle.toLowerCase();
-  if (rumor) plan.push(rumorSlot(rumor, { known: Object.keys(state.accounts || {}).some((h) => h.toLowerCase() === rumorHandle) }));
+  if (rumor) plan.push(rumorSlot(rumor, { known: Object.keys(state.accounts || {}).some((h) => h.toLowerCase() === rumorHandle), language: settings.language }));
   t.step(1);
   // Une seule barre de progression pour les deux requêtes : les caractères reçus s'additionnent.
   const chars = { national: 0, edition: 0 };
@@ -2337,7 +2372,7 @@ async function transcribeDictation({ store, settings, audio }) {
   const s = state?.snapshot;
   const press = state?.press;
   const names = [...new Set([s?.player?.name, s?.club?.name, s?.coaches?.mine, s?.next?.home, s?.next?.away, s?.last?.home, s?.last?.away, ...(s?.squad || []).map((p) => p.name), ...(press?.questions || []).map((q) => q.journalist)].filter(Boolean))].slice(0, 50);
-  return transcribe(settings, store.getKey(settings.provider), { audio: Buffer.from(audio).toString('base64'), prompt: prompts.dictationPrompt(names) });
+  return transcribe(settings, store.getKey(settings.provider), { audio: Buffer.from(audio).toString('base64'), prompt: prompts.dictationPrompt(names, settings.language) });
 }
 
 async function openPress({ store, settings, progress }) {

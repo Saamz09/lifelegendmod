@@ -1,6 +1,6 @@
 'use strict';
 
-const { app, BrowserWindow, ipcMain, dialog, safeStorage, shell, Notification, nativeImage, nativeTheme } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, safeStorage, shell, Notification, nativeImage, nativeTheme, net } = require('electron');
 const { tr, trError } = require('./src/i18n');
 const fs = require('fs');
 const path = require('path');
@@ -393,6 +393,19 @@ app.whenReady().then(() => {
     fs.writeFileSync(r.filePath, text, 'utf8');
     shell.showItemInFolder(r.filePath);
     return { path: r.filePath };
+  });
+  // « Vérifier les mises à jour » : la dernière version publiée sur la page GitHub de LifeLegend, seulement quand il
+  // clique. Rien d'autre n'est envoyé (ni identifiant, ni réglage, ni donnée de carrière).
+  handle('update:check', async () => {
+    const res = await net.fetch('https://api.github.com/repos/Saamz09/lifelegendmod/releases/latest', { headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'LifeLegend' } });
+    if (!res.ok) throw new Error(`GitHub ${res.status}`);
+    const r = await res.json();
+    const latest = String(r.tag_name || '').replace(/^v/, '');
+    const parts = (v) => String(v).split('-')[0].split('.').map((x) => parseInt(x, 10) || 0);
+    const [a, b] = [parts(latest), parts(app.getVersion())];
+    const diff = [0, 1, 2].map((i) => (a[i] || 0) - (b[i] || 0)).find((d) => d !== 0) || 0;
+    const url = /^https:\/\/github\.com\/Saamz09\/lifelegendmod\//.test(r.html_url || '') ? r.html_url : 'https://github.com/Saamz09/lifelegendmod/releases/latest';
+    return { current: app.getVersion(), latest, newer: Boolean(latest) && diff > 0, url };
   });
   // Visages des joueurs qu'une page affiche, lus dans le jeu : { nom : fichier du dossier faces de la carrière }.
   handle('faces:get', (names) => playerFaces({ store, settings: store.getSettings(), names }));

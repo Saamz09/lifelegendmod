@@ -206,23 +206,39 @@ function worldStories(w) {
 // La vie des championnats (son choix le 2027-01-01 : « ce type d'article qui raconte la vie des championnats, un peu plus
 // souvent ») : l'édito de La Transversale et la voix neutre de Kop. Un championnat différent à chaque édition ; quand tous
 // y sont passés, le sujet change : la course au titre, puis la lutte pour l'Europe, le maintien, le meilleur buteur.
-function worldDebate(w, editions = 0) {
+// Les sujets d'édito d'un championnat (avec ses tableaux) : la course au titre, les places européennes, le maintien, les
+// buteurs ; chacun avec les clubs dont il parle (la vignette).
+function debateTopics(c) {
   const src = '(FACTS.world_football)';
   const line = (rows) => rows.map((r) => `${r.pos}. ${r.team} ${r.pts} pts`).join(', ');
-  const perComp = (w?.competitions || []).filter((c) => c.table_top?.length >= 2).map((c) => {
-    const t = c.table_top, [a, b] = t, gap = a.pts - b.pts, sc = c.top_scorers || [];
-    return [
-      gap <= 2
-        ? `the title race in ${c.competition}: ${a.team} ${a.pts} pts, ${b.team} ${b.pts} pts after ${a.p} matches ${src}: who is the real favourite? Take a side`
-        : `${a.team} lead ${c.competition} by ${gap} points over ${b.team} (${a.pts} against ${b.pts}, FACTS.world_football): is the title race already over? Take a side`,
-      t.length >= 6 ? `the race for the European places in ${c.competition}: ${line(t.slice(2, 6))} ${src}: who will make it, who will fall short? Take a side` : null,
-      c.table_bottom?.length >= 2 ? `the fight to stay up in ${c.competition}: ${line(c.table_bottom)} ${src}: who is in real danger, who will get out of it? Take a side` : null,
-      sc.length >= 2 ? `the scorer race in ${c.competition}: ${sc.slice(0, 3).map((p) => `${p.player} (${p.team}) ${p.goals} goals`).join(', ')} ${src}: who will finish top scorer? Take a side` : null,
-    ].filter(Boolean);
-  });
+  const t = c.table_top, [a, b] = t, gap = a.pts - b.pts, sc = c.top_scorers || [];
+  return [
+    { teams: [a.team, b.team], subject: gap <= 2
+      ? `the title race in ${c.competition}: ${a.team} ${a.pts} pts, ${b.team} ${b.pts} pts after ${a.p} matches ${src}: who is the real favourite? Take a side`
+      : `${a.team} lead ${c.competition} by ${gap} points over ${b.team} (${a.pts} against ${b.pts}, FACTS.world_football): is the title race already over? Take a side` },
+    t.length >= 6 ? { teams: [t[2].team, t[3].team], subject: `the race for the European places in ${c.competition}: ${line(t.slice(2, 6))} ${src}: who will make it, who will fall short? Take a side` } : null,
+    c.table_bottom?.length >= 2 ? { teams: c.table_bottom.slice(0, 2).map((r) => r.team), subject: `the fight to stay up in ${c.competition}: ${line(c.table_bottom)} ${src}: who is in real danger, who will get out of it? Take a side` } : null,
+    sc.length >= 2 ? { teams: [sc[0].team], subject: `the scorer race in ${c.competition}: ${sc.slice(0, 3).map((p) => `${p.player} (${p.team}) ${p.goals} goals`).join(', ')} ${src}: who will finish top scorer? Take a side` } : null,
+  ].filter(Boolean);
+}
+// Un sujet pour Kop (la tendance du foot ailleurs) : un championnat, puis un sujet, à tour de rôle.
+function worldDebate(w, editions = 0) {
+  const perComp = (w?.competitions || []).filter((c) => c.table_top?.length >= 2).map((c) => debateTopics(c).map((x) => x.subject));
   if (!perComp.length) return null;
   const list = perComp[editions % perComp.length];
   return list[Math.floor(editions / perComp.length) % list.length];
+}
+
+// Les éditos du journal mondial (sa demande du 2026-11-12 : « trop peu fréquents et visibles que pour la Premier
+// League ») : count championnats différents, ceux dont le journal n'a pas parlé depuis le plus longtemps d'abord (recent :
+// les compétitions des éditos parus, du plus récent au plus ancien), et pour chacun le sujet suivant de sa liste (pas
+// deux fois la course au titre de suite). extra : d'autres candidats, son championnat ({ competition, focus, topics }).
+function worldDebates(w, { recent = [], count = 2, extra = [] } = {}) {
+  const leagues = (w?.competitions || []).filter((c) => c.table_top?.length >= 2).map((c) => ({ competition: c.competition, focus: 'world', topics: debateTopics(c) }));
+  const age = (name) => { const i = recent.indexOf(name); return i < 0 ? Infinity : i; };
+  return [...leagues, ...extra].filter((c) => c.competition && c.topics?.length).map((c, k) => ({ c, k }))
+    .sort((p, q) => age(q.c.competition) - age(p.c.competition) || p.k - q.k).slice(0, count)
+    .map(({ c }) => { const t = c.topics[recent.filter((x) => x === c.competition).length % c.topics.length]; return { competition: c.competition, focus: c.focus, teams: t.teams || [], subject: t.subject }; });
 }
 
 // Ancien angle « le foot ailleurs » (un seul article) : gardé pour les éditions sans grande compétition dans le plan.
@@ -231,4 +247,4 @@ function worldAngle(w) {
   return s ? { competition: s.competition, teams: s.teams, story: s.story } : null;
 }
 
-module.exports = { worldFootball, worldStories, worldDebate, worldAngle, worldBrief, playersOfMonth, potmSummary, worldTotw, tierOf };
+module.exports = { worldFootball, worldStories, worldDebate, worldDebates, worldAngle, worldBrief, playersOfMonth, potmSummary, worldTotw, tierOf };

@@ -1,7 +1,7 @@
 {
   "name": "lifelegend",
   "productName": "LifeLegend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "LifeLegend : l'internet de ta carrière Become a Legend (SP Football Life 2027, eFootball PES 2021), écrit par l'IA à partir de ta sauvegarde.",
   "main": "main.js",
   "private": true,

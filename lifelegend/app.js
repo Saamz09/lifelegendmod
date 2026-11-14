@@ -792,26 +792,41 @@ function nationalArticles() {
   return out.sort((p, q) => String(q.date).localeCompare(String(p.date)) || q.edition - p.edition || p.i - q.i);
 }
 
-// Illustration d'un article, sur fond flouté aux couleurs des clubs : ce dont il parle (gzSubject) et rien d'autre.
-// x : { a: l'article, date: la date de son édition }.
+// Illustration d'un article : ce dont il parle (gzSubject) et rien d'autre, sur un fond graphite, avec en haut un liseré
+// aux couleurs des clubs (gzPaintColors). x : { a: l'article, date: la date de son édition }.
 function gzFrame(x, ratio = '3x2') {
   const v = gzSubject(x.a, x.date);
   const logo = v.logo ? compEmblem(v.logo) : null;
-  const urls = (logo ? [logo] : v.teams.map((n) => teamEmblem(n))).filter(Boolean);
-  // Deux clubs : chacun sa couleur, d'un côté et de l'autre.
-  const bg = urls.length > 1 ? `<img class="gz-frame-bg gz-frame-bg--l" src="${esc(urls[0])}" alt=""><img class="gz-frame-bg gz-frame-bg--r" src="${esc(urls[1])}" alt="">` : urls[0] ? `<img class="gz-frame-bg" src="${esc(urls[0])}" alt="">` : '';
   const crest = (n) => gzCrest(n, ' gz-crest--big');
   const badge = v.badge ? `<span class="gz-frame-badge">${hi(v.badge)}</span>` : '';
-  const mid = v.score ? `<b class="gz-frame-mid">${v.score[0]}<i>-</i>${v.score[1]}</b>` : v.formation ? `<b class="gz-frame-mid gz-frame-form">${esc(v.formation)}</b>` : v.vs ? '<span class="gz-frame-mid gz-frame-vs">vs</span>' : v.done ? `<span class="gz-frame-mid gz-frame-vs">${tr('Fin')}</span>` : badge;
+  const mid = v.score ? `<b class="gz-frame-mid gz-frame-score">${v.score[0]}<i>-</i>${v.score[1]}</b>` : v.formation ? `<b class="gz-frame-mid gz-frame-form">${esc(v.formation)}</b>` : v.vs ? '<span class="gz-frame-mid gz-frame-vs gz-frame-score">vs</span>' : v.done ? `<span class="gz-frame-mid gz-frame-vs gz-frame-score">${tr('Fin')}</span>` : badge;
   const [one, two] = v.teams;
   let inner;
   if (v.mode === 'person') {
-    const fallback = crest(one);
-    inner = `<span class="gz-frame-face">${v.isCoach ? coachFaceIn(v.person, fallback) : v.person === state.snapshot.player?.name ? myFaceIn(fallback) : faceIn(v.person, fallback)}</span>${teamEmblem(one) ? `<span class="gz-frame-mark">${gzCrest(one)}</span>` : ''}`;
+    // Son visage, l'écusson de son club en filigrane, et (grandes vignettes) son nom : le prénom au-dessus, le nom en gros ;
+    // au-dessus encore sa distinction (joueur du mois…) ou son club.
+    const fallback = crest(one), club = one ? teamEmblem(one) : null;
+    const words = String(v.person).trim().split(/\s+/), family = words.pop(), given = words.join(' ');
+    const kicker = v.caption && v.caption !== v.person ? v.caption : one || '';
+    inner = `${club ? `<img class="gz-frame-wm" src="${esc(club)}" alt="">` : ''}<span class="gz-frame-who">${kicker ? `<span class="gz-frame-kick">${club ? gzCrest(one) : ''}${esc(kicker)}</span>` : ''}<b class="gz-frame-name">${given ? `<span>${esc(given)}</span>` : ''}${esc(family)}</b></span><span class="gz-frame-face">${v.isCoach ? coachFaceIn(v.person, fallback) : v.person === state.snapshot.player?.name ? myFaceIn(fallback) : faceIn(v.person, fallback)}</span>`;
   } else if (logo) inner = `<span class="gz-frame-plate"><img src="${esc(logo)}" alt=""></span>${mid}`;
   else if (two) inner = `${crest(one)}${mid}${crest(two)}`;
   else inner = `${one ? crest(one) : ''}${mid}`;
-  return `<div class="gz-frame gz-frame--${ratio} gz-frame-is-${v.mode}">${bg}<div class="gz-frame-crests${mid ? ' has-mid' : ''}">${inner}</div>${v.caption ? `<span class="gz-frame-cap">${esc(v.caption)}</span>` : ''}</div>`;
+  const clubs = logo ? [] : [one, two].filter(Boolean);
+  return `<div class="gz-frame gz-frame--${ratio} gz-frame-is-${v.mode}"${clubs.map((n, k) => ` data-gzc${k + 1}="${esc(n)}"`).join('')}><div class="gz-frame-crests${mid ? ' has-mid' : ''}">${inner}</div>${v.caption && v.mode !== 'person' ? `<span class="gz-frame-cap">${esc(v.caption)}</span>` : ''}</div>`;
+}
+
+// Le liseré des vignettes : la couleur de chaque club (lue dans son écusson), à gauche et à droite ; un seul club, toute la
+// largeur ; aucun (une compétition, les récompenses), la couleur du journal. Un club sans couleur franche (noir et blanc)
+// donnerait un liseré noir, invisible en thème sombre : sa seconde couleur, sinon un gris clair.
+function gzPaintColors(root = document) {
+  const dark = document.documentElement.dataset.theme === 'dark';
+  const pick = (c) => (!dark || contrastOf(c.primary, '#1b1c22') >= 1.6 ? c.primary : contrastOf(c.secondary, '#1b1c22') >= 1.6 ? c.secondary : '#c9cad1');
+  root.querySelectorAll('.gz-frame[data-gzc1]').forEach((el) => {
+    const c1 = clubColors(el.dataset.gzc1), c2 = el.dataset.gzc2 ? clubColors(el.dataset.gzc2) : null;
+    if (c1) el.style.setProperty('--gz-c1', pick(c1));
+    if (c2) el.style.setProperty('--gz-c2', pick(c2));
+  });
 }
 
 // Compétitions de La Transversale, lues dans la sauvegarde : seulement celles du club (son championnat, ses coupes,
@@ -1093,7 +1108,8 @@ function gzSubjectOf(a, date) {
     const teams = [...new Set([...(a.teams || []), ...gzClubsCited(top, known)])].slice(0, 2);
     // Scores pas encore chargés : rien n'est retenu (pending), la vignette se refait.
     const d = skData(), pending = d === undefined;
-    const m = withMatch(teams);
+    // Un édito parle d'eux, pas d'un de leurs matchs : leurs écussons, sans score.
+    const m = kind === 'édito' ? { mode: 'clubs', teams } : withMatch(teams);
     if (m.mode === 'match') return m;
     // Un joueur du monde dans le titre : son visage et l'écusson de son club, comme le lauréat des récompenses.
     const who = d && gzWorldPersonIn(head, d);
@@ -1691,6 +1707,7 @@ function bindNational(page) {
   // Une rubrique de grande compétition prend les couleurs de celle-ci ; partout ailleurs, celles de son championnat.
   const rub = !view.natArticle && !view.natAll && view.natRubric && !view.natRubric.startsWith('*') ? view.natRubric : null;
   gzTheme(box, rub ? { league: { name: rub } } : state.snapshot);
+  gzPaintColors(page);
   box.scrollTop = view.gzY || 0;
   page.querySelectorAll('[data-gzrubric]').forEach((a) => {
     a.onclick = () => {
@@ -2101,6 +2118,7 @@ function clubColors(name) {
     if (current === 'huddle') hdPaintColors();
     else if (current === 'mail' && view.smDossier) { dsPaintColors(); smPaintColors(); }
     else if (current === 'pantheon') ptPaintColors();
+    else if (current === 'national') gzPaintColors();
     else if (current === 'tribune') smPaintColors();
     else if (current === 'mail' && !view.smInfluence) smPaintColors();
     else if (current === 'local' || current === 'stats' || (current === 'mail' && view.smInfluence)) render();
@@ -7333,7 +7351,7 @@ const RG_TABS = [
   ['about', 'À propos', ''],
 ];
 // L'onglet de chaque section qu'ouvrent les autres pages (« Réglages de l'IA », « Ajouter ma clé… », la bio de Panthéon).
-const RG_SECTION_TAB = { 'rg-save': 'save', 'rg-key': 'save', 'rg-names': 'save', 'rg-ai': 'ai', 'rg-lang': 'look', 'rg-theme': 'look', 'rg-tone': 'world', 'rg-replays': 'world', 'rg-mebio': 'me','rg-about': 'about' };
+const RG_SECTION_TAB = { 'rg-save': 'save', 'rg-key': 'save', 'rg-names': 'save', 'rg-ai': 'ai', 'rg-lang': 'look', 'rg-theme': 'look', 'rg-tone': 'world', 'rg-replays': 'world', 'rg-mebio': 'me','rg-about': 'about', 'rg-update': 'about' };
 const rgRow = (id, label, control, note = '') => `<div class="rg-row"${id ? ` id="${id}"` : ''}><div class="rg-label"><h3>${label}</h3>${note ? `<p>${note}</p>` : ''}</div><div class="rg-ctl">${control}</div></div>`;
 const rgSwitch = (id, on, label, note = '') => `<label class="rg-switch"><input type="checkbox" id="${id}"${on ? ' checked' : ''}><span class="rg-switch-text"><b>${label}</b>${note ? `<small>${note}</small>` : ''}</span></label>`;
 // Miniature d'un thème : le cadre de LifeLegend (rail, barre, blocs), clair ou sombre ; Automatique est coupé en diagonale.
@@ -7428,6 +7446,7 @@ async function renderSettings(page) {
     rgRow('rg-about', tr('À propos de LifeLegend'), `<p class="fineprint">${esc(/-/.test(appVersion || '') ? tr('Version {v} · bêta', { v: appVersion }) : tr('Version {v}', { v: appVersion || '—' }))}</p>
       <p class="fineprint">${tr(REAL_PEOPLE_NOTE)}</p>
       <p class="fineprint">${tr('LifeLegend est publié sous licence MIT. Polices, icônes et mises en page reprises ont leurs propres licences : voir LICENSE et THIRD-PARTY-NOTICES.txt dans le dossier de LifeLegend.')}</p>`),
+    rgRow('rg-update', tr('Mises à jour'), `<button class="btn" id="rg-update-btn" type="button">${tr('Vérifier les mises à jour')}</button><p class="fineprint" id="rg-update-out" role="status"></p>`, tr('LifeLegend regarde la dernière version publiée sur sa page GitHub, seulement quand tu cliques. Rien d’autre n’est envoyé.')),
     ...(introAvailable ? [rgRow('rg-intro', tr('Animation d’ouverture'), `<button class="btn" id="rg-intro-btn" type="button">${tr('Revoir')}</button>`, tr('La courte vidéo qui ouvre LifeLegend au premier lancement. Animation réalisée avec Profounder (profounder.com), qui n’a pas de lien avec LifeLegend.'))] : []),
     rgRow('rg-report', tr('Signaler un problème'), `<button class="btn" id="rg-report-btn" type="button">${tr('Préparer le rapport')}</button>`,
       tr('LifeLegend prépare un fichier texte avec sa version, tes réglages utiles et ses derniers messages d’erreur, sans ta clé d’IA, ton adresse e-mail ni tes textes. Relis-le, puis envoie-le toi-même : rien ne part tout seul.')),
@@ -7439,6 +7458,20 @@ async function renderSettings(page) {
   page.querySelectorAll('[data-rgtab]').forEach((b) => { b.onclick = () => rgShowTab(b.dataset.rgtab); });
   rgTabInView();
   if ($('#rg-intro-btn')) $('#rg-intro-btn').onclick = () => playIntro({ save: false });
+  // Vérifier les mises à jour : la réponse sous le bouton, avec le lien de la nouvelle version s'il y en a une.
+  const upd = $('#rg-update-btn');
+  if (upd) {
+    upd.onclick = async () => {
+      const out = $('#rg-update-out');
+      upd.disabled = true;
+      out.textContent = tr('Vérification…');
+      try {
+        const r = await live.checkUpdate();
+        out.innerHTML = r.newer ? `${esc(tr('La version {v} est disponible.', { v: r.latest }))} <a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(tr('La télécharger'))}</a>` : esc(tr('Tu as la dernière version ({v}).', { v: r.current }));
+      } catch { out.textContent = tr('Impossible de vérifier pour l’instant. Réessaie plus tard.'); }
+      upd.disabled = false;
+    };
+  }
   // Signaler un problème : il choisit où enregistrer le rapport, l'Explorateur le montre ; rien n'est envoyé.
   const report = $('#rg-report-btn');
   if (report) {

@@ -330,21 +330,22 @@ table { width: 100%; border-collapse: collapse; }
 .gz-band { padding: clamp(1.1rem, 2.4vw, 1.75rem); border-radius: var(--r-l); background: var(--surface-2); }
 
 /* Illustrations : le mod n'a pas de photos. Les écussons du jeu, sur leur couleur floutée et le tracé d'un terrain. */
-.gz-frame { position: relative; display: block; overflow: hidden; border-radius: var(--gz-r); background: var(--tv); isolation: isolate; }
+/* Vignettes « Graphite » (son choix du 2026-11-12) : fond sobre, liseré en haut aux couleurs des clubs (--gz-c1, --gz-c2,
+   posées par gzPaintColors), le score dans un cadre net. */
+.gz-frame { position: relative; display: block; overflow: hidden; border-radius: var(--gz-r); background: radial-gradient(130% 100% at 50% 0%, #2b2d35 0%, #18191e 72%); isolation: isolate; }
+:root[data-theme="light"] .gz-frame { background: radial-gradient(130% 100% at 50% 0%, #ffffff 0%, #e6e5e1 75%); }
 .gz-frame--4x3 { aspect-ratio: 4 / 3; } .gz-frame--3x2 { aspect-ratio: 3 / 2; } .gz-frame--16x9 { aspect-ratio: 16 / 9; } .gz-frame--21x9 { aspect-ratio: 21 / 9; } .gz-frame--1x1 { aspect-ratio: 1; }
 .gz-frame--fill { position: absolute; inset: 0; border-radius: 0; }
-.gz-frame-bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; filter: blur(34px) saturate(1.9) brightness(.62); transform: scale(1.9); }
-.gz-frame-bg--l { right: auto; width: 62%; transform-origin: left center; }
-.gz-frame-bg--r { left: auto; width: 62%; transform-origin: right center; }
-.gz-frame::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 260' preserveAspectRatio='xMidYMid slice' fill='none' stroke='white' stroke-width='1.6'%3E%3Crect x='14' y='14' width='372' height='232'/%3E%3Cpath d='M200 14v232'/%3E%3Ccircle cx='200' cy='130' r='44'/%3E%3Ccircle cx='200' cy='130' r='2' fill='white'/%3E%3Crect x='14' y='62' width='66' height='136'/%3E%3Crect x='320' y='62' width='66' height='136'/%3E%3Crect x='14' y='100' width='24' height='60'/%3E%3Crect x='362' y='100' width='24' height='60'/%3E%3C/svg%3E") center / cover no-repeat; opacity: .2; }
-.gz-frame::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, .34) 100%); }
+.gz-frame::after { content: ""; position: absolute; top: 0; right: 0; left: 0; z-index: 1; height: 5px; background: linear-gradient(90deg, var(--gz-c1, var(--tv-accent)) 0 50%, var(--gz-c2, var(--gz-c1, var(--tv-accent))) 50% 100%); }
 .gz-frame-crests { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8%; transition: transform .3s ease; }
 .gz-frame { container-type: inline-size; }
 /* Ce qu'il y a entre les écussons : le score, le schéma tactique, « vs », le micro de la conférence de presse ou le mercato. */
 .gz-frame-crests.has-mid { gap: 4.5%; }
 .gz-frame-crests.has-mid .gz-crest--big { width: 28%; }
-.gz-frame-mid { flex: none; color: #fff; font-size: clamp(1rem, 12cqw, 3.4rem) /* hors échelle */; font-weight: 700; line-height: 1; letter-spacing: -.02em; white-space: nowrap; text-shadow: 0 2px 12px rgba(0, 0, 0, .5); }
-.gz-frame-mid i { margin-inline: .12em; font-style: normal; opacity: .72; }
+.gz-frame-mid { flex: none; color: #fff; font-size: clamp(1rem, 12cqw, 3.4rem) /* hors échelle */; font-weight: 700; line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
+.gz-frame-mid i { margin-inline: .12em; font-style: normal; opacity: .5; }
+.gz-frame-score { display: inline-flex; align-items: center; padding: .14em .4em; border-radius: var(--r-m); background: rgba(8, 9, 12, .84); box-shadow: 0 6px 18px rgba(0, 0, 0, .28); font-variant-numeric: tabular-nums; }
+.gz-frame-vs.gz-frame-score { padding: .3em .7em; font-size: clamp(.7rem, 5cqw, 1.4rem) /* hors échelle */; opacity: 1; }
 .gz-frame-vs { font-size: clamp(.8rem, 6.6cqw, 1.9rem) /* hors échelle */; font-weight: 700; opacity: .88; }
 .gz-frame-form { padding: .28em .6em; border-radius: var(--r-pill); background: rgba(0, 0, 0, .45); font-size: clamp(.68rem, 5.6cqw, 1.5rem) /* hors échelle */; font-weight: 700; letter-spacing: 0; }
 .gz-frame-badge { display: inline-grid; flex: none; place-items: center; width: clamp(24px, 15cqw, 76px); height: clamp(24px, 15cqw, 76px); border-radius: 50%; background: #fff; color: #17181d; box-shadow: 0 6px 16px rgba(0, 0, 0, .35); }
@@ -352,8 +353,27 @@ table { width: 100%; border-collapse: collapse; }
 .gz-frame-plate { display: grid; flex: none; place-items: center; width: clamp(40px, 26cqw, 150px); aspect-ratio: 1; border-radius: 18% /* hors échelle */; background: #fff; box-shadow: 0 8px 22px rgba(0, 0, 0, .34); }
 .gz-frame-plate img { width: 78%; height: 78%; object-fit: contain; }
 /* Un joueur : son visage découpé, posé au bas de l'image, l'écusson de son club à côté. */
-.gz-frame-is-person .gz-frame-crests { align-items: flex-end; gap: 0; }
-.gz-frame-face { position: relative; display: grid; flex: none; place-items: end center; height: min(94%, 290px); aspect-ratio: 1; }
+/* Un joueur ou un entraîneur (2026-11-12) : son visage (128 px dans le jeu : jamais au-delà de 220 px), l'écusson de son
+   club en filigrane derrière ; sur les grandes vignettes, le visage à droite et son nom en titre à gauche. */
+.gz-frame-is-person .gz-frame-crests { align-items: flex-end; justify-content: center; gap: 0; }
+.gz-frame-face { position: relative; display: grid; flex: none; place-items: end center; height: min(88%, 220px); aspect-ratio: 1; }
+.gz-frame-wm { position: absolute; top: 50%; left: 50%; z-index: -1; height: 150%; aspect-ratio: 1; object-fit: contain; opacity: .14; transform: translate(-50%, -50%); pointer-events: none; }
+.gz-frame-crests:has(.gz-frame-face .gz-crest) .gz-frame-wm { display: none; }
+.gz-frame-who { display: none; }
+.gz-frame-kick { display: flex; align-items: center; gap: 8px; color: rgba(255, 255, 255, .64); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.gz-frame-kick .gz-crest { width: 20px; height: 20px; }
+.gz-frame-name { color: #fff; font-size: clamp(20px, 5.4cqw, 48px) /* hors échelle */; font-weight: 700; line-height: 1.02; letter-spacing: -.02em; }
+.gz-frame-name span { display: block; margin-bottom: 2px; font-size: clamp(14px, 2.7cqw, 24px) /* hors échelle */; font-weight: 500; letter-spacing: -.01em; opacity: .78; }
+:root[data-theme="light"] .gz-frame-kick { color: rgba(23, 24, 29, .6); }
+:root[data-theme="light"] .gz-frame-name { color: #17181d; }
+@container (min-width: 420px) {
+  .gz-frame-is-person .gz-frame-crests { justify-content: flex-end; padding-right: 9%; }
+  .gz-frame-wm { left: auto; right: 2%; height: 140%; opacity: .1; transform: translateY(-50%); }
+  .gz-frame-who { position: absolute; top: 50%; left: 7%; display: grid; gap: 10px; max-width: 48%; text-align: left; transform: translateY(-50%); }
+  .gz-frame-is-person .gz-frame-mark { display: none; }
+}
+.gz-feature .gz-frame-who { display: none; }
+.gz-feature .gz-frame-is-person .gz-frame-crests { align-items: flex-end; padding-top: 0; }
 .gz-frame-face .face-img { height: 100%; object-fit: contain; filter: drop-shadow(0 6px 16px rgba(0, 0, 0, .4)); }
 .gz-frame-mark { position: absolute; top: 8%; right: 7%; display: grid; place-items: center; width: clamp(20px, 11cqw, 60px); aspect-ratio: 1; }
 .gz-frame-mark .gz-crest { width: 100%; height: 100%; filter: drop-shadow(0 0 1px rgba(255, 255, 255, .9)) drop-shadow(0 3px 8px rgba(0, 0, 0, .4)); }
@@ -375,7 +395,8 @@ table { width: 100%; border-collapse: collapse; }
 .gz-crest { display: inline-block; flex: none; width: 22px; height: 22px; object-fit: contain; vertical-align: middle; }
 .gz-crest--s { width: 22px; height: 22px; }
 .gz-crest--md { width: 42px; height: 42px; }
-.gz-crest--big { width: 34%; height: auto; max-height: 62%; aspect-ratio: 1; filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, .9)) drop-shadow(0 8px 16px rgba(0, 0, 0, .38)); }
+.gz-crest--big { width: 34%; height: auto; max-height: 62%; aspect-ratio: 1; filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, .4)) drop-shadow(0 6px 14px rgba(0, 0, 0, .35)); }
+:root[data-theme="light"] .gz-crest--big { filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .16)); }
 .gz-crest-none { display: inline-grid; place-items: center; border-radius: 50%; background: var(--surface-3); color: var(--ink-2); font-size: 11px /* hors échelle */; font-weight: 700; line-height: 1; }
 .gz-crest-none.gz-crest--big { font-size: 2.4rem /* hors échelle */; }
 

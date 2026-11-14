@@ -418,3 +418,54 @@ test('synchro : une marque propose un contrat, sans requête d’IA de plus, et 
     Object.assign(boots, real);
   }
 });
+
+test('synchro en anglais : chaque requête finit par la consigne de langue, sans façon d’écrire en français (2026-11-14)', { skip }, async () => {
+  mockAi();
+  const world = require(path.join(ROOT, 'src/world/world.js'));
+  emailsReply = [];
+  asked.length = 0;
+  await world.sync({ store: freshStore().store, settings: settings({ language: 'en' }), log: () => {}, progress: () => {} });
+  assert.ok(asked.length >= 2, `${asked.length} requêtes`);
+  for (const q of asked) {
+    assert.match(q.system.slice(-2500), /LANGUAGE — ENGLISH ONLY/);
+    assert.match(q.user, /\(Reminder: write everything in English\.\)$/);
+    assert.ok(!/"style":\s?"(tout en minuscules|posé, argumente|style dépêche|une phrase choc|phrases courtes)/.test(q.user), 'façons d’écrire en anglais');
+    assert.ok(!/"(titulaire|remplaçant entré|pas joué) ?\(?/.test(q.user), 'temps de jeu en anglais');
+  }
+  // En français, rien ne change.
+  asked.length = 0;
+  await world.sync({ store: freshStore().store, settings: settings(), log: () => {}, progress: () => {} });
+  assert.ok(asked.length && asked.every((q) => !/LANGUAGE — /.test(q.system) && !/Reminder: write everything/.test(q.user)), 'en français, aucune consigne ajoutée');
+});
+
+test('langue : une réponse revenue en français est redemandée une fois, avec le modèle choisi (2026-11-14)', { skip }, async (t) => {
+  mockAi();
+  const world = require(path.join(ROOT, 'src/world/world.js'));
+  const { staffFor } = require(path.join(ROOT, 'src/world/huddle.js'));
+  emailsReply = [];
+  const s = freshStore();
+  const staff = staffFor(s.before.snapshot.club.ref);
+  t.after(() => { huddleReply = { messages: [] }; });
+  const isHuddle = (a) => /^You write the group chat/.test(a.system);
+  const said = () => s.store.activeCareer().huddles?.[0]?.messages.filter((m) => m.who === 'them').map((m) => m.text) || [];
+  await world.sync({ store: s.store, settings: settings({ language: 'en' }), log: () => {}, progress: () => {} });
+  // Le modèle léger répond en français (l'historique du groupe l'est) : redemandé au modèle choisi, consigne en tête.
+  let n = 0;
+  huddleReply = { toJSON: () => (n++ ? { messages: [{ from: staff[0].name, text: 'Recovery session at 10 tomorrow, ice baths for everyone.' }] } : { messages: [{ from: staff[0].name, text: 'compte sur moi pour le gros son ce soir, on va arriver chauds à picot' }] }) };
+  asked.length = 0;
+  await world.sendHuddle({ store: s.store, settings: settings({ language: 'en' }), text: 'Great win lads!', progress: () => {} });
+  const q = asked.filter(isHuddle);
+  assert.deepStrictEqual(q.map((a) => a.light), [true, false], 'une seconde demande, au modèle choisi');
+  assert.match(q[1].user, /^YOUR PREVIOUS ANSWER WAS WRITTEN IN FRENCH\. Write it again, entirely in English/);
+  assert.strictEqual(said().at(-1), 'Recovery session at 10 tomorrow, ice baths for everyone.');
+  // Une réponse déjà dans la bonne langue : une seule demande.
+  huddleReply = { messages: [{ from: staff[1].name, text: 'Training at 10, do not be late lads.' }] };
+  asked.length = 0;
+  await world.sendHuddle({ store: s.store, settings: settings({ language: 'en' }), text: 'What time tomorrow?', progress: () => {} });
+  assert.strictEqual(asked.filter(isHuddle).length, 1);
+  // En français, jamais de seconde demande.
+  huddleReply = { messages: [{ from: staff[1].name, text: 'Séance à 10h, soyez à l’heure les gars.' }] };
+  asked.length = 0;
+  await world.sendHuddle({ store: s.store, settings: settings(), text: 'On s’entraîne à quelle heure ?', progress: () => {} });
+  assert.strictEqual(asked.filter(isHuddle).length, 1);
+});

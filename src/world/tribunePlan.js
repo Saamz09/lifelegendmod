@@ -21,6 +21,28 @@ const PRO_STYLES = {
   stats: ['le chiffre d’abord, emoji 📊'], betting: ['cotes et emojis 💰, toujours « jouez avec modération »'],
   meme: ['une phrase choc et un emoji, culture web', 'tout en minuscules, second degré'],
 };
+// Les mêmes façons d'écrire en anglais, pour les autres langues que le français (2026-11-14 : des styles en français
+// poussaient l'IA à écrire en français). Gardées en français dans la carrière ; traduites en partant vers l'IA.
+const STYLE_EN = {
+  'tout en minuscules, sans ponctuation, abréviations (mdr, jsp, frr, tkt)': 'all lowercase, no punctuation, the chat abbreviations of the language',
+  'phrases courtes, beaucoup d’emojis': 'short sentences, lots of emojis',
+  'MAJUSCULES quand il s’emballe, points d’exclamation': 'CAPITALS when excited, exclamation marks',
+  'ironique, pince-sans-rire, phrases bien tournées': 'ironic, deadpan, well-turned sentences',
+  'langage de tribune : « allez », chants, « on lâche rien »': 'terrace talk: chants, "come on", "never give up"',
+  'râleur et pessimiste, « comme d’hab »': 'grumpy and pessimistic, "same old story"',
+  'posé, argumente avec des chiffres simples': 'calm, argues with simple numbers',
+  'questions rhétoriques, interpelle les autres': 'rhetorical questions, calls out the others',
+  'style dépêche, factuel': 'wire-story style, factual',
+  'proche du club, chaleureux': 'close to the club, warm',
+  'analytique, nuancé': 'analytical, nuanced',
+  'tranché, punchlines': 'outspoken, punchlines',
+  'pédagogue, explique le jeu': 'a teacher, explains the game',
+  'le chiffre d’abord, emoji 📊': 'the number first, emoji 📊',
+  'cotes et emojis 💰, toujours « jouez avec modération »': 'odds and emojis 💰, always "please gamble responsibly"',
+  'une phrase choc et un emoji, culture web': 'one punchy line and an emoji, web culture',
+  'tout en minuscules, second degré': 'all lowercase, tongue-in-cheek',
+};
+const styleIn = (style, language) => (style && language && language !== 'fr' ? STYLE_EN[style] || style : style);
 function hashOf(str) {
   let h = 2166136261;
   for (const c of String(str).toLowerCase()) h = Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0;
@@ -44,7 +66,7 @@ function playingTime(s) {
     last_appearance: last ? { date: last.date, competition: last.competition, opponent: last.venue === 'domicile' ? last.away : last.home, minutes: last.me.minutes, started: Boolean(last.me.starter) } : null,
     club_matches_without_him_since: k >= 0 ? played.length - 1 - k : played.length,
     joined_club_on: since || undefined,
-    last_5_club_matches: played.slice(-5).map((f) => (f.me?.minutes ? `${f.me.starter ? 'titulaire' : 'remplaçant entré'} (${f.me.minutes} min)` : 'pas joué')),
+    last_5_club_matches: played.slice(-5).map((f) => (f.me?.minutes ? `${f.me.starter ? 'started' : 'came on'} (${f.me.minutes} min)` : 'did not play')),
   };
 }
 
@@ -400,7 +422,7 @@ function renameInvented({ state, snapshot: s, clubLeague = null, authors, keep }
 
 // Une bio qui recopie une consigne de style (« tout en minuscules, sans ponctuation… ») n'en est pas une.
 const normStyle = (s) => String(s || '').toLowerCase().replace(/[’']/g, "'").replace(/s+/g, ' ').trim();
-const STYLE_TEXTS = [...FAN_STYLES, ...Object.values(PRO_STYLES).flat()].map(normStyle);
+const STYLE_TEXTS = [...FAN_STYLES, ...Object.values(PRO_STYLES).flat(), ...Object.values(STYLE_EN)].map(normStyle);
 const isStyleText = (bio) => { const b = normStyle(bio); return Boolean(b) && STYLE_TEXTS.some((st) => b.includes(st.slice(0, 24)) || st.includes(b)); };
 
-module.exports = { tribunePlan, newVoices, newPro, renameInvented, playingTime, styleOf, isStyleText, FAN_STYLES, langOf, FIRST_NAMES, NICKNAMES, LAST_NAMES, MEME_ACCOUNTS };
+module.exports = { tribunePlan, newVoices, newPro, renameInvented, playingTime, styleOf, styleIn, STYLE_EN, isStyleText, FAN_STYLES, langOf, FIRST_NAMES, NICKNAMES, LAST_NAMES, MEME_ACCOUNTS };

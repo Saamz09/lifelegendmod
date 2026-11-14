@@ -6,9 +6,9 @@
 // Une rumeur au plus par édition, et pas deux fois le même club en 30 jours.
 
 const INSIDERS = {
-  unverified: { handle: 'MercatoSecret', name: 'Mercato Secret', bio: 'Les rumeurs du mercato, vérifiées ou pas.' },
-  serious: { handle: 'InsideFootball', name: 'Inside Football', bio: 'Ce qui se dit dans les cellules de recrutement.' },
-  reliable: { handle: 'TheScoopFC', name: 'The Scoop', bio: 'Transferts : les infos avant tout le monde.' },
+  unverified: { handle: 'MercatoSecret', name: 'Mercato Secret', bio: 'Les rumeurs du mercato, vérifiées ou pas.', bioEn: 'Transfer rumours, checked or not.' },
+  serious: { handle: 'InsideFootball', name: 'Inside Football', bio: 'Ce qui se dit dans les cellules de recrutement.', bioEn: 'What scouting departments are saying.' },
+  reliable: { handle: 'TheScoopFC', name: 'The Scoop', bio: 'Transferts : les infos avant tout le monde.', bioEn: 'Transfers: the news before everyone else.' },
 };
 const COOLDOWN_DAYS = 30;
 const days = (a, b) => (Date.parse(b) - Date.parse(a)) / 864e5;
@@ -32,14 +32,14 @@ function pickRumor({ state, snapshot: s, rand = Math.random }) {
 }
 
 // Créneau du plan Kop pour cette rumeur : le compte de son niveau, et ce qu'il peut dire.
-function rumorSlot(rumor, { known = false } = {}) {
+function rumorSlot(rumor, { known = false, language = 'fr' } = {}) {
   const who = INSIDERS[rumor.tier];
   const angle = {
     reliable: `a transfer scoop about him: ${rumor.club} has made him an offer (true; never give the salary or the contract figures). Present it as exclusive information, without exclamation marks`,
     serious: `a serious lead about him: ${rumor.club} is following him closely (true: scouts watch him). Say it is a lead, not an offer and not a done deal`,
     unverified: `an unverified transfer rumour: ${rumor.club} might be interested in him. It is pure speculation and the post says so; no figures, no "done deal"`,
   }[rumor.tier];
-  return { handle: who.handle, name: who.name, type: 'journalist', ...(known ? {} : { new: true, bio_hint: who.bio }), angle, rumor };
+  return { handle: who.handle, name: who.name, type: 'journalist', ...(known ? {} : { new: true, bio_hint: language === 'fr' ? who.bio : who.bioEn }), angle, rumor };
 }
 
 // Rumeurs tranchées par cette synchro : confirmées s'il signe (ou s'engage) dans le club, démenties quand le mercato ferme
