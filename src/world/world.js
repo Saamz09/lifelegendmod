@@ -610,7 +610,7 @@ function editionKind(changes, mercato = false, biography = false) {
   if (changes.newTeamRole && !changes.newResults.length && !changes.matchday) return `TEAM ROLE: the player has a new role in the squad: ${changes.newTeamRole} (CHANGES.newTeamRole).`;
   if (changes.skillLearned && !changes.newResults.length && !changes.matchday) return `NEW SKILL: in training, the player has just learned ${skillForAi(changes.skillLearned.code) ? `the skill « ${skillForAi(changes.skillLearned.code)} »` : 'a new skill (its name is not known: do not name it)'} (CHANGES.skillLearned).`;
   if (changes.contractSigned && !changes.newResults.length) return `CONTRACT EXTENSION: ${changes.contractSigned.club} has announced that the player extended his contract until ${changes.contractSigned.until} (it ran until ${changes.contractSigned.previousUntil}). Lead with it.`;
-  if (changes.newResults.length) return `POST-MATCH: cover the new results in CHANGES.newResults.${changes.contractSigned ? ' Also big news: his contract extension (CHANGES.contract_signed), announced by the club.' : ''}${changes.window?.event === 'close' ? ' The transfer window has also just closed: recap the moves involving his club (CHANGES.window_transfers).' : ''}`;
+  if (changes.newResults.length) return `POST-MATCH: cover the new results in CHANGES.newResults.${changes.injury ? ` Also big news: he is injured, out for about ${changes.injury.days} days (CHANGES.injury).` : ''}${changes.contractSigned ? ' Also big news: his contract extension (CHANGES.contract_signed), announced by the club.' : ''}${changes.window?.event === 'close' ? ' The transfer window has also just closed: recap the moves involving his club (CHANGES.window_transfers).' : ''}`;
   if (changes.window?.event === 'close') return `MERCATO CLOSED: the ${changes.window.kind === 'été' ? 'summer' : 'winter'} transfer window closed on ${changes.window.close}. Recap it: the moves involving his club in CHANGES.window_transfers (arrivals, departures, what they change for him), the notable other moves, and where he stands now (club, contract, interest he drew).${changes.newResults.length ? ' Also cover the new results in CHANGES.newResults.' : ''}`;
   if (mercato && !changes.matchday) return 'MERCATO: transfer news. Lead with the moves involving his club in CHANGES.new_transfers (arrivals and departures, what they change for him), then other notable moves.';
   return 'MATCH DAY PREVIEW: today is the day of next_match; build-up to it, team news, expectations, life around the club.';
@@ -1064,7 +1064,14 @@ function rumourPiece(list, r, author) {
   if (!r) return;
   list.push({ extra: 3, author, kind: 'chronique', focus: 'club', size: 'short', subject: `mercato: the rumour posted on Kop by ${r.insider} that ${r.club} ${r.reliability === 'reliable' ? 'has made him an offer' : 'is following him closely'} (FACTS.transfer_rumour): what is known, how reliable that account is, what it would mean for him and his club; a rumour, never a done deal, no fee or figure` });
 }
-// Deux articles spéciaux de son club au plus par édition (1 le derby, 2 les retrouvailles, 3 la rumeur, 4 le duel).
+// Sa blessure, quand elle tombe avec un match (sans match, toute l'édition s'ouvre dessus : « INJURY ») : passe avant les
+// autres articles spéciaux (2026-11-16, retour d'un joueur sur Discord : ni le staff ni les journalistes n'en parlaient).
+function injuryPiece(list, injury, author) {
+  if (!injury) return;
+  list.push({ extra: 0, author, kind: 'chronique', focus: 'club', size: 'short', subject: `his injury: he is unavailable for about ${injury.days} days (CHANGES.injury; no diagnosis, never name the injury): the matches he will miss among the next fixtures in FACTS, and what his absence changes for his club` });
+}
+// Deux articles spéciaux de son club au plus par édition (0 la blessure, 1 le derby, 2 les retrouvailles, 3 la rumeur,
+// 4 le duel).
 function capExtras(list, max = 2) {
   const extras = list.filter((p) => p.extra != null).sort((a, b) => a.extra - b.extra);
   for (const p of extras.slice(max)) list.splice(list.indexOf(p), 1);
@@ -1092,6 +1099,7 @@ function worldPaperPlan(desk, press, kind, n, angles) {
     club.push({ author: w(4), kind: 'conférence de presse', focus: 'club', competition: before.competition, subject: `the press conferences before ${before.match} (${before.competition}): what both camps said` });
     club.push({ author: w(3), kind: 'regard de consultant', focus: 'club', competition: before.competition, subject: ROOM_BEFORE(before.match)[n % ROOM_BEFORE(before.match).length] });
   }
+  if (!special) injuryPiece(club, angles.injury, w(4));
   if (angles.rival) club.push(duelPiece(angles.rival, angles.world?.awards?.player_of_the_month || angles.world?.awards?.player_of_the_year ? w(5) : w(1)));
   derbyPieces(club, angles.derby, club.some((p) => p.author === w(0)) ? w(5) : w(0));
   reunionPieces(club, angles.reunion, w(3));
@@ -1194,6 +1202,7 @@ function transversalePlan(desk, press, kind, editions = 0, angles = {}) {
     plan = [lead, n % 2 ? debate : numbers];
     if (big) plan.push(room(null));
   }
+  if (!SPECIAL_EDITION.test(kind)) injuryPiece(plan, angles.injury, w(4));
   if (angles.rival && !/^SEASON REVIEW/.test(kind)) plan.push(duelPiece(angles.rival, w(1)));
   if (!/^SEASON REVIEW/.test(kind)) derbyPieces(plan, angles.derby, plan.some((p) => p.author === w(0)) ? w(5) : w(0));
   if (!/^SEASON REVIEW/.test(kind)) { reunionPieces(plan, angles.reunion, w(3)); rumourPiece(plan, angles.rumour, w(5)); }
@@ -1306,7 +1315,7 @@ function transversaleOutline({ state, snapshot, rawChanges, kind, world = null, 
   const own = debate && league ? [{ competition: league, focus: 'competition', topics: [{ subject: debate, teams: [] }] }] : [];
   const names = [...(world?.competitions || []).map((c) => c.competition), league].filter(Boolean);
   const rival = rivalInNews(state.rival, n, 5) ? state.rival : null;
-  const angles = { rival, derby: derbyFacts(snapshot), reunion: reunionFacts(state, snapshot), rumour: rumor && rumor.reliability !== 'unverified' ? rumor : null, tour: tourAngle(snapshot, press, stories), story: longViewAngle(stories, n), debate, big: bigEdition(snapshot, rawChanges, press), world: stories2.length || world?.awards?.player_of_the_year ? { stories: stories2, debates: worldDebates(world, { recent: recentDebates(state, names, league), extra: own }), awards: world.awards || null } : null };
+  const angles = { injury: rawChanges?.injury || null, rival, derby: derbyFacts(snapshot), reunion: reunionFacts(state, snapshot), rumour: rumor && rumor.reliability !== 'unverified' ? rumor : null, tour: tourAngle(snapshot, press, stories), story: longViewAngle(stories, n), debate, big: bigEdition(snapshot, rawChanges, press), world: stories2.length || world?.awards?.player_of_the_year ? { stories: stories2, debates: worldDebates(world, { recent: recentDebates(state, names, league), extra: own }), awards: world.awards || null } : null };
   return { desk, press, plan: transversalePlan(desk, press, kind, n, angles) };
 }
 

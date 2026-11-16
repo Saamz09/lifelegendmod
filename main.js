@@ -18,6 +18,7 @@ const world = require('./src/world/world');
 const { buildReport } = require('./src/report');
 const { playerFaces } = require('./src/world/playerFaces');
 const { dominantColors } = require('./src/world/clubColors');
+const { RELEASES_API, releaseInfo } = require('./src/update');
 
 // La mod s'appelait LiveTweet : son dossier de données garde ce nom (carrières, réglages, clés, mémoire du
 // navigateur), pour que le changement de nom ne perde rien.
@@ -413,18 +414,13 @@ app.whenReady().then(() => {
     fs.writeFileSync(r.filePath, lastShot.toPNG());
     return { path: r.filePath };
   });
-  // « Vérifier les mises à jour » : la dernière version publiée sur la page GitHub de LifeLegend, seulement quand il
-  // clique. Rien d'autre n'est envoyé (ni identifiant, ni réglage, ni donnée de carrière).
+  // Mises à jour : la dernière version publiée sur la page GitHub de LifeLegend, à chaque ouverture (réglage
+  // updateNotify, coché par défaut) ou quand il clique sur « Vérifier les mises à jour ». Rien d'autre n'est envoyé
+  // (ni identifiant, ni réglage, ni donnée de carrière).
   handle('update:check', async () => {
-    const res = await net.fetch('https://api.github.com/repos/Saamz09/lifelegendmod/releases/latest', { headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'LifeLegend' } });
+    const res = await net.fetch(RELEASES_API, { headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'LifeLegend' }, signal: AbortSignal.timeout(10000) });
     if (!res.ok) throw new Error(`GitHub ${res.status}`);
-    const r = await res.json();
-    const latest = String(r.tag_name || '').replace(/^v/, '');
-    const parts = (v) => String(v).split('-')[0].split('.').map((x) => parseInt(x, 10) || 0);
-    const [a, b] = [parts(latest), parts(app.getVersion())];
-    const diff = [0, 1, 2].map((i) => (a[i] || 0) - (b[i] || 0)).find((d) => d !== 0) || 0;
-    const url = /^https:\/\/github\.com\/Saamz09\/lifelegendmod\//.test(r.html_url || '') ? r.html_url : 'https://github.com/Saamz09/lifelegendmod/releases/latest';
-    return { current: app.getVersion(), latest, newer: Boolean(latest) && diff > 0, url };
+    return releaseInfo(await res.json(), app.getVersion());
   });
   // Visages des joueurs qu'une page affiche, lus dans le jeu : { nom : fichier du dossier faces de la carrière }.
   handle('faces:get', (names) => playerFaces({ store, settings: store.getSettings(), names }));

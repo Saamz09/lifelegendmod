@@ -21,6 +21,8 @@ const DEFAULT_SETTINGS = {
   language: 'fr',
   fanVulgarity: true, // supporters vulgaires possibles après de très mauvais résultats (décochable)
   theme: 'auto',
+  updateNotify: true, // à l'ouverture, prévenir quand une nouvelle version est publiée sur GitHub (décochable)
+  updateSkip: '',    // version pour laquelle il a demandé à ne plus être prévenu
   keys: {},          // fournisseur -> clé chiffrée (base64)
 };
 

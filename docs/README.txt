@@ -1,4 +1,4 @@
-LifeLegend 1.1.0 — how to use
+LifeLegend 1.1.1 — how to use
 ====================================
 
 LifeLegend reads your SP Football Life 2027 Become a Legend save and builds a world that reacts to every match: a national
@@ -14,10 +14,24 @@ Life, any club, competition or player.
 
 NEW IN THIS VERSION
 -------------------
-- A completely rebuilt interface: every site in one frame, with the menu on the left.
-- Mails: the Career file (contract, market, career path) and Influence (your requests to your coach and club).
-- Player and coach faces, read from your game.
-- Boot deals: the game's brands offer you a contract in Mails. It is fiction, the game knows nothing about it.
+- A new version no longer goes unnoticed: when LifeLegend opens, a small window announces it, with the download link
+  (can be turned off in Settings › About).
+- Emojis on Kop: the Vestiaire's emoji keyboard, under the post box and under your replies.
+- Your injury counts: La Transversale gives it an article, your coach or the club doctor writes to you, the Vestiaire,
+  Kop and the fan blog talk about it, and your comeback is welcomed.
+- Careers made with FL Mod Studio and a created player are read (before: « record not found »).
+- No more « Invalid time value » when syncing: the save's date is read whatever the game's language.
+
+In 1.1.0:
+- A rival for the season: « the duel » in La Transversale, Kop debating « him or you? », a Rival tab in Scoreline.
+- Derbies, reunions with a former club, your club's player of the month voted by the fans, and your own fan chant when
+  you become their favourite.
+- Rumours picked up by the press (your agent confirms or denies) and an exclusive interview about once a month.
+- Share as image: an article, a Kop post or a Scoreline card, ready to paste on X or Discord; a player comparison in
+  Scoreline.
+- Backup sync: when your free AI quota for the day is used up, everything that needs no AI is kept.
+- Saves enlarged by game mods (FL Mod Studio, GigaPack…) are read.
+- Press conference questions come in the chosen language.
 
 
 WHAT YOU NEED
@@ -36,7 +50,7 @@ WHAT YOU NEED
 
 INSTALL
 -------
-1. Unzip the LifeLegend-1.1.0-win-x64 folder anywhere (Documents, Desktop, a USB stick…), but not in "Program Files".
+1. Unzip the LifeLegend-1.1.1-win-x64 folder anywhere (Documents, Desktop, a USB stick…), but not in "Program Files".
    Nothing is installed in Windows.
 2. Run LifeLegend.exe.
 3. Windows may show "Windows protected your PC": LifeLegend is not digitally signed. Click "More info", then
@@ -80,20 +94,21 @@ YOUR SAVE AND YOUR DATA
 - At each sync, LifeLegend sends that provider the facts of your career (matches, stats, player and club names) and
   your posts, so it can write. What you write on Kop, in Mails and in Vestiaire is sent too, so that people can answer.
   If you dictate an answer at a press conference, your voice goes to Google (Gemini) to be transcribed, only when you
-  use the microphone. Nothing else leaves your computer.
+  use the microphone. When it opens, LifeLegend also asks its GitHub page for the latest version number, without
+  sending anything about you (can be turned off in Settings › About). Nothing else leaves your computer.
 - LifeLegend contains no game file: names, crests, faces and boots are read from your game and stay on your computer.
 
 
 UPDATE
 ------
-Settings › About › "Check for updates" tells you when a new version is out. To install it, download the new folder,
-unzip it, then delete the old one. Your careers and settings stay: they are kept in %APPDATA%\LiveTweet, not in the
-LifeLegend folder.
+When LifeLegend opens, a small window tells you when a new version is out; Settings › About › "Check for updates"
+tells you too. To install it, download the new folder, unzip it, then delete the old one. Your careers and settings
+stay: they are kept in %APPDATA%\LiveTweet, not in the LifeLegend folder.
 
 
 UNINSTALL
 ---------
-Delete the LifeLegend-1.1.0-win-x64 folder and, to erase your careers, the %APPDATA%\LiveTweet folder.
+Delete the LifeLegend-1.1.1-win-x64 folder and, to erase your careers, the %APPDATA%\LiveTweet folder.
 
 
 IF SOMETHING GOES WRONG

@@ -1,4 +1,4 @@
-LifeLegend 1.1.0 — mode d'emploi
+LifeLegend 1.1.1 — mode d'emploi
 =======================================
 
 LifeLegend lit ta sauvegarde Become a Legend de SP Football Life 2027 et en tire un monde qui réagit à chaque match :
@@ -15,10 +15,25 @@ Konami, Football Life, les clubs, les compétitions ni les joueurs.
 
 NOUVEAU DANS CETTE VERSION
 --------------------------
-- Une interface entièrement refaite : tous les sites dans un même cadre, avec le menu à gauche.
-- Mails : le Dossier de carrière (contrat, marché, parcours) et Influence (tes demandes à ton entraîneur et à ton club).
-- Les visages des joueurs et des entraîneurs, lus dans ton jeu.
-- Les offres d'équipementier : les marques du jeu te proposent un contrat dans Mails. C'est fictif, le jeu n'en sait rien.
+- Une nouvelle version ne passe plus inaperçue : à l'ouverture, une petite fenêtre l'annonce, avec le lien pour la
+  télécharger (décochable dans Réglages › À propos).
+- Les emojis sur Kop : le clavier du Vestiaire, sous le champ de post et sous tes réponses.
+- Ta blessure compte : La Transversale lui consacre un article, ton entraîneur ou le médecin du club t'écrit, le
+  Vestiaire, Kop et le blog des supporters en parlent, et ton retour est salué.
+- Les carrières faites avec FL Mod Studio et un joueur créé sont lues (avant : « fiche introuvable »).
+- Plus de « Invalid time value » à la synchro : la date de la sauvegarde est lue quelle que soit la langue du jeu.
+
+Dans la 1.1.0 :
+- Un rival pour la saison : « le duel » dans La Transversale, Kop qui débat « lui ou toi ? », un onglet Rival dans
+  Scoreline.
+- Les derbys, les retrouvailles avec un ancien club, le joueur du mois de ton club élu par les supporters, et ton chant
+  de supporters quand tu deviens leur chouchou.
+- Les rumeurs reprises par la presse (ton agent confirme ou dément) et l'interview exclusive, environ une fois par mois.
+- Partager en image un article, un post Kop ou une carte de Scoreline, prêt à coller sur X ou Discord ; le comparateur
+  de joueurs dans Scoreline.
+- La synchro de secours : quand le quota gratuit d'IA du jour est épuisé, tout ce qui se fait sans IA est gardé.
+- Les sauvegardes agrandies par des modules du jeu (FL Mod Studio, GigaPack…) sont lues.
+- Les questions de la conférence de presse arrivent dans la langue choisie.
 
 
 CE QU'IL TE FAUT
@@ -37,7 +52,7 @@ CE QU'IL TE FAUT
 
 INSTALLER
 ---------
-1. Décompresse le dossier LifeLegend-1.1.0-win-x64 où tu veux (Documents, Bureau, une clé USB…), mais pas dans
+1. Décompresse le dossier LifeLegend-1.1.1-win-x64 où tu veux (Documents, Bureau, une clé USB…), mais pas dans
    « Program Files ». Rien n'est installé dans Windows.
 2. Lance LifeLegend.exe.
 3. Windows peut afficher « Windows a protégé votre ordinateur » : LifeLegend n'est pas signé numériquement.
@@ -82,20 +97,23 @@ TA SAUVEGARDE ET TES DONNÉES
 - À chaque synchro, LifeLegend envoie à ce fournisseur les faits de ta carrière (matchs, statistiques, noms des
   joueurs et des clubs) et tes posts, pour qu'il écrive. Ce que tu écris sur Kop, dans Mails et dans le Vestiaire lui est
   envoyé aussi, pour qu'on te réponde. Si tu dictes une réponse en conférence de presse, ta voix part chez Google
-  (Gemini) pour être transcrite, et seulement quand tu utilises le micro. Rien d'autre ne quitte ton ordinateur.
+  (Gemini) pour être transcrite, et seulement quand tu utilises le micro. À l'ouverture, LifeLegend demande aussi à sa
+  page GitHub le numéro de la dernière version, sans rien envoyer de toi (décochable dans Réglages › À propos). Rien
+  d'autre ne quitte ton ordinateur.
 - LifeLegend ne contient aucun fichier du jeu : noms, écussons, visages et chaussures sont lus dans ton jeu et restent chez toi.
 
 
 METTRE À JOUR
 -------------
-Réglages › À propos › « Vérifier les mises à jour » dit si une nouvelle version est sortie. Pour l'installer, télécharge
-le nouveau dossier, décompresse-le, puis supprime l'ancien. Tes carrières et tes réglages restent : ils sont rangés dans
-%APPDATA%\LiveTweet, pas dans le dossier de LifeLegend.
+À l'ouverture, une petite fenêtre te prévient quand une nouvelle version est sortie ; Réglages › À propos › « Vérifier
+les mises à jour » le dit aussi. Pour l'installer, télécharge le nouveau dossier, décompresse-le, puis supprime
+l'ancien. Tes carrières et tes réglages restent : ils sont rangés dans %APPDATA%\LiveTweet, pas dans le dossier de
+LifeLegend.
 
 
 DÉSINSTALLER
 ------------
-Supprime le dossier LifeLegend-1.1.0-win-x64, et si tu veux effacer tes carrières, le dossier %APPDATA%\LiveTweet.
+Supprime le dossier LifeLegend-1.1.1-win-x64, et si tu veux effacer tes carrières, le dossier %APPDATA%\LiveTweet.
 
 
 SI QUELQUE CHOSE NE VA PAS

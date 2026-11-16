@@ -135,7 +135,15 @@ function seasonLabel(matches) {
 const HUB_ORDER = ['Premier League', 'LaLiga Santander', 'Serie A TIM', 'Bundesliga', 'Ligue 1 Uber Eats', 'UEFA Champions League', 'UEFA Europa League',
   'Conmebol Libertadores', 'FIFA World Cup', 'UEFA EURO', 'Eredivisie', 'Liga NOS', 'Emirates FA Cup', 'Copa Del Rey', 'Coppa Italia', 'DFB-Pokal', 'Coupe de France'];
 const HUB_BIG = [...HUB_ORDER, ...COMP_DATA.big.filter((k) => !HUB_ORDER.includes(k))];
-const addDays = (iso, n) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const addDays = (iso, n) => { const d = new Date(`${iso}T12:00:00Z`); if (Number.isNaN(d.getTime())) return iso; d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+// Le jour du jeu : la date de l'en-tête, sinon le dernier match joué par son club, son début de carrière, ou la veille du
+// premier match du monde (carrière toute neuve dont l'en-tête n'a pas de date lisible : la synchro plantait, « Invalid
+// time value », 2026-11-16, PES 2021 sur Evoweb).
+const validDay = (s) => typeof s === 'string' && /^\d{4}-\d\d-\d\d$/.test(s) && !Number.isNaN(Date.parse(`${s}T12:00:00Z`));
+function gameDay(career, played) {
+  const first = career.matches.find((m) => validDay(m.date))?.date;
+  return [career.save?.date, played.at(-1)?.date, career.player?.careerStart].find(validDay) || (first ? addDays(first, -1) : null);
+}
 const liteMatch = (m) => ({
   date: m.date, hour: Number.isInteger(m.hour) && m.hour >= 0 && m.hour <= 23 ? m.hour : null,
   home: m.home.name, away: m.away.name, homeRef: m.home.ref, awayRef: m.away.ref, played: m.played, ...(m.played ? { score: m.score } : {}),
@@ -272,7 +280,7 @@ function buildSnapshot(career, names = null) {
   let nationalTeam = null;
   const nt = career.nationalTeam;
   if (nt) {
-    const today = career.save.date || played[played.length - 1]?.date || '';
+    const today = gameDay(career, played) || '';
     const ntFixtures = matches.filter((m) => m.home.ref === nt.ref || m.away.ref === nt.ref).map((m) => compactMatch(m, { clubRef: nt.ref, playerId: player.id, nameOf }));
     const ntStats = blank();
     for (const f of ntFixtures) {
@@ -344,7 +352,7 @@ function buildSnapshot(career, names = null) {
   return {
     game: career.game,
     slot: career.save.slot,
-    gameDate: career.save.date || played[played.length - 1]?.date || null,
+    gameDate: gameDay(career, played),
     season: seasonLabel(leagueMatches),
     player: { id: player.id, name: player.name, nationality: player.nationality, contractUntil: player.contractUntil || null, salary: player.salary || null, history: player.history || null, offers: player.offers || [], interests: player.interests || [], profile: player.profile || null, training: player.training || null, careerStart: player.careerStart || null },
     club: { ref: club.ref, name: club.name, short: club.short, stadium: club.stadium, coach: club.coach },
@@ -375,7 +383,7 @@ function buildSnapshot(career, names = null) {
     roundResults,
     nextRound,
     otherLeagues,
-    competitions: competitionsHub(career, { clubRef: club.ref, leagueId, today: career.save.date || played[played.length - 1]?.date || '' }),
+    competitions: competitionsHub(career, { clubRef: club.ref, leagueId, today: gameDay(career, played) || '' }),
     nationalTeam,
     windows: career.transferWindows || [],
     coaches: {
@@ -491,4 +499,4 @@ function diffSnapshots(prev, cur) {
 // (fréquent avec la sauvegarde automatique du jeu) ne déclenche pas d'appel à l'IA.
 const hasNews = (c) => Boolean(c.firstSync || c.transfer || c.newSeason || c.newResults.length > 0 || c.matchday || c.contractSigned || c.injury || c.newTeamRole || c.skillLearned || c.ntResults.length > 0 || c.callUp || c.ntMatchday || c.window?.event === 'close' || c.plannedMove || c.seasonComplete);
 
-module.exports = { buildSnapshot, diffSnapshots, hasNews, ratingFromRaw, ratingWord, sameMatch };
+module.exports = { buildSnapshot, diffSnapshots, hasNews, ratingFromRaw, ratingWord, sameMatch, gameDay };

@@ -68,10 +68,28 @@ function readDescription(desc) {
     const [club, ...league] = parts[2].split(' / ');
     info.club = prettyName(club);
     info.league = league.join(' / ');
-    const [d, m, y] = parts[3].split('/').map(Number);
-    if (y) info.date = `${y}-${pad(m)}-${pad(d)}`;
+    const options = headerDates(parts[3]);
+    if (options.length) info.date = options[0];
+    if (options.length > 1) info.dateOptions = options;
   }
   return info;
+}
+
+// La date de l'en-tête suit la langue du jeu : 23/11/2021 (jour/mois), 11/23/2021 (mois/jour, en anglais américain),
+// 2021/11/23 (année d'abord). Rend les dates possibles et réelles, jour/mois d'abord ; deux quand 05/11/2021 se lit des
+// deux façons (readCareer tranche avec les matchs). Avant : jour/mois toujours, et une date impossible (« 2021-23-11 »)
+// faisait planter la synchro (« Invalid time value », 2026-11-16, PES 2021 sur Evoweb).
+function headerDates(text) {
+  const n = String(text || '').match(/\d+/g)?.map(Number) || [];
+  if (n.length < 3) return [];
+  const real = ([y, m, d]) => {
+    if (y < 1900 || y > 2200 || m < 1 || m > 12 || d < 1 || d > 31) return null;
+    const iso = `${y}-${pad(m)}-${pad(d)}`;
+    return new Date(`${iso}T12:00:00Z`).toISOString().slice(0, 10) === iso ? iso : null;
+  };
+  const year = (v) => (v < 100 ? 2000 + v : v);
+  const out = n[0] >= 1000 ? [real([n[0], n[1], n[2]])] : [real([year(n[2]), n[1], n[0]]), real([year(n[2]), n[0], n[1]])];
+  return [...new Set(out.filter(Boolean))];
 }
 
 function readTeams(d, L) {
@@ -480,6 +498,15 @@ function readCareer(savePath) {
   const competitions = readCompetitions(d, L);
   const competitionLogos = readCompetitionLogos(d, L);
   const matches = readMatches(d, teams, competitions, L);
+  // Date de l'en-tête lisible de deux façons (05/11 : 5 novembre ou 11 mai) : pas avant le dernier match joué, et la
+  // plus proche de lui (ou du premier match du monde, en début de carrière).
+  if (save.dateOptions) {
+    const last = matches.reduce((a, m) => (m.played && m.date > a ? m.date : a), '');
+    const anchor = Date.parse(`${last || matches[0]?.date || save.dateOptions[0]}T12:00:00Z`);
+    const ok = save.dateOptions.filter((x) => x >= last);
+    save.date = (ok.length ? ok : save.dateOptions).sort((a, b) => Math.abs(Date.parse(`${a}T12:00:00Z`) - anchor) - Math.abs(Date.parse(`${b}T12:00:00Z`) - anchor))[0];
+    delete save.dateOptions;
+  }
   const clubRef = d.readUInt32LE(PC);
   const nationalTeam = teams.get(d.readUInt32LE(PC + 4));
   return {
@@ -519,4 +546,4 @@ function peekSave(savePath) {
   return { fileType: file.fileType, game: file.gameVersion, ...readDescription(file.description) };
 }
 
-module.exports = { readCareer, peekSave, competitionMatches, leagueTable, scorers, prettyName, readPlayerOfYear, PLAYER_REC };
+module.exports = { readCareer, peekSave, competitionMatches, leagueTable, scorers, prettyName, readPlayerOfYear, headerDates, PLAYER_REC };

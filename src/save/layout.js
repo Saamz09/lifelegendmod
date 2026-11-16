@@ -22,6 +22,10 @@ const COACH_STRIDE = 0x258, COMP_STRIDE = 0x314, MATCH_STRIDE = 0x254;
 const isDate = (d, o) => { if (o < 0 || o + 4 > d.length) return false; const y = d.readUInt16LE(o); return y >= 1990 && y <= 2100 && d[o + 2] >= 1 && d[o + 2] <= 12 && d[o + 3] >= 1 && d[o + 3] <= 31; };
 const printable = (d, o) => o >= 0 && o < d.length && d[o] >= 0x21 && d[o] < 0xF8;
 const plausibleId = (id) => id >= 1000 && id < 4000000;
+// L'id en tête de la fiche du joueur. Un joueur créé peut porter un id au bit haut allumé (0x80000000 + numéro) : c'est
+// lui que portent ses feuilles de match et son début de carrière (2026-11-16, sauvegarde d'un joueur d'Evoweb, Thiago
+// Bennett à Fribourg, carrière faite avec FL Mod Studio ; l'id d'un vrai joueur suit 4 octets plus loin).
+const playerIdOk = (id) => plausibleId(id) || (id >= 0x80000000 && id - 0x80000000 < 4000000);
 const cstr = (d, o, n) => { let e = o; while (e < o + n && e < d.length && d[e]) e++; return d.toString('utf8', o, e); };
 const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
 
@@ -29,7 +33,7 @@ const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toL
 function standardFits(d, playerName) {
   const S = STANDARD;
   if (S.careerStart + 0x20 > d.length) return false;
-  if (!plausibleId(d.readUInt32LE(S.player))) return false;
+  if (!playerIdOk(d.readUInt32LE(S.player))) return false;
   if (playerName && norm(cstr(d, S.player + 8, 61)) !== norm(playerName)) return false;
   return printable(d, S.comp) && isDate(d, S.match) && d.readUInt32LE(S.coach - 8) === 0;
 }
@@ -38,7 +42,7 @@ function standardFits(d, playerName) {
 function findPlayer(d, playerName) {
   if (!playerName) return null;
   const needle = Buffer.from(`${playerName}\0`, 'utf8');
-  for (let i = d.indexOf(needle); i >= 0; i = d.indexOf(needle, i + 1)) if (i >= 8 && plausibleId(d.readUInt32LE(i - 8))) return i - 8;
+  for (let i = d.indexOf(needle); i >= 0; i = d.indexOf(needle, i + 1)) if (i >= 8 && playerIdOk(d.readUInt32LE(i - 8))) return i - 8;
   return null;
 }
 // Entraîneurs : 40 fiches de suite numérotées 0, 1, 2…

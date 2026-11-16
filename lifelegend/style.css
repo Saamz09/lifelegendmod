@@ -219,6 +219,20 @@ table { width: 100%; border-collapse: collapse; }
 .toast-act:hover { background: color-mix(in srgb, currentColor 16%, transparent); }
 .toast.error .toast-act { color: #fff; }
 :root[data-theme="dark"] .toast { box-shadow: var(--shadow-pop), inset 0 0 0 1px rgba(255, 255, 255, .1); }
+/* Nouvelle version sur GitHub (updateNotice) : petite carte en bas à droite, au-dessus des pages, sous les fenêtres. */
+.ll-update { position: fixed; right: 24px; bottom: 24px; z-index: 35; width: min(380px, calc(100vw - 48px)); padding: 18px 20px 14px; border: 1px solid var(--line); border-radius: var(--r-xl); background: var(--surface); color: var(--ink); box-shadow: var(--shadow-pop); font-size: 14px; line-height: 1.5; animation: ll-pop .18s ease-out; transition: opacity .2s ease, transform .2s ease; }
+.ll-update.out { opacity: 0; transform: translateY(6px); }
+.ll-update-eyebrow { margin: 0 0 6px; color: var(--gold-ink); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.ll-update h2 { margin: 0 28px 6px 0; font-size: 18px; font-weight: 700; line-height: 1.25; letter-spacing: -.01em; }
+.ll-update-text { margin: 0; color: var(--ink-2); font-size: 13px; }
+.ll-update-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.ll-update-actions .btn { text-decoration: none; }
+.ll-update-x { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: var(--r-pill); background: transparent; color: var(--ink-2); cursor: pointer; }
+.ll-update-x:hover { background: var(--surface-2); color: var(--ink); }
+.ll-update-x .hi { width: 17px; height: 17px; }
+.ll-update-skip { margin: 10px 0 0; padding: 0; border: 0; background: none; color: var(--ink-3); font-size: 12px; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.ll-update-skip:hover { color: var(--ink); }
+:root[data-theme="dark"] .ll-update { box-shadow: var(--shadow-pop), inset 0 0 0 1px rgba(255, 255, 255, .06); }
 .synclog { position: fixed; right: 18px; bottom: 18px; z-index: 20; width: 420px; max-width: 90vw; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r-l); background: var(--surface); box-shadow: var(--shadow-pop); font-size: 13px; }
 .logline { padding: 3px 0; color: var(--ink-3); }
 .logline:last-of-type { color: var(--ink); }
@@ -1328,11 +1342,13 @@ table { width: 100%; border-collapse: collapse; }
 .tw-form textarea::placeholder, .tw-replybox textarea::placeholder, .tw-qc textarea::placeholder { color: var(--ink-3); }
 .tw .mention-pop { top: 100%; left: 0; right: 0; }
 .tw .mention-warn { margin: -4px 0 0; padding: 0; }
-.tw-form-foot { display: flex; align-items: center; justify-content: space-between; padding-inline: 16px 0; }
+.tw-form-foot { position: relative; display: flex; align-items: center; justify-content: space-between; padding-inline: 16px 0; }
 /* Les sondages : dans le champ de post, le bouton et les choix ; sous un post, le résultat (barres, le choix en tête en gras). */
 .tw-form-tools { display: flex; align-items: center; gap: 16px; }
-.tw-form-poll { display: grid; place-items: center; padding: 0; border: 0; background: none; color: var(--gold); cursor: pointer; }
-.tw-form-poll .hi { width: 20px; height: 20px; }
+.tw-form-poll, .tw-form-emoji { display: grid; place-items: center; padding: 0; border: 0; background: none; color: var(--gold); cursor: pointer; }
+.tw-form-poll .hi, .tw-form-emoji .hi { width: 20px; height: 20px; }
+/* Le clavier d'emoji du Vestiaire, sous le champ de post ou la zone de réponse de Kop. */
+.tw-emoji-pop { --hd-accent: var(--gold); top: calc(100% + 6px); bottom: auto; left: 0; right: auto; z-index: 6; }
 .tw-form-poll.on { color: var(--gold-ink); }
 .tw-poll-edit { display: flex; flex-direction: column; gap: 8px; margin: 10px 0 4px; padding: 12px; border: 1px solid var(--line); border-radius: var(--r-l); }
 .tw-poll-edit label { display: flex; align-items: center; gap: 8px; margin: 0; }
@@ -1425,7 +1441,8 @@ table { width: 100%; border-collapse: collapse; }
 .tw-replybox .avatar, .tw-replybox .avatar.t-me { width: 32px; height: 32px; font-size: 13px /* hors échelle */; }
 .tw-replybox-main { display: flex; flex: 1; flex-direction: column; gap: 6px; min-width: 0; }
 .tw-replybox textarea { min-height: 28px; padding: 2px 0; font-size: 16px; line-height: 24px; }
-.tw-replybox-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+.tw-replybox-foot { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+.tw-replybox-foot .tw-form-emoji { margin-right: auto; }
 .tw-link { padding: 0; border: 0; background: none; color: var(--ink); font-size: 14px; font-weight: 600; line-height: 20px; cursor: pointer; }
 .tw .tw-link { font-size: 14px; font-weight: 500; line-height: 20px; }
 .tw-link:hover { text-decoration: underline; }

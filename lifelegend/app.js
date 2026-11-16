@@ -2772,7 +2772,7 @@ function replyBoxHtml(handle) {
     <div class="tw-replybox-main">
       <p class="tw-replying">${tr('En réponse à')} <span>@${esc(handle)}</span></p>
       <textarea id="tw-reply-text" rows="1" maxlength="280" placeholder="${tr('Poste ta réponse')}">${esc(draft)}</textarea>
-      <div class="tw-replybox-foot"><span class="tw-chars" id="tw-reply-chars">${charRing(draft.length)}</span><button class="tw-btn tw-btn-sm" id="tw-reply-send"${draft.trim() ? '' : ' disabled'}>${tr('Répondre')}</button></div>
+      <div class="tw-replybox-foot"><button type="button" class="tw-form-emoji" id="tw-reply-emoji" title="${tr('Émojis')}" aria-label="${tr('Émojis')}">${hi('smile')}</button><div class="hd-pop hidden" id="tw-reply-emoji-pop"></div><span class="tw-chars" id="tw-reply-chars">${charRing(draft.length)}</span><button class="tw-btn tw-btn-sm" id="tw-reply-send"${draft.trim() ? '' : ' disabled'}>${tr('Répondre')}</button></div>
     </div></div>`;
 }
 
@@ -3356,6 +3356,7 @@ function bindTribuneFeed(page) {
       if (ev.key === 'Escape') { view.twReplyTo = view.twPost ? { postId: view.twPost, replyId: '' } : null; render(); }
       if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey) && !rs.disabled) rs.click();
     };
+    bindKopEmoji($('#tw-reply-emoji'), $('#tw-reply-emoji-pop'), rt);
     rs.onclick = async (ev) => {
       ev.stopPropagation();
       const { postId, replyId } = view.twReplyTo;
@@ -4005,7 +4006,7 @@ function renderTribune(page) {
               <div class="mention-pop hidden" id="mention-pop"></div></div>
             <div class="mention-warn hidden" id="mention-warn"></div>${twPollEditHtml()}
             <div class="tw-form-foot">
-              <div class="tw-form-tools"><button type="button" class="tw-form-poll${drafts.poll ? ' on' : ''}" id="poll-btn" title="${tr(drafts.poll ? 'Retirer le sondage' : 'Ajouter un sondage')}" aria-pressed="${Boolean(drafts.poll)}">${hi('poll')}</button><div class="tw-form-icons" title="${tr('Images, GIF, emojis et lieux ne sont pas disponibles sur Kop')}">${['photo', 'gif', 'smile', 'pin'].map((k) => `<span>${hi(k)}</span>`).join('')}</div></div>
+              <div class="tw-form-tools"><button type="button" class="tw-form-poll${drafts.poll ? ' on' : ''}" id="poll-btn" title="${tr(drafts.poll ? 'Retirer le sondage' : 'Ajouter un sondage')}" aria-pressed="${Boolean(drafts.poll)}">${hi('poll')}</button><button type="button" class="tw-form-emoji" id="tw-emoji-btn" title="${tr('Émojis')}" aria-label="${tr('Émojis')}">${hi('smile')}</button><div class="tw-form-icons" title="${tr('Images, GIF et lieux ne sont pas disponibles sur Kop')}">${['photo', 'gif', 'pin'].map((k) => `<span>${hi(k)}</span>`).join('')}</div><div class="hd-pop hidden" id="tw-emoji-pop"></div></div>
               <div class="tw-form-send"><span class="tw-chars" id="chars">${charRing(drafts.post.length)}</span><button class="tw-btn" id="post-btn"${drafts.post.trim() ? '' : ' disabled'}>${tr('Poster')}</button></div>
             </div>
           </div>
@@ -4162,6 +4163,7 @@ function renderTribune(page) {
   };
   ta.onkeydown = (ev) => mentionKeys(ev, ta);
   ta.onblur = () => setTimeout(() => $('#mention-pop')?.classList.add('hidden'), 150);
+  bindKopEmoji($('#tw-emoji-btn'), $('#tw-emoji-pop'), ta);
   if (!mentionDir) live.mentionDirectory().then((d) => { mentionDir = d; }).catch(() => { mentionDir = []; });
   btn.onclick = async () => {
     const text = ta.value.trim();
@@ -4509,6 +4511,60 @@ function hdPaintColors() {
   const v = c && parseInt(c.primary.slice(1), 16), lum = c && (0.299 * (v >> 16) + 0.587 * ((v >> 8) & 255) + 0.114 * (v & 255)) / 255;
   [['--hd-c', c?.primary], ['--hd-c2', c?.secondary], ['--hd-c-ink', c && fbInk(c.primary)], ['--hd-lift', c && (lum < 0.35 ? '40%' : '74%')], ['--hd-drop', c && (lum > 0.6 ? '45%' : '82%')]].forEach(([k, x]) => { if (x) box.style.setProperty(k, x); else box.style.removeProperty(k); });
 }
+// Le clavier d'emoji dans sa bulle (pop), pour une zone de saisie : le Vestiaire et Kop. insert(e) place l'emoji.
+function emojiPop(pop, insert, scrollTop = 0) {
+  pop.dataset.kind = 'emoji';
+  pop.innerHTML = hdEmojiHtml();
+  const scroller = pop.querySelector('.hd-emoji-scroll');
+  const tabs = [...pop.querySelectorAll('[data-tab]')], secs = [...scroller.querySelectorAll('[data-cat]')];
+  const lit = () => {
+    const cur = secs.filter((s) => s.offsetTop <= scroller.scrollTop + 4).at(-1) || secs[0];
+    tabs.forEach((t) => t.classList.toggle('on', t.dataset.tab === cur?.dataset.cat));
+  };
+  scroller.scrollTop = scrollTop;
+  scroller.onscroll = lit;
+  lit();
+  // Le clic ne retire pas le curseur de la zone de saisie.
+  pop.onmousedown = (ev) => ev.preventDefault();
+  pop.onclick = (ev) => {
+    ev.stopPropagation();
+    const e = ev.target.closest('[data-e]'), tab = ev.target.closest('[data-tab]'), tone = ev.target.closest('[data-tone]');
+    if (e) { insert(e.dataset.e); hdSave('recent', [e.dataset.e, ...hdLoad('recent', []).filter((x) => x !== e.dataset.e)].slice(0, 32)); }
+    else if (tab) scroller.scrollTop = scroller.querySelector(`[data-cat="${tab.dataset.tab}"]`).offsetTop;
+    else if (tone) { hdSave('tone', tone.dataset.tone); emojiPop(pop, insert, scroller.scrollTop); }
+  };
+}
+// Les emojis sur Kop (2026-11-16, demande d'un joueur sur Discord) : le clavier du Vestiaire, sous le champ de post et
+// sous la zone de réponse. Il s'ouvre sous son bouton ; un clic ailleurs ou Échap le referme.
+function bindKopEmoji(btn, pop, ta) {
+  if (!btn || !pop || !ta) return;
+  hdEmojiWarm();
+  const max = ta.maxLength > 0 ? ta.maxLength : 280;
+  const insert = (e) => {
+    if (ta.value.length + e.length > max) return;
+    const a = ta.selectionStart ?? ta.value.length, b = ta.selectionEnd ?? a;
+    ta.value = ta.value.slice(0, a) + e + ta.value.slice(b);
+    ta.selectionStart = ta.selectionEnd = a + e.length;
+    ta.focus();
+    ta.dispatchEvent(new Event('input'));
+  };
+  btn.onmousedown = (ev) => ev.preventDefault();
+  btn.onclick = (ev) => {
+    ev.stopPropagation();
+    if (pop.dataset.kind) { closeKopEmoji(); return; }
+    closeKopEmoji();
+    pop.className = 'hd-pop hd-pop-emoji tw-emoji-pop';
+    emojiPop(pop, insert);
+    // Sous une réponse en bas du fil, le clavier dépasserait de l'écran : la page défile jusqu'à lui.
+    pop.scrollIntoView({ block: 'nearest' });
+  };
+}
+function closeKopEmoji() {
+  document.querySelectorAll('.tw-emoji-pop').forEach((p) => { p.className = 'hd-pop hidden'; p.innerHTML = ''; delete p.dataset.kind; });
+}
+addEventListener('click', (ev) => { if (!ev.target.closest('.tw-emoji-pop')) closeKopEmoji(); });
+addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && document.querySelector('.tw-emoji-pop')) closeKopEmoji(); });
+
 function bindHuddle(page, group) {
   hdPaintColors();
   hdEmojiWarm();
@@ -4621,29 +4677,7 @@ function bindHuddle(page, group) {
     if (pop.dataset.kind === 'emoji') hidePop();
     insert(`${ta.value.slice(0, ta.selectionStart) && !/\s$/.test(ta.value.slice(0, ta.selectionStart)) ? ' ' : ''}@`);
   };
-  const openEmoji = (scrollTop = 0) => {
-    pop.className = 'hd-pop hd-pop-emoji';
-    pop.dataset.kind = 'emoji';
-    pop.innerHTML = hdEmojiHtml();
-    const scroller = pop.querySelector('.hd-emoji-scroll');
-    const tabs = [...pop.querySelectorAll('[data-tab]')], secs = [...scroller.querySelectorAll('[data-cat]')];
-    const lit = () => {
-      const cur = secs.filter((s) => s.offsetTop <= scroller.scrollTop + 4).at(-1) || secs[0];
-      tabs.forEach((t) => t.classList.toggle('on', t.dataset.tab === cur?.dataset.cat));
-    };
-    scroller.scrollTop = scrollTop;
-    scroller.onscroll = lit;
-    lit();
-    // Le clic ne retire pas le curseur de la zone de saisie.
-    pop.onmousedown = (ev) => ev.preventDefault();
-    pop.onclick = (ev) => {
-      ev.stopPropagation();
-      const e = ev.target.closest('[data-e]'), tab = ev.target.closest('[data-tab]'), tone = ev.target.closest('[data-tone]');
-      if (e) { insert(e.dataset.e); hdSave('recent', [e.dataset.e, ...hdLoad('recent', []).filter((x) => x !== e.dataset.e)].slice(0, 32)); }
-      else if (tab) scroller.scrollTop = scroller.querySelector(`[data-cat="${tab.dataset.tab}"]`).offsetTop;
-      else if (tone) { hdSave('tone', tone.dataset.tone); openEmoji(scroller.scrollTop); }
-    };
-  };
+  const openEmoji = () => { pop.className = 'hd-pop hd-pop-emoji'; emojiPop(pop, insert); };
   $('#hd-emoji').onclick = () => { if (pop.dataset.kind === 'emoji') hidePop(); else openEmoji(); };
   // Un clic ailleurs referme ce qui est ouvert.
   root.onclick = (ev) => { if (pop.dataset.kind && !ev.target.closest('.hd-compose')) hidePop(); };
@@ -7557,7 +7591,7 @@ async function renderSettings(page) {
     rgRow('rg-about', tr('À propos de LifeLegend'), `<p class="fineprint">${esc(/-/.test(appVersion || '') ? tr('Version {v} · bêta', { v: appVersion }) : tr('Version {v}', { v: appVersion || '—' }))}</p>
       <p class="fineprint">${tr(REAL_PEOPLE_NOTE)}</p>
       <p class="fineprint">${tr('LifeLegend est publié sous licence MIT. Polices, icônes et mises en page reprises ont leurs propres licences : voir LICENSE et THIRD-PARTY-NOTICES.txt dans le dossier de LifeLegend.')}</p>`),
-    rgRow('rg-update', tr('Mises à jour'), `<button class="btn" id="rg-update-btn" type="button">${tr('Vérifier les mises à jour')}</button><p class="fineprint" id="rg-update-out" role="status"></p>`, tr('LifeLegend regarde la dernière version publiée sur sa page GitHub, seulement quand tu cliques. Rien d’autre n’est envoyé.')),
+    rgRow('rg-update', tr('Mises à jour'), `${rgSwitch('updatenotify', settings.updateNotify !== false, tr('Me prévenir quand une nouvelle version sort'))}<button class="btn" id="rg-update-btn" type="button">${tr('Vérifier les mises à jour')}</button><p class="fineprint" id="rg-update-out" role="status"></p>`, tr('LifeLegend regarde la dernière version publiée sur sa page GitHub : à chaque ouverture si la case est cochée, sinon seulement quand tu cliques. Rien d’autre n’est envoyé.')),
     ...(introAvailable ? [rgRow('rg-intro', tr('Animation d’ouverture'), `<button class="btn" id="rg-intro-btn" type="button">${tr('Revoir')}</button>`, tr('La courte vidéo qui ouvre LifeLegend au premier lancement. Animation réalisée avec Profounder (profounder.com), qui n’a pas de lien avec LifeLegend.'))] : []),
     rgRow('rg-report', tr('Signaler un problème'), `<button class="btn" id="rg-report-btn" type="button">${tr('Préparer le rapport')}</button>`,
       tr('LifeLegend prépare un fichier texte avec sa version, tes réglages utiles et ses derniers messages d’erreur, sans ta clé d’IA, ton adresse e-mail ni tes textes. Relis-le, puis envoie-le toi-même : rien ne part tout seul.')),
@@ -7708,6 +7742,7 @@ async function saveSettings() {
     theme: document.querySelector('input[name=rg-theme]:checked')?.value || settings.theme || 'auto',
     colors: rgFormColors(),
     fanVulgarity: $('#fanvulgarity').checked,
+    updateNotify: $('#updatenotify')?.checked ?? settings.updateNotify !== false,
   };
   const key = $('#apikey').value.trim();
   if (key) update.apiKey = key;
@@ -7938,4 +7973,34 @@ async function init() {
   introAvailable = await probeIntro();
   if (introAvailable && !settings.introSeen && setupActive()) playIntro();
   if (introAvailable && current === 'settings') render();
+  updateNotice();
+}
+
+// Nouvelle version publiée sur GitHub : une petite carte en bas à droite, à chaque ouverture, quelques secondes après le
+// démarrage et jamais par-dessus l'animation d'ouverture. Réglage updateNotify ; « Ne plus me prévenir pour cette
+// version » la garde dans updateSkip (la suivante sera annoncée). Hors ligne ou GitHub muet : rien, sans message.
+async function updateNotice() {
+  if (settings.updateNotify === false) return;
+  await new Promise((ok) => setTimeout(ok, 4000));
+  let r;
+  try { r = await live.checkUpdate(); } catch { return; }
+  if (!r?.newer || settings.updateSkip === r.latest || settings.updateNotify === false) return;
+  while (document.querySelector('.ll-intro')) await new Promise((ok) => setTimeout(ok, 500));
+  if (document.querySelector('.ll-update')) return;
+  const box = document.createElement('aside');
+  box.className = 'll-update';
+  box.setAttribute('aria-labelledby', 'll-update-title');
+  box.innerHTML = `<button class="ll-update-x" type="button" data-close aria-label="${tr('Plus tard')}" title="${tr('Plus tard')}">${hi('xmark')}</button>
+    <p class="ll-update-eyebrow">${tr('Mise à jour disponible')}</p>
+    <h2 id="ll-update-title">${esc(tr('LifeLegend {v} est disponible', { v: r.latest }))}</h2>
+    <p class="ll-update-text">${esc(tr('Tu as la version {v}. Télécharge le nouveau dossier, décompresse-le, puis supprime l’ancien : tes carrières et tes réglages restent.', { v: r.current }))}</p>
+    <div class="ll-update-actions"><a class="btn primary" href="${esc(r.url)}" target="_blank" rel="noopener" data-close>${tr('Voir et télécharger')}</a><button class="btn" type="button" data-close>${tr('Plus tard')}</button></div>
+    <button class="ll-update-skip" type="button" data-skip>${tr('Ne plus me prévenir pour cette version')}</button>`;
+  const close = () => { box.classList.add('out'); setTimeout(() => box.remove(), 200); };
+  box.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', close));
+  box.querySelector('[data-skip]').onclick = () => {
+    close();
+    live.saveSettings({ updateSkip: r.latest }).then((s) => { settings = s; }).catch(() => {});
+  };
+  document.body.append(box);
 }

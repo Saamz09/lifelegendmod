@@ -47,6 +47,15 @@ test('sauvegarde agrandie : chaque table retrouvée par sa forme', () => {
   assert.deepStrictEqual(L, { standard: false, ...AT, matchCount: 68 });
 });
 
+// Un joueur créé peut porter l'id 0x80000000 (bit haut + numéro), celui de ses feuilles de match et de son début de
+// carrière (2026-11-16, sauvegarde d'un joueur d'Evoweb : « fiche introuvable » en 1.1.0).
+test('sauvegarde agrandie : joueur créé à l’id au bit haut', () => {
+  const d = moddedSave();
+  d.writeUInt32LE(0x80000000, AT.player); d.writeUInt32LE(41126, AT.player + 4);
+  d.writeUInt32LE(0x80000000, AT.careerStart + 0x1C);
+  assert.deepStrictEqual(saveLayout(d, { playerName: 'Iker Bravo' }), { standard: false, ...AT, matchCount: 68 });
+});
+
 test('sauvegarde agrandie : pas d’écriture, et un message clair si la fiche du joueur manque', () => {
   const d = moddedSave();
   assert.throws(() => assertStandard(d), (e) => e.code === 'SAVE_LAYOUT' && /n’y écrit pas/.test(e.message));

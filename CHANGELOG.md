@@ -1,5 +1,34 @@
 # Journal des changements
 
+## 1.1.1 — 2026-11-16
+
+### Corrigé
+- **Les carrières faites avec FL Mod Studio et un joueur créé** : la 1.1.0 disait « la fiche de ton joueur est
+  introuvable ». Le jeu donne à ce joueur un identifiant particulier (0x80000000), que LifeLegend refusait ; il est
+  maintenant reconnu, avec ses matchs, ses buts et ses passes.
+- **« Invalid time value » à chaque synchro** (vu sur PES 2021) : la date de la sauvegarde suit la langue du jeu
+  (23/11/2021, 11/23/2021 ou 2021/11/23) et LifeLegend ne lisait que le premier format. Les trois sont lus, et sans
+  date lisible la synchro prend le dernier match joué ou le début de ta carrière au lieu de planter.
+
+### Ta blessure compte
+- Blessé pendant un match, tu n'étais le sujet de personne : l'édition parlait du match et c'est tout. Maintenant, La
+  Transversale consacre un article à ta blessure (le temps d'indisponibilité, les matchs que tu vas manquer), ton
+  entraîneur ou le médecin du club t'écrit, le Vestiaire te souhaite un prompt rétablissement, les supporters s'inquiètent
+  sur Kop, le blog en parle ; tant que tu es indisponible, personne ne t'attend au match suivant, et ton retour est
+  salué. Le jeu ne dit pas de quelle blessure il s'agit : personne ne l'invente.
+
+### Kop
+- **Les emojis** : le clavier du Vestiaire (catégories, couleur de peau, récents) sous le champ de post et sous tes
+  réponses.
+
+### Mises à jour
+- **Une nouvelle version ne passe plus inaperçue** : à l'ouverture, une petite fenêtre en bas à droite annonce la
+  dernière version publiée sur GitHub, avec le lien pour la télécharger. « Plus tard » la ferme jusqu'à la prochaine
+  ouverture ; « Ne plus me prévenir pour cette version » attend la suivante. LifeLegend ne demande à GitHub que le
+  numéro de la dernière version, et la case se décoche dans Réglages › À propos.
+
+Aucune requête d'IA en plus par synchro.
+
 ## 1.1.0 — 2026-11-16
 
 ### Ta carrière racontée autrement
