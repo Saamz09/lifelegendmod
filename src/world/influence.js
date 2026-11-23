@@ -7,6 +7,7 @@
 
 const { formIndex, monthsBetween, hash } = require('./agent');
 const { tr } = require('../i18n');
+const { validStyle, styleChangesEn, styleEn } = require('../save/playStyle');
 
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const newId = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
@@ -109,6 +110,17 @@ function assess(kind, params, { state, s, aux }) {
     const form = pointsPerMatch(s, 5);
     if (form?.ppm >= 2) { difficulty += 15; reasons.push('winning'); } else if (form && form.ppm <= 0.8) { difficulty -= 15; reasons.push('struggling'); }
     if (inf.effects.some((e) => e.kind === 'formation' && ['applied', 'confirmed'].includes(e.status) && daysBetween(e.appliedOn || e.on, s.gameDate) < 45)) { difficulty += 20; reasons.push('recent_change'); }
+  } else if (kind === 'style') {
+    // Style de jeu : les 7 consignes de l'écran du jeu ; plus il en change, plus c'est dur.
+    if (!validStyle(params.values) || !validStyle(inf.style)) return { ...out, blocked: 'unknown', chance: 0, reasons };
+    const changes = params.values.filter((v, i) => v !== inf.style[i]).length;
+    Object.assign(out, { values: params.values, previous: inf.style, changes });
+    if (!changes) blocked = 'same_style';
+    if (since(last('style')) < 28) blocked ||= 'cooldown';
+    difficulty = 30 + 6 * changes;
+    const form = pointsPerMatch(s, 5);
+    if (form?.ppm >= 2) { difficulty += 15; reasons.push('winning_style'); } else if (form && form.ppm <= 0.8) { difficulty -= 15; reasons.push('struggling'); }
+    if (inf.effects.some((e) => e.kind === 'style' && ['applied', 'confirmed'].includes(e.status) && daysBetween(e.appliedOn || e.on, s.gameDate) < 45)) { difficulty += 20; reasons.push('recent_style_change'); }
   } else if (kind === 'signing') {
     const p = playerById(aux, params.playerId);
     if (!p) return { ...out, blocked: 'unknown', chance: 0, reasons };
@@ -189,7 +201,8 @@ function assess(kind, params, { state, s, aux }) {
 }
 
 // Qui répond : l'entraîneur pour le plan de jeu, le directeur sportif pour le reste.
-const responder = (kind, s) => (kind === 'formation' ? { from: s.club.coach || 'Coach', role: 'coach' } : { from: directorOf(s.club.ref), role: 'club' });
+const COACH_KINDS = ['formation', 'style'];
+const responder = (kind, s) => (COACH_KINDS.includes(kind) ? { from: s.club.coach || 'Coach', role: 'coach' } : { from: directorOf(s.club.ref), role: 'club' });
 
 // Enregistre une demande et sa décision ; renvoie { request, effect } (effect = ce qu'il faudra écrire dans le jeu).
 function decide(state, s, kind, params, a, aux) {
@@ -199,11 +212,13 @@ function decide(state, s, kind, params, a, aux) {
   const accepted = (hash(`${id}|${state.careerId}`) % 100) < a.chance;
   const who = responder(kind, s);
   const win = currentWindow(s), next = nextWindow(s);
-  const request = { id, kind, on: s.gameDate, params, chance: a.chance, accepted, reasons: a.reasons, from: who.from, role: who.role, summary: { name: a.name, gameName: a.gameName, from: a.from, to: a.to, wish: a.wish, ...(kind === 'signing' ? { position: a.role, wanted: a.pos } : {}) } };
+  const request = { id, kind, on: s.gameDate, params, chance: a.chance, accepted, reasons: a.reasons, from: who.from, role: who.role, summary: { name: a.name, gameName: a.gameName, from: a.from, to: a.to, wish: a.wish, ...(kind === 'signing' ? { position: a.role, wanted: a.pos } : {}), ...(kind === 'style' ? { values: a.values, previous: a.previous } : {}) } };
   let effect = null;
   if (accepted && kind === 'formation') {
     const opt = aux.formations.find((f) => f.key === params.key);
     effect = { kind, clubRef: s.club.ref, name: opt.name, gameName: opt.gameName, roles: opt.roles, phases: opt.phases, template: opt.template, previous: inf.formation || null, status: 'ready' };
+  } else if (accepted && kind === 'style') {
+    effect = { kind, clubRef: s.club.ref, values: a.values, previous: a.previous, status: 'ready' };
   } else if (accepted && (kind === 'signing' || kind === 'sale')) {
     effect = kind === 'signing'
       ? { kind, playerId: a.playerId, name: a.name, fromRef: a.fromRef, from: a.from, toRef: s.club.ref, to: s.club.name }
@@ -230,7 +245,7 @@ function decide(state, s, kind, params, a, aux) {
 
 // À chaque synchro : la jauge, la formation du club, et le sort des décisions (mercato ouvert, écrites, gardées par le
 // jeu, payantes ou non). Renvoie les nouvelles publiques pour l'édition (CHANGES.influence_news).
-function syncInfluence(state, s, { formation, clubs, previousClubs }) {
+function syncInfluence(state, s, { formation, style = null, clubs, previousClubs }) {
   const inf = ensureInfluence(state);
   const news = [];
   // Il a changé de club : les décisions de l'ancien club tombent.
@@ -240,6 +255,7 @@ function syncInfluence(state, s, { formation, clubs, previousClubs }) {
   }
   inf.clubRef = s.club.ref;
   inf.formation = formation || null;
+  inf.style = validStyle(style) ? style : null;
   inf.scoreInfo = influenceScore(state, s);
   inf.computedOn = s.gameDate;
   const win = currentWindow(s);
@@ -253,26 +269,28 @@ function syncInfluence(state, s, { formation, clubs, previousClubs }) {
     }
     // Écrite par LifeLegend : le jeu l'a-t-il gardée à sa sauvegarde suivante ?
     if (e.status === 'applied' && s.gameDate > e.appliedOn) {
-      const kept = e.kind === 'formation'
-        ? Boolean(formation) && formation.gameName === e.gameName
-        : clubs?.[e.playerId] === e.toRef;
+      const kept = e.kind === 'formation' ? Boolean(formation) && formation.gameName === e.gameName
+        : e.kind === 'style' ? Boolean(inf.style) && inf.style.every((v, i) => v === e.values[i])
+          : clubs?.[e.playerId] === e.toRef;
       e.status = kept ? 'confirmed' : 'reverted';
       e.checkedOn = s.gameDate;
+      if (kept && COACH_KINDS.includes(e.kind)) e.baseline = pointsPerMatch(s, 5, e.appliedOn)?.ppm ?? null;
       if (kept && e.kind === 'formation') {
-        e.baseline = pointsPerMatch(s, 5, e.appliedOn)?.ppm ?? null;
         news.push({ kind: 'formation', formation: e.name, game_name: e.gameName, previous: e.previous?.name || null, coach: s.club.coach });
+      } else if (kept && e.kind === 'style') {
+        news.push({ kind: 'style', changes: styleChangesEn(e.values, e.previous), coach: s.club.coach });
       } else if (kept) {
         news.push({ kind: e.kind === 'undo' ? 'kept_teammate' : e.kind, player: e.name, from: e.from, to: e.to });
       }
     }
-    // Plan de jeu changé à sa demande : au bout de 4 matchs de championnat, a-t-il eu raison ?
-    if (e.kind === 'formation' && e.status === 'confirmed' && !e.judged && e.baseline !== null && e.baseline !== undefined) {
+    // Plan de jeu ou style changé à sa demande : au bout de 4 matchs de championnat, a-t-il eu raison ?
+    if (COACH_KINDS.includes(e.kind) && e.status === 'confirmed' && !e.judged && e.baseline !== null && e.baseline !== undefined) {
       const after = pointsPerMatch(s, 4, null, e.appliedOn);
       if (after && after.matches >= 4) {
         e.judged = after.ppm - e.baseline >= 0.3 ? 'paid_off' : after.ppm - e.baseline <= -0.3 ? 'backfired' : 'neutral';
         if (e.judged !== 'neutral') {
           inf.track = clamp(inf.track + (e.judged === 'paid_off' ? 6 : -6), -20, 20);
-          news.push({ kind: `formation_${e.judged}`, formation: e.name, points_per_match_before: Math.round(e.baseline * 100) / 100, points_per_match_after: Math.round(after.ppm * 100) / 100 });
+          news.push({ kind: `${e.kind}_${e.judged}`, ...(e.kind === 'formation' ? { formation: e.name } : { changes: styleChangesEn(e.values, e.previous) }), points_per_match_before: Math.round(e.baseline * 100) / 100, points_per_match_after: Math.round(after.ppm * 100) / 100 });
         }
       }
     }
@@ -343,13 +361,14 @@ function influenceFacts(state) {
   if (!inf?.scoreInfo) return undefined;
   return {
     standing_in_dressing_room: inf.scoreInfo.score >= 70 ? 'strong' : inf.scoreInfo.score >= 45 ? 'growing' : 'limited',
-    recent_requests: inf.requests.slice(-4).map((r) => ({ on: r.on, kind: r.kind, about: r.summary, accepted: r.accepted, to: r.from })),
+    recent_requests: inf.requests.slice(-4).map((r) => ({ on: r.on, kind: r.kind, about: r.kind === 'style' ? { changes: styleChangesEn(r.summary.values, r.summary.previous) } : r.summary, accepted: r.accepted, to: r.from })),
   };
 }
 
 // La demande telle que l'IA la reçoit pour écrire la réponse (raisons en clair, jamais de chiffres d'influence).
 const REASONS_EN = {
   winning: 'the team is winning with the current system', struggling: 'results have been poor lately', recent_change: 'he changed the system very recently',
+  winning_style: 'the team is winning with its current instructions', recent_style_change: 'he changed the team instructions very recently',
   bigger_club: 'the player\'s club is bigger than ours', smaller_club: 'the player\'s club is smaller than ours', abroad: 'a club we know less well',
   key_player: 'a key player for his club', regular: 'a regular for his club', fringe: 'rarely plays for his club', squad_big: 'our squad is already large',
   in_form: 'the player is in good form', out_of_form: 'the player is out of form', average_form: 'the player\'s form is average',
@@ -359,15 +378,16 @@ const REASONS_EN = {
 const ROLE_EN = ['goalkeeper', 'centre-back', 'left-back', 'right-back', 'defensive midfielder', 'central midfielder', 'left midfielder', 'right midfielder', 'attacking midfielder', 'left winger', 'right winger', 'second striker', 'centre-forward'];
 function requestFacts(state, s, request, effect, message) {
   const inf = ensureInfluence(state), sm = request.summary;
-  const type = { formation: 'change of formation', signing: 'recommends a signing', sale: 'asks the club to sell a teammate', keep: 'asks the club to keep a teammate (turn down offers for him)', future: 'his own future at the club' }[request.kind];
+  const type = { formation: 'change of formation', style: 'change of playing style (the team instructions)', signing: 'recommends a signing', sale: 'asks the club to sell a teammate', keep: 'asks the club to keep a teammate (turn down offers for him)', future: 'his own future at the club' }[request.kind];
   const details = request.kind === 'formation' ? { new_formation: sm.name, shown_in_game_as: sm.gameName, current_formation: inf.formation?.name || null }
+    : request.kind === 'style' ? { requested_changes: styleChangesEn(sm.values, sm.previous), current_style: styleEn(sm.previous) }
     : request.kind === 'signing' ? { player: sm.name || null, his_club: sm.from || null, his_position: ROLE_EN[sm.position] || null, position_he_wants_strengthened: ROLE_EN[sm.wanted] || null }
       : request.kind === 'sale' ? { teammate: sm.name || null, interested_club: sm.to || null }
         : request.kind === 'keep' ? { teammate: sm.name || null }
           : { wish: sm.wish === 'extend' ? 'a contract extension' : 'permission to leave' };
   const keep = inf.keeps.find((k) => k.playerId === request.params.playerId);
   const timing = !request.accepted ? null
-    : request.kind === 'formation' ? 'from the next match'
+    : COACH_KINDS.includes(request.kind) ? 'from the next match'
       : effect?.status === 'waiting' ? `the transfer window is closed: it will be done when it opens on ${effect.opens}`
         : effect ? 'now, during the transfer window'
           : request.kind === 'keep' && keep ? `the club will turn down offers for him until ${keep.until}` : null;
@@ -382,6 +402,8 @@ function fallbackReply(lang, state, s, request, effect) {
   const [subject, body] = {
     formation: ok ? ['Plan de jeu : on passe au {name}', '{me},\n\nJ’ai réfléchi à ce que tu m’as dit. On passe au {name} dès le prochain match. À toi de montrer que tu avais raison.\n\n{from}']
       : ['Plan de jeu', '{me},\n\nMerci pour ton avis, mais je garde notre {current} pour l’instant. Les choix tactiques me reviennent. Continue de travailler, on en reparlera.\n\n{from}'],
+    style: ok ? ['Style de jeu : nouvelles consignes', '{me},\n\nJ’ai réfléchi à ce que tu m’as dit. On change nos consignes dès le prochain match, comme tu le proposes. À toi de montrer que tu avais raison.\n\n{from}']
+      : ['Style de jeu', '{me},\n\nMerci pour ton avis, mais je garde nos consignes de jeu pour l’instant. Les choix tactiques me reviennent. Continue de travailler, on en reparlera.\n\n{from}'],
     signing: ok ? ['Mercato : {player}', waiting ? '{me},\n\nBonne piste. Le mercato est fermé : on reviendra à la charge pour {player} ({club}) dès son ouverture, le {date}.\n\n{from}' : '{me},\n\nBonne piste. On lance les démarches pour {player} ({club}).\n\n{from}']
       : ['Mercato : {player}', '{me},\n\nJ’ai étudié la piste {player}, mais ce n’est pas possible pour nous en ce moment. Merci d’avoir pensé au club.\n\n{from}'],
     sale: ok ? ['Effectif : {player}', waiting ? '{me},\n\nJ’entends ce que tu dis sur {player}. On en reparle à l’ouverture du mercato, le {date} : {club} est intéressé.\n\n{from}' : '{me},\n\nJ’entends ce que tu dis sur {player}. On va lui trouver une porte de sortie : {club} est intéressé.\n\n{from}']

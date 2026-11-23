@@ -19,6 +19,8 @@ const { buildReport } = require('./src/report');
 const { playerFaces } = require('./src/world/playerFaces');
 const { dominantColors } = require('./src/world/clubColors');
 const { RELEASES_API, releaseInfo } = require('./src/update');
+const { whatsNew } = require('./src/news');
+const { listModels } = require('./src/ai/modelList');
 
 // La mod s'appelait LiveTweet : son dossier de données garde ce nom (carrières, réglages, clés, mémoire du
 // navigateur), pour que le changement de nom ne perde rien.
@@ -256,7 +258,12 @@ app.whenReady().then(() => {
   if (!gotLock) return;
   store = new Store(path.join(app.getPath('userData'), 'data'), safeStorage);
 
-  handle('settings:get', () => ({ settings: store.publicSettings(), providers: PROVIDERS, version: app.getVersion() }));
+  handle('settings:get', () => {
+    const settings = store.publicSettings();
+    // Les nouveautés de la mise à jour qu'il vient d'installer (src/news.js), montrées une fois.
+    const news = whatsNew({ seen: settings.newsSeen, current: app.getVersion(), returning: Boolean(settings.savePath) });
+    return { settings, providers: PROVIDERS, version: app.getVersion(), news };
+  });
   handle('settings:save', (update) => {
     const saved = store.saveSettings(update);
     setupAutoSync();
@@ -417,6 +424,17 @@ app.whenReady().then(() => {
   // Mises à jour : la dernière version publiée sur la page GitHub de LifeLegend, à chaque ouverture (réglage
   // updateNotify, coché par défaut) ou quand il clique sur « Vérifier les mises à jour ». Rien d'autre n'est envoyé
   // (ni identifiant, ni réglage, ni donnée de carrière).
+  // Modèles du moment d'un fournisseur, demandés avec la clé tapée dans les réglages (pas encore enregistrée) ou celle
+  // enregistrée ; gardés dans les réglages pour la liste du champ « Modèle ». Seule la clé part, au fournisseur choisi.
+  handle('ai:models', async ({ provider, apiKey = '', baseUrl = '' } = {}) => {
+    const s = store.getSettings();
+    const key = String(apiKey || '').trim() || store.getKey(provider);
+    const models = await listModels({ provider, apiKey: key, baseUrl: String(baseUrl || '').trim() || s.baseUrl });
+    const modelLists = models.length ? { ...(s.modelLists || {}), [provider]: { at: Date.now(), models } } : s.modelLists || {};
+    // Si la liste ne peut pas être gardée, elle reste proposée jusqu'à la fermeture des réglages.
+    if (models.length) try { store.saveSettings({ modelLists }); } catch (err) { logError('ai:models', err); }
+    return { models, modelLists };
+  });
   handle('update:check', async () => {
     const res = await net.fetch(RELEASES_API, { headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'LifeLegend' }, signal: AbortSignal.timeout(10000) });
     if (!res.ok) throw new Error(`GitHub ${res.status}`);

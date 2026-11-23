@@ -4,6 +4,10 @@
 // - formation : les 3 phases des tactiques A et B du club (+0x4B0, +0x550) et des 3 tactiques de son entraîneur
 //   (+0x48, +0xE8, +0x188 de sa fiche). Affichée dans le plan de jeu, jouée au match suivant, gardée par la sauvegarde
 //   du jeu. Les réglages de chaque tactique (61 octets après les phases) ne changent pas.
+// - style de jeu : les 7 consignes oui/non (playStyle.js) des 5 mêmes tactiques. Octets vérifiés en jeu le 16/11/2026
+//   (Football Life 2027, Watford) : l'écran « Tactiques définies » a montré les consignes changées. Seule écriture permise
+//   dans une sauvegarde agrandie par des modules : essayée le 23/11/2026 sur le GigaPack (Accrington), affichée puis
+//   gardée par la sauvegarde du jeu, la table des entraîneurs retrouvée par sa forme.
 // - transfert : dans les fiches des deux clubs, l'effectif (paires [numéro interne][id] à +0x19C), les numéros de
 //   maillot (u16 × 40 à +0x2EA, même ordre) et le nombre de joueurs (u8 à +0x476), comme le jeu le fait (relevé sur les
 //   183 clubs qui ont bougé entre octobre 2020 et février 2021). Le joueur garde son numéro interne. Sans le nombre de
@@ -16,9 +20,10 @@
 const fs = require('fs');
 const path = require('path');
 const { splitSave, joinSave, decryptSave } = require('./pesCrypt');
-const { assertStandard } = require('./layout');
+const { writePlaces } = require('./layout');
 const { gameRunning } = require('./offerRedirect');
 const { PHASE, readPhase } = require('./formations');
+const { validStyle, readStyle, writeStyle } = require('./playStyle');
 
 const TEAM_STRIDE = 0x690;
 const ROSTER = 0x19C;
@@ -83,14 +88,37 @@ function formationInData(source, { clubRef, phases }) {
   }
   changes.push('tactiques du club');
   // Fiche de l'entraîneur : ses 3 tactiques, si elles sont bien là (un club sans entraîneur garde les siennes).
-  const slot = clubRef & 0x3FFF, name = COACH_TABLE + COACH_STRIDE * slot;
-  if (name + COACH_STRIDE <= d.length && d.readUInt32LE(name - 8) === slot) {
-    const rec = name - 0x10;
-    const found = COACH_TACTICS.filter((t) => readPhase(d, rec + t));
-    found.forEach((t) => put(rec + t));
-    if (found.length) changes.push(`tactiques de l’entraîneur (${found.length})`);
-  }
+  const found = coachTactics(d, clubRef);
+  found.forEach(put);
+  if (found.length) changes.push(`tactiques de l’entraîneur (${found.length})`);
   return { data: d, changes };
+}
+
+// Les tactiques de l'entraîneur d'un club (début de chacune), celles qui sont bien à leur place. table : le nom de
+// l'entraîneur de l'équipe 0 (ailleurs dans une sauvegarde agrandie, layout.js).
+function coachTactics(d, clubRef, table = COACH_TABLE) {
+  const slot = clubRef & 0x3FFF, name = table + COACH_STRIDE * slot;
+  if (name + COACH_STRIDE > d.length || d.readUInt32LE(name - 8) !== slot) return [];
+  return COACH_TACTICS.map((t) => name - 0x10 + t).filter((at) => readPhase(d, at));
+}
+
+// Change le style de jeu d'un club (playStyle.js) : les 7 consignes de ses tactiques A et B et des 3 de son entraîneur
+// (c'est la 1re de l'entraîneur que le jeu affiche). Les phases et les autres réglages ne bougent pas.
+// coachTable : la table des entraîneurs (writePlaces) ; null dans une sauvegarde agrandie où elle est introuvable : sans
+// elle, le jeu afficherait toujours l'ancien style, donc rien n'est écrit.
+function styleInData(source, { clubRef, values, coachTable = COACH_TABLE }) {
+  if (!validStyle(values)) throw new Error('Style de jeu illisible.');
+  if (coachTable == null) throw new Error('Fiches des entraîneurs introuvables dans ta sauvegarde : rien n’a été modifié.');
+  const d = Buffer.from(source);
+  const o = teamOffset(d, clubRef);
+  if (o < 0) throw new Error('Club introuvable dans ta sauvegarde.');
+  const club = CLUB_TACTICS.map((t) => o + t);
+  if (club.some((at) => !readPhase(d, at) || !readStyle(d, at))) throw new Error('Les tactiques de ce club ne sont pas à la place attendue : rien n’a été modifié.');
+  const coach = coachTactics(d, clubRef, coachTable).filter((at) => readStyle(d, at));
+  [...club, ...coach].forEach((at) => writeStyle(d, at, values));
+  const changes = ['consignes du club'];
+  if (coach.length) changes.push(`consignes de l’entraîneur (${coach.length})`);
+  return { data: d, changes, spots: [...club, ...coach] };
 }
 
 // Transfert d'un joueur, comme le jeu le fait : le club de départ resserre ses listes, le club d'arrivée l'ajoute à la
@@ -162,14 +190,15 @@ function transferInData(source, { playerId, fromRef, toRef, news }) {
 }
 
 // Écriture dans le fichier de sauvegarde : jeu fermé, copie de sécurité, écriture puis relecture.
-function writeInSave({ savePath, backupDir, edit, check, tag = 'influence' }) {
+// enlarged : écriture permise dans une sauvegarde agrandie par des modules (FL Mod Studio, GigaPack…), seulement pour ce
+// qui y a été essayé en jeu ; edit reçoit alors les places retrouvées (writePlaces).
+function writeInSave({ savePath, backupDir, edit, check, tag = 'influence', enlarged = false, playerName = null }) {
   if (gameRunning()) throw new Error('Le jeu est ouvert : sauvegarde ta partie, quitte-le, puis recommence.');
   const before = fs.statSync(savePath);
   const original = fs.readFileSync(savePath);
   const parts = splitSave(original);
-  // Une sauvegarde agrandie par des modules (FL Mod Studio…) : ses places n'ont pas été vérifiées pour écrire.
-  assertStandard(parts.data);
-  const result = edit(parts.data);
+  const places = writePlaces(parts.data, { enlarged, playerName });
+  const result = edit(parts.data, places);
   parts.data = result.data;
   const out = joinSave(parts);
   if (!decryptSave(out).data.equals(result.data)) throw new Error('Vérification de l’écriture échouée : rien n’a été modifié.');
@@ -199,6 +228,18 @@ function applyFormation({ savePath, backupDir, clubRef, phases }) {
   });
 }
 
+function applyStyle({ savePath, backupDir, clubRef, values }) {
+  let spots = [];
+  const same = (a) => Array.isArray(a) && a.every((v, i) => v === values[i]);
+  return writeInSave({
+    savePath,
+    backupDir,
+    enlarged: true, // essayé en jeu sur le GigaPack le 2026-11-23 : affiché, puis gardé par la sauvegarde du jeu
+    edit: (data, places) => { const r = styleInData(data, { clubRef, values, coachTable: places.coach }); spots = r.spots; return { data: r.data, changes: r.changes }; },
+    check: (d) => spots.length > 0 && spots.every((at) => same(readStyle(d, at))),
+  });
+}
+
 function applyTransfer({ savePath, backupDir, playerId, fromRef, toRef, news }) {
   let message = null;
   return writeInSave({
@@ -216,4 +257,4 @@ function applyTransfer({ savePath, backupDir, playerId, fromRef, toRef, news }) 
   });
 }
 
-module.exports = { formationInData, transferInData, applyFormation, applyTransfer, writeInSave, rosterAt, teamOffset, messagesAt, addMessage, ARRIVAL, DEPARTURE };
+module.exports = { formationInData, styleInData, transferInData, applyFormation, applyStyle, applyTransfer, writeInSave, rosterAt, teamOffset, coachTactics, messagesAt, addMessage, ARRIVAL, DEPARTURE };

@@ -3,8 +3,8 @@
 // Kop et dans Vestiaire. L'IA juge chacun de ses messages dans la requête qui part déjà quand il écrit (champ « conduct »
 // de la réponse) : aucune requête en plus. Le code tient les comptes et décide à la synchro suivante, par paliers (son
 // choix du 2026-11-10, « progressive ») : un rappel à l'ordre du coach, puis une mise à l'écart d'un match, puis de deux,
-// quels que soient son influence ou l'enjeu des matchs. La mise à l'écart s'écrit dans le jeu (ses jours
-// d'indisponibilité, src/save/conductWrite.js), jeu fermé, sur un bouton de Mails.
+// quels que soient son influence ou l'enjeu des matchs. La mise à l'écart s'écrit dans le jeu (une suspension, comme
+// après un carton rouge : src/save/conductWrite.js), jeu fermé, sur un bouton de Mails.
 // Le temps apaise : sans nouvel écart, les points s'effacent au bout de deux semaines de jeu et chaque mois enlève un palier.
 
 const { postTexts } = require('./postTexts');
@@ -14,10 +14,10 @@ const SOURCES = ['press', 'kop', 'huddle'];
 const WEIGHT = [0, 1, 3, 5];                  // un écart de niveau 1, 2 ou 3 → des points
 const TRIGGER = 3;                            // points qui déclenchent le palier suivant
 const POINTS_DAYS = 14, CALM_DAYS = 30, KEEP = 40;
-// La mise à l'écart dans le jeu attend de savoir où le jeu garde les vraies indisponibilités : l'octet +328 de la fiche
-// ne suffit pas (essai en jeu du 2026-11-10 : titulaire le 14 et le 21/01, compteur remis à 0 par le jeu). En attendant,
-// après le rappel à l'ordre, un nouvel écart rend seulement l'ambiance tendue (kind « tension »).
-const SANCTIONS_IN_GAME = false;
+// La mise à l'écart dans le jeu : en pause du 2026-11-10 (les jours d'indisponibilité écrits ne tenaient pas) au
+// 2026-11-23 (le champ de suspension du jeu trouvé et essayé en jeu). Sans elle (sanctions: false), après le rappel à
+// l'ordre, un nouvel écart rend seulement l'ambiance tendue (kind « tension »).
+const SANCTIONS_IN_GAME = true;
 
 const noon = (iso) => Date.parse(`${iso}T12:00:00Z`);
 const daysBetween = (a, b) => Math.round((noon(b) - noon(a)) / 864e5);
@@ -136,14 +136,15 @@ function conductAtSync(state, snapshot, { language = 'fr', newId, director = nul
   return out;
 }
 
-// La mise à l'écart couvre-t-elle cette date ? (ses jours d'indisponibilité sont alors une sanction, pas une blessure)
+// Une mise à l'écart écrite en jours d'indisponibilité (avant le 2026-11-23) couvre-t-elle cette date ? Ces jours sont
+// alors une sanction, pas une blessure. Celles écrites en suspension (applied.matches) ne touchent pas à ces jours.
 const sanctionActive = (state, date) => {
   const p = state.conduct?.pending;
-  return Boolean(p?.applied && date >= p.applied.on && date <= addDays(p.applied.on, p.applied.days));
+  return Boolean(p?.applied?.days && date >= p.applied.on && date <= addDays(p.applied.on, p.applied.days));
 };
 const endedRecently = (state, date) => {
   const h = state.conduct?.history?.at(-1);
-  return Boolean(h?.applied && date <= addDays(h.applied.on, h.applied.days + 3));
+  return Boolean(h?.applied?.days && date <= addDays(h.applied.on, h.applied.days + 3));
 };
 
 // Ce que l'édition en sait : la relation du moment (sans les citations de Vestiaire, qui restent privées).

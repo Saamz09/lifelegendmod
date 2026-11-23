@@ -192,3 +192,104 @@ test('jeu ouvert : Football Life aussi, pour ne jamais écrire dans une sauvegar
   for (const exe of ['explorer.exe', 'FLauncher.exe', 'notFL_2027.exe', 'LifeLegend.exe']) assert.ok(!gameInTaskList(line(exe)), exe);
   assert.ok(!gameInTaskList(''));
 });
+
+// Style de jeu : les 7 consignes de l'écran « Tactiques définies » (src/save/playStyle.js).
+const STYLE_NOW = [0, 1, 1, 0, 0, 1, 1]; // Watford, vu en jeu le 16/11/2026 : Contre-attaque … Prudent
+const flip = (v, n) => v.map((x, i) => (i < n ? 1 - x : x));
+
+test('style de jeu : chances selon le nombre de consignes changées, rien sans style lu', () => {
+  const ctx = career();
+  assert.strictEqual(assess('style', { values: flip(STYLE_NOW, 1) }, ctx).blocked, 'unknown', 'style pas encore lu');
+  syncInfluence(ctx.state, ctx.s, { formation: null, style: STYLE_NOW, clubs: {} });
+  assert.strictEqual(assess('style', { values: STYLE_NOW }, ctx).blocked, 'same_style');
+  assert.strictEqual(assess('style', { values: [0, 1, 2, 0, 0, 1, 1] }, ctx).blocked, 'unknown', 'une consigne vaut 0 ou 1');
+  const one = assess('style', { values: flip(STYLE_NOW, 1) }, ctx), all = assess('style', { values: flip(STYLE_NOW, 7) }, ctx);
+  assert.ok(!one.blocked && !all.blocked && one.chance > all.chance, `${one.chance} > ${all.chance}`);
+  assert.strictEqual(all.changes, 7);
+  const { styleChangesEn } = require(path.join(ROOT, 'src/save/playStyle.js'));
+  assert.deepStrictEqual(styleChangesEn(flip(STYLE_NOW, 1), STYLE_NOW), ['attacking style: possession game (was counter attack)']);
+});
+
+test('style de jeu : décidé par l’entraîneur, écrit, gardé par le jeu, puis une nouvelle pour l’édition', () => {
+  const ctx = career();
+  syncInfluence(ctx.state, ctx.s, { formation: null, style: STYLE_NOW, clubs: {} });
+  const wanted = flip(STYLE_NOW, 2);
+  const { request, effect } = decide(ctx.state, ctx.s, 'style', { values: wanted }, { ...assess('style', { values: wanted }, ctx), chance: 100 }, ctx.aux);
+  assert.deepStrictEqual([request.role, request.from, effect.status], ['coach', 'J. Jansen', 'ready'], 'l’entraîneur répond, rien à attendre');
+  assert.deepStrictEqual([effect.values, effect.previous], [wanted, STYLE_NOW]);
+  assert.strictEqual(assess('style', { values: flip(STYLE_NOW, 3) }, ctx).blocked, 'cooldown');
+  Object.assign(effect, { status: 'applied', appliedOn: '2021-02-28' });
+  const news = syncInfluence(ctx.state, { ...ctx.s, gameDate: '2021-03-06' }, { formation: null, style: wanted, clubs: {} });
+  assert.strictEqual(effect.status, 'confirmed');
+  assert.deepStrictEqual(news.map((n) => [n.kind, n.changes.length]), [['style', 2]]);
+  // Le jeu ne l'a pas gardée (sauvegarde du jeu écrite par-dessus) : pas de nouvelle.
+  const c2 = career();
+  syncInfluence(c2.state, c2.s, { formation: null, style: STYLE_NOW, clubs: {} });
+  const { effect: e2 } = decide(c2.state, c2.s, 'style', { values: wanted }, { ...assess('style', { values: wanted }, c2), chance: 100 }, c2.aux);
+  Object.assign(e2, { status: 'applied', appliedOn: '2021-02-28' });
+  assert.deepStrictEqual(syncInfluence(c2.state, { ...c2.s, gameDate: '2021-03-06' }, { formation: null, style: STYLE_NOW, clubs: {} }), []);
+  assert.strictEqual(e2.status, 'reverted');
+});
+
+test('style de jeu : écrit dans les 5 tactiques du club et de son entraîneur, rien d’autre', () => {
+  const { styleInData, coachTactics } = require(path.join(ROOT, 'src/save/influenceWrite.js'));
+  const { readStyle } = require(path.join(ROOT, 'src/save/playStyle.js'));
+  // Une sauvegarde réduite : un club (slot 5) et la fiche de son entraîneur, 3 phases puis les consignes par tactique.
+  const ref = (4321 << 14) | 5, name = 0x133A38 + 0x258 * 5;
+  const d = Buffer.alloc(name + 0x258);
+  d.writeUInt32LE(ref, 0x50);
+  d.write('Heerenveen', 0x54);
+  const tactic = (at) => { for (let p = 0; p < 3; p++) P433.copy(d, at + 33 * p); Buffer.from(STYLE_NOW).copy(d, at + 99); };
+  [0x4B0, 0x550].forEach(tactic);
+  d.writeUInt32LE(5, name - 8);
+  [0x48, 0xE8, 0x188].forEach((t) => tactic(name - 0x10 + t));
+  assert.strictEqual(coachTactics(d, ref).length, 3);
+  const wanted = flip(STYLE_NOW, 7);
+  const r = styleInData(d, { clubRef: ref, values: wanted });
+  assert.deepStrictEqual(r.changes, ['consignes du club', 'consignes de l’entraîneur (3)']);
+  assert.ok(r.spots.every((at) => readStyle(r.data, at).join() === wanted.join()));
+  let diff = 0; for (let i = 0; i < d.length; i++) if (d[i] !== r.data[i]) diff++;
+  assert.strictEqual(diff, 7 * 5, 'les 7 consignes des 5 tactiques, pas un octet de plus');
+  assert.ok(readPhase(r.data, 0x4B0), 'la formation ne bouge pas');
+  // Sans fiche d'entraîneur à sa place : le club seulement. Consignes illisibles : rien n'est écrit.
+  const lone = Buffer.from(d); lone.writeUInt32LE(9, name - 8);
+  assert.deepStrictEqual(styleInData(lone, { clubRef: ref, values: wanted }).changes, ['consignes du club']);
+  const odd = Buffer.from(d); odd[0x4B0 + 99] = 7;
+  assert.throws(() => styleInData(odd, { clubRef: ref, values: wanted }), /pas à la place attendue/);
+  assert.throws(() => styleInData(d, { clubRef: ref, values: [1, 1] }), /illisible/);
+});
+
+// Sauvegarde agrandie (GigaPack, FL Mod Studio) : la table des entraîneurs est ailleurs, retrouvée par sa forme
+// (layout.js writePlaces). Introuvable : rien n'est écrit (le jeu afficherait l'ancien style, celui de l'entraîneur).
+test('style de jeu : sauvegarde agrandie, table des entraîneurs déplacée', () => {
+  const { styleInData, coachTactics } = require(path.join(ROOT, 'src/save/influenceWrite.js'));
+  const { readStyle } = require(path.join(ROOT, 'src/save/playStyle.js'));
+  const table = 0x9000, ref = (4321 << 14) | 5, name = table + 0x258 * 5;
+  const d = Buffer.alloc(name + 0x258);
+  d.writeUInt32LE(ref, 0x50);
+  d.write('Accrington Stanley', 0x54);
+  const tactic = (at) => { for (let p = 0; p < 3; p++) P433.copy(d, at + 33 * p); Buffer.from(STYLE_NOW).copy(d, at + 99); };
+  [0x4B0, 0x550].forEach(tactic);
+  d.writeUInt32LE(5, name - 8);
+  [0x48, 0xE8, 0x188].forEach((t) => tactic(name - 0x10 + t));
+  assert.strictEqual(coachTactics(d, ref, table).length, 3);
+  const wanted = flip(STYLE_NOW, 1);
+  const r = styleInData(d, { clubRef: ref, values: wanted, coachTable: table });
+  assert.deepStrictEqual(r.changes, ['consignes du club', 'consignes de l’entraîneur (3)']);
+  assert.ok(r.spots.every((at) => readStyle(r.data, at).join() === wanted.join()));
+  assert.throws(() => styleInData(d, { clubRef: ref, values: wanted, coachTable: null }), /entraîneurs introuvables/);
+});
+
+test('style de jeu : lu et écrit dans une copie de la sauvegarde', { skip: !(fs.existsSync(SAVE) && fs.existsSync(KEY)) && 'fichiers de référence absents' }, (ctx) => {
+  const { decryptSave, setSaveKeys } = require(path.join(ROOT, 'src/save/pesCrypt.js'));
+  ctx.after(() => setSaveKeys([]));
+  setSaveKeys([fs.readFileSync(KEY)]);
+  const { styleInData } = require(path.join(ROOT, 'src/save/influenceWrite.js'));
+  const { readCareer } = require(path.join(ROOT, 'src/save/blReader.js'));
+  const c = readCareer(SAVE);
+  const now = c.teams.get(c.club.ref).style;
+  assert.ok(now && now.length === 7, 'le style du club est lu');
+  assert.ok([...c.teams.values()].every((t) => t.style), 'et celui de chaque club');
+  const r = styleInData(decryptSave(fs.readFileSync(SAVE)).data, { clubRef: c.club.ref, values: flip(now, 7) });
+  assert.deepStrictEqual(r.changes, ['consignes du club', 'consignes de l’entraîneur (3)']);
+});

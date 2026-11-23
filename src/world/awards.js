@@ -3,7 +3,7 @@
 // classement des meilleurs joueurs et, la saison finie, ses trophées (meilleur joueur, buteur, passeur, gardien,
 // équipe type de la saison). Les matchs sont ceux de la sauvegarde (compositions avec note, minutes et poste joué).
 
-const ratingFromRaw = (raw) => Math.round(raw / 2.5) / 2; // même échelle que snapshot.js
+const ratingFromRaw = (raw) => raw / 10; // note en dixièmes (blReader : 58 = 5,8)
 // Ligne du poste joué dans le match (0 gardien, 1-2 défenseurs, 3-6 milieux, 7-9 attaquants) ; équipe type en 4-3-3.
 const lineOf = (pos) => (pos === 0 ? 'gk' : pos <= 2 ? 'def' : pos <= 6 ? 'mid' : 'att');
 const SHAPE = [['gk', 1], ['def', 4], ['mid', 3], ['att', 3]];

@@ -42,6 +42,7 @@ const PATTERNS = [
   [/^Impossible de joindre (.+)\. Vérifie ta connexion\.$/, 'Impossible de joindre {provider}. Vérifie ta connexion.', ['provider']],
   [/^Réponse vide de (.+) \(souvent une limite de requêtes\)\. Réessaie\.$/, 'Réponse vide de {provider} (souvent une limite de requêtes). Réessaie.', ['provider']],
   [/^La connexion avec (.+) a été coupée pendant la réponse\.$/, 'La connexion avec {provider} a été coupée pendant la réponse.', ['provider']],
+  [/^(.+) ne répond plus depuis (\d+) min\.$/, '{provider} ne répond plus depuis {n} min.', ['provider', 'n']],
   [/^Google n'a renvoyé aucun texte \((.+)\)\.$/s, 'Google n’a renvoyé aucun texte ({reason}).', ['reason']],
   [/^Fournisseur inconnu : (.+)$/, 'Fournisseur inconnu : {provider}', ['provider']],
 ];

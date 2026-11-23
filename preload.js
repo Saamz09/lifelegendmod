@@ -42,6 +42,7 @@ contextBridge.exposeInMainWorld('live', {
   conductApply: () => call('conduct:apply'),
   makeReport: (title) => call('report:make', { title }),
   checkUpdate: () => call('update:check'),
+  listModels: (q) => call('ai:models', q),
   shareImage: (rect) => call('share:image', rect),
   saveShot: (title) => call('share:save', { title }),
   replyMail: (threadId, text) => call('mail:reply', { threadId, text }),

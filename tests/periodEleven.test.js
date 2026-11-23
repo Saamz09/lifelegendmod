@@ -13,8 +13,8 @@ const match = (round, date, home, away) => ({ played: true, round, date, home: {
 
 test('équipe type d’une période : un gardien, quatre défenseurs, trois milieux, trois attaquants, les meilleures moyennes', () => {
   // L'équipe A est mieux notée (7) que B (6), sauf son 12e homme, un attaquant à 8 qui n'a joué qu'un match.
-  const a = (rounds) => lineup(100, (k) => (k === 11 ? 40 : 35)).filter((p) => p.playerId !== 111 || rounds === 1);
-  const b = () => lineup(200, () => 30);
+  const a = (rounds) => lineup(100, (k) => (k === 11 ? 80 : 70)).filter((p) => p.playerId !== 111 || rounds === 1);
+  const b = () => lineup(200, () => 60);
   const ms = [match(0, '2026-12-05', a(1), b()), match(1, '2026-12-12', a(2), b()), match(2, '2026-12-19', a(3), b())];
   const xi = periodEleven(ms, { minApps: 2 });
   assert.strictEqual(xi.length, 11);
@@ -28,7 +28,7 @@ test('équipe type d’une période : un gardien, quatre défenseurs, trois mili
 });
 
 test('équipe type d’une période : une entrée en fin de match ne compte pas', () => {
-  const ms = [0, 1].map((r) => match(r, `2026-12-0${r + 1}`, lineup(100, () => 35, 20), lineup(200, () => 30)));
+  const ms = [0, 1].map((r) => match(r, `2026-12-0${r + 1}`, lineup(100, () => 70, 20), lineup(200, () => 60)));
   const xi = periodEleven(ms, { minApps: 2 });
   assert.ok(xi.length === 11 && xi.every((p) => p.ref === 2), 'seuls les joueurs qui ont joué 45 minutes sont notés');
 });

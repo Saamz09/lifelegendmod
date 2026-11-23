@@ -4,32 +4,61 @@
 const sdk = require('@anthropic-ai/sdk');
 const Anthropic = sdk.Anthropic || sdk.default || sdk;
 
-// Préréglages : les modèles évoluent vite, le champ reste modifiable dans les réglages.
+// Préréglages : les modèles évoluent vite, le champ reste modifiable dans les réglages. models : proposés dans les
+// réglages, le 1er choisi d'office quand on change de fournisseur, le dernier (le plus léger) pour les tâches courtes,
+// et tous essayés dans cet ordre quand le modèle choisi ne répond pas. more : proposés aussi, hors de cet ordre de
+// secours. Noms relevés le 2026-11-23 dans la documentation de chaque fournisseur.
 const PROVIDERS = {
   anthropic: {
     label: 'Anthropic (Claude)',
     keyHint: 'sk-ant-…',
-    models: ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'],
+    models: ['claude-sonnet-5-5', 'claude-opus-5-5', 'claude-fable-5-2', 'claude-haiku-5-5'],
   },
   google: {
     label: 'Google AI Studio (Gemini) — gratuit',
     keyHint: 'AIza…',
     baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
     models: ['gemini-3.6-flash', 'gemini-3.5-flash-lite'],
-    // Autres modèles gratuits, en dernier recours : ils ont chacun leur quota du jour, et restent hors de la liste des réglages.
+    // Autres modèles gratuits, en dernier recours : ils ont chacun leur quota du jour.
     backups: ['gemini-3.8-flash', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite'],
+    // Gratuits aussi, à choisir : Gemini 4 Hydrogen, et 3.8 Flash (le plus doué des Flash, petit quota du jour).
+    more: ['gemini-4-hydrogen', 'gemini-3.8-flash'],
   },
   openai: {
     label: 'OpenAI (GPT)',
     keyHint: 'sk-…',
     baseUrl: 'https://api.openai.com/v1',
-    models: ['gpt-5.6', 'gpt-5.6-mini'],
+    models: ['gpt-6.2-sol', 'gpt-6.2-astra', 'gpt-6.1-terra', 'gpt-6-luna'],
+  },
+  mistral: {
+    label: 'Mistral AI',
+    keyHint: '',
+    baseUrl: 'https://api.mistral.ai/v1',
+    models: ['mistral-large-latest', 'mistral-small-latest'],
+  },
+  deepseek: {
+    label: 'DeepSeek',
+    keyHint: 'sk-…',
+    baseUrl: 'https://api.deepseek.com',
+    models: ['deepseek-v4-pro', 'deepseek-flash'],
+  },
+  xai: {
+    label: 'xAI (Grok)',
+    keyHint: 'xai-…',
+    baseUrl: 'https://api.x.ai/v1',
+    models: ['grok-4.7', 'grok-4.3'],
   },
   groq: {
     label: 'Groq — gratuit',
     keyHint: 'gsk_…',
     baseUrl: 'https://api.groq.com/openai/v1',
-    models: ['openai/gpt-oss-120b', 'openai/gpt-oss-20b'],
+    models: ['openai/gpt-oss-120b', 'llama-3.3-70b-versatile', 'openai/gpt-oss-20b'],
+  },
+  cerebras: {
+    label: 'Cerebras',
+    keyHint: 'csk-…',
+    baseUrl: 'https://api.cerebras.ai/v1',
+    models: ['gpt-oss-120b', 'qwen-3.8-27b'],
   },
   openrouter: {
     label: 'OpenRouter',
@@ -45,10 +74,11 @@ const PROVIDERS = {
 };
 
 class AIError extends Error {
-  constructor(message, { retryable = false, network = false, retryAfter = null, limit = false } = {}) {
+  constructor(message, { retryable = false, network = false, retryAfter = null, limit = false, stalled = false } = {}) {
     super(message);
     this.retryable = retryable;
     this.network = network; // connexion impossible : changer de modèle n'y changerait rien
+    this.stalled = stalled; // le modèle s'est figé : on passe au suivant sans le redemander
     this.limit = limit; // limite de requêtes atteinte (429)
     this.retryAfter = retryAfter; // secondes à attendre avant de réessayer, quand le serveur le dit (limite par minute)
   }
@@ -124,18 +154,32 @@ function httpError(status, text, providerName, retryHeader = null) {
   return new AIError(`Erreur ${providerName} (${status}) : ${detail}`, { retryable: status === 429 || status >= 500, limit: status === 429, retryAfter: status === 429 ? retryDelayOf(text, retryHeader) : null });
 }
 
+// Un fournisseur qui ne renvoie plus rien (ni le début de sa réponse, ni le morceau suivant) depuis ce délai s'est
+// figé : la requête est coupée et complete() passe au modèle suivant, au lieu d'attendre sans fin. Délai large : un
+// modèle qui « réfléchit » peut rester muet une ou deux minutes quand ses serveurs sont chargés.
+const STALL = { ms: 5 * 60 * 1000 };
+
 // Requête en streaming (SSE). onEvent reçoit chaque événement JSON ; si le serveur ne streame pas,
 // la réponse complète est renvoyée telle quelle.
 async function postStream(url, headers, body, providerName, onEvent) {
+  const ctrl = new AbortController();
+  const stalled = () => new AIError(`${providerName} ne répond plus depuis ${Math.round(STALL.ms / 60000)} min.`, { retryable: true, stalled: true });
+  // Chaque attente (en-têtes, morceau suivant, corps) a droit à STALL.ms ; au-delà, la requête est coupée.
+  const guard = (promise) => {
+    let timer;
+    const limit = new Promise((_, reject) => { timer = setTimeout(() => { ctrl.abort(); reject(stalled()); }, STALL.ms); });
+    return Promise.race([promise, limit]).finally(() => clearTimeout(timer));
+  };
   let res;
   try {
-    res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body) });
-  } catch {
+    res = await guard(fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body), signal: ctrl.signal }));
+  } catch (err) {
+    if (err instanceof AIError) throw err;
     throw new AIError(`Impossible de joindre ${providerName}. Vérifie ta connexion.`, { retryable: true, network: true });
   }
-  if (!res.ok) throw httpError(res.status, await res.text(), providerName, res.headers.get('retry-after'));
+  if (!res.ok) throw httpError(res.status, await guard(res.text()), providerName, res.headers.get('retry-after'));
   if (!(res.headers.get('content-type') || '').includes('event-stream')) {
-    const text = await res.text();
+    const text = await guard(res.text());
     if (!text.trim()) throw new AIError(`Réponse vide de ${providerName} (souvent une limite de requêtes). Réessaie.`, { retryable: true });
     return JSON.parse(text);
   }
@@ -154,7 +198,7 @@ async function postStream(url, headers, body, providerName, onEvent) {
   };
   try {
     for (;;) {
-      const { value, done } = await reader.read();
+      const { value, done } = await guard(reader.read());
       if (done) break;
       buffer += decoder.decode(value, { stream: true });
       let i;
@@ -165,6 +209,7 @@ async function postStream(url, headers, body, providerName, onEvent) {
     }
     handle(buffer);
   } catch (err) {
+    if (err?.stalled) reader.cancel().catch(() => {});
     if (err instanceof AIError) throw err;
     throw new AIError(`La connexion avec ${providerName} a été coupée pendant la réponse.`, { retryable: true, network: true });
   }
@@ -301,7 +346,8 @@ async function completeWith(settings, model, apiKey, { system, user, maxTokens, 
     try {
       return await run();
     } catch (err) {
-      if (!(err instanceof AIError) || !err.retryable || attempt >= 2 || provider === 'anthropic') throw err;
+      // Un modèle figé n'est pas redemandé : complete() passe directement au suivant.
+      if (!(err instanceof AIError) || !err.retryable || err.stalled || attempt >= 2 || provider === 'anthropic') throw err;
       if (err.limit && (!(err.retryAfter > 0) || err.retryAfter > MAX_WAIT || attempt >= 1)) throw err;
       const wait = err.limit ? Math.ceil(err.retryAfter) + 1 : 4 * (attempt + 1);
       if (err.limit) log?.(`Limite de requêtes de ${model} : nouvel essai dans ${wait} s.`);
@@ -358,4 +404,4 @@ function parseJson(text) {
   throw new AIError("La réponse de l'IA n'était pas lisible (JSON invalide). Relance la synchro.", { retryable: true });
 }
 
-module.exports = { PROVIDERS, AIError, complete, transcribe, parseJson, isDailyQuota };
+module.exports = { PROVIDERS, AIError, STALL, complete, transcribe, parseJson, isDailyQuota };

@@ -23,6 +23,8 @@ const DEFAULT_SETTINGS = {
   theme: 'auto',
   updateNotify: true, // à l'ouverture, prévenir quand une nouvelle version est publiée sur GitHub (décochable)
   updateSkip: '',    // version pour laquelle il a demandé à ne plus être prévenu
+  newsSeen: '',      // dernière version dont il a vu les nouveautés (src/news.js)
+  modelLists: {},    // fournisseur -> { at, models } : ses modèles du moment, demandés avec la clé (src/ai/modelList.js)
   keys: {},          // fournisseur -> clé chiffrée (base64)
 };
 

@@ -14,7 +14,7 @@ const BIG_LEAGUES = [0x11, 0x12, 0x13, 0x14, 0x32, 0x15, 0x16];
 
 // Note officielle du jeu (sur 10, par pas de 0,5) : la valeur brute vaut environ note × 5
 // (calibré sur un 7,5 en jeu = 37 dans la sauvegarde ; 22/25/27/30/32/35 = 4,5…7,0).
-const ratingFromRaw = (raw) => Math.round(raw / 2.5) / 2;
+const ratingFromRaw = (raw) => raw / 10; // note en dixièmes (blReader : 58 = 5,8)
 // Postes de la feuille de match (bits 14-17 de la composition, lus par blReader), en toutes lettres pour l'IA.
 const LINEUP_POSITIONS = ['gardien', 'défenseur central', 'arrière latéral', 'milieu défensif', 'milieu central', 'milieu latéral', 'milieu offensif', 'second attaquant', 'ailier', 'avant-centre'];
 

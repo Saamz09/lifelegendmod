@@ -9,7 +9,7 @@ const { compAccount } = require('./competitions');
 const { teamOfRound, playerRanking, rankingMinApps, periodEleven } = require('./awards');
 const DATA = require('../data/competitionAccounts.json');
 
-const ratingFromRaw = (raw) => Math.round(raw / 2.5) / 2; // même échelle que snapshot.js
+const ratingFromRaw = (raw) => raw / 10; // note en dixièmes (blReader : 58 = 5,8)
 const addDays = (iso, n) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 const validHour = (h) => (Number.isInteger(h) && h >= 0 && h <= 23 ? h : null);
 const LINEUP_DAYS = 45; // compositions gardées pour les matchs des 45 derniers jours (et tous ceux du club)

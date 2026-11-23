@@ -1,5 +1,93 @@
 # Journal des changements
 
+## 1.2.0 — 2026-11-23
+
+### Influence
+- **Le style de jeu** (demandé par des joueurs) : Influence montre les 7 consignes de ton entraîneur, celles de l'écran
+  du jeu « Plan de jeu › Tactiques définies » (style offensif, construction, zone d'attaque, placement, style défensif,
+  zone de pressing, pressing constant), et tu peux lui en proposer d'autres. Plus tu en changes, plus c'est dur à
+  obtenir ; il répond dans Mails. Acceptées, et avec « Influence : effets réels dans le jeu » coché, elles sont écrites
+  dans ta sauvegarde (jeu fermé, copie gardée) et le plan de jeu les affiche quand tu relances (vérifié dans Football
+  Life 2027). Quand le jeu les a gardées, la presse et les supporters peuvent remarquer le changement, sans jamais
+  révéler ta demande.
+- **Le style de jeu s'écrit aussi dans une sauvegarde agrandie** (GigaPack, FL Mod Studio) : c'est la première
+  écriture permise dans ce genre de sauvegarde. Essayé en jeu sur le GigaPack de Matozanato : le plan de jeu affiche le
+  nouveau style, et la sauvegarde du jeu le garde. La formation, les transferts et les offres redirigées y restent en
+  lecture seule.
+
+### Relation avec le club
+- **Les mises à l'écart comptent dans le jeu** : quand ton club te sanctionne pour tes propos (1 match, puis 2 en cas
+  de récidive), le bouton « Appliquer dans le jeu » sous son mail écrit une vraie suspension dans ta sauvegarde, au même
+  endroit que le jeu après un carton rouge (jeu fermé, copie gardée). L'écran Composition affiche « Suspendu », tu n'es
+  pas retenu, et le jeu décompte les matchs tout seul. Essayé en jeu dans Football Life 2027 (GigaPack). Une suspension
+  plus longue déjà en cours (vrai carton rouge) est gardée. Ça marche aussi dans une sauvegarde agrandie (GigaPack, FL
+  Mod Studio). Jusqu'ici, après le rappel à l'ordre, l'ambiance se tendait seulement : aucune sanction n'était écrite.
+- Tant que tu es suspendu, le calendrier du menu du jeu montre chaque match en double : c'est l'affichage du jeu, le
+  même après un vrai carton rouge.
+
+### Kop
+- **Des posts plus longs** (demandé sur Discord) : un post, une réponse ou le commentaire d'une citation peut faire
+  1 000 caractères, au lieu de 280. Les supporters et les comptes qui te répondent lisent ton texte en entier.
+
+### IA
+- **Plus de fournisseurs** : Mistral AI, DeepSeek, xAI (Grok) et Cerebras rejoignent la liste des réglages, avec leurs
+  modèles du moment.
+- **Des modèles à jour** : GPT-6 chez OpenAI (6.2 Sol par défaut, 6.2 Astra, 6.1 Terra, 6 Luna pour les tâches
+  courtes), Claude Fable 5.2 chez Anthropic (Sonnet 5.5 est maintenant proposé d'office), Llama 3.3 70B chez Groq, et
+  deux modèles Gemini gratuits de plus à choisir (Gemini 4 Hydrogen, 3.8 Flash). Rien ne change pour qui a déjà choisi
+  son modèle.
+- **La liste des modèles vient du fournisseur** : « Actualiser la liste », sous le champ Modèle, demande au fournisseur
+  ses modèles du moment avec ta clé (seulement ceux qui écrivent du texte : ni image, ni voix). LifeLegend le fait aussi
+  tout seul à l'ouverture des réglages, une fois par semaine, si une clé est enregistrée. Un nouveau modèle sorti après
+  cette version apparaît donc sans attendre la suivante.
+
+### Mises à jour
+- **Les nouveautés à chaque mise à jour** : à la première ouverture après avoir installé une nouvelle version, une
+  fenêtre montre en quelques lignes ce qui change (et toutes les versions sautées, s'il en a manqué). Elle ne s'ouvre
+  qu'une fois ; « Voir les nouveautés » la rouvre dans Réglages › À propos. Une nouvelle installation ne la voit pas.
+
+### Corrigé
+- **Des matchs sans compétition** : la table des compétitions de la sauvegarde a des places vides au milieu, et
+  LifeLegend s'arrêtait à la première. Dans une sauvegarde du GigaPack, 48 245 matchs sur 59 664 restaient sans
+  compétition, dont tous ceux du joueur (EFL League Two) : « Mes matchs » de Scoreline était vide, et son championnat
+  manquait. Même souci, moins grave, dans une sauvegarde du jeu sans modules (2 958 matchs sur 10 289). LifeLegend saute
+  maintenant les places vides : Scoreline montre ses matchs, et toutes les ligues du GigaPack (405 compétitions au lieu
+  de 61).
+- **Les notes des matchs au dixième près** : LifeLegend lisait la note de chaque joueur sans son dernier bit et
+  l'arrondissait au demi-point (5,8 dans le jeu devenait 6,0). Il la lit maintenant comme le jeu, au dixième : les 22
+  notes d'un écran de fin de match tombent juste. Ça vaut pour Scoreline, tes statistiques, l'équipe type de la journée,
+  les trophées et ce que racontent les journaux et les supporters. Les matchs déjà joués sont corrigés à la synchro
+  suivante. Les modules qui changent le calcul des notes (comme fair_rating) sont donc suivis aussi.
+- **Les effectifs dans les sauvegardes du GigaPack** : Influence montrait le joueur seul sur le terrain, sans un
+  coéquipier. Dans ces sauvegardes, le numéro interne de chaque joueur de l'effectif est marqué « vide » (seul le joueur
+  créé en a un), et LifeLegend arrêtait la liste à la première place « vide » : 1 839 effectifs sur 4 096 étaient vides
+  ou coupés, dont celui du joueur. La liste s'arrête maintenant à la première place sans joueur. Ça rend aussi leurs
+  joueurs à Scoreline, au Vestiaire, aux sélections et au suivi des transferts (sans faux transfert à la synchro
+  suivante : vérifié). Rien ne change pour une sauvegarde normale ou FL Mod Studio.
+- **Les écussons et logos des packs installés en fichiers libres** (le GigaPack de Matozanato, tout pack déclaré dans
+  le sider.ini de Football Life) : LifeLegend ne les cherchait que dans les archives du jeu. Sur une carrière avec le
+  GigaPack, 133 clubs sur 490 (dont celui du joueur) et 8 compétitions sur 56 restaient sans écusson. Les dossiers de
+  Sider sont maintenant lus en premier, dans leur ordre de priorité, comme le fait le jeu ; et un écusson déjà extrait
+  est relu quand un pack le remplace ou le met à jour.
+- **Le logo de toutes les ligues dans Scoreline** : seules les compétitions avec un compte sur Kop avaient leur logo.
+  Une ligue ajoutée par un pack (Bahreïn, Inde, Algérie, Angola…) n'a aucun club connu de LifeLegend, donc pas de
+  compte, et restait sans logo (18 ligues sur 61 avec le GigaPack). Chaque compétition a maintenant le sien, même deux
+  ligues au même sigle (« BPL » : Bahreïn, Bangladesh, Botswana).
+- **Un compte Kop par ligue, même quand deux ligues ont le même sigle** : le pseudo inventé d'une compétition sans compte
+  officiel est son sigle, et deux ligues pouvaient tomber sur le même (@SPL_officiel réunissait la Syrie et Singapour,
+  22 équipes sous le nom de la Syrie). Chacune a maintenant le sien (@SyrianPL_officiel, @SingaporePL_officiel), et les
+  posts déjà publiés suivent.
+
+### Synchro
+- **« Google est lent en ce moment : la synchro continue. »** Quand une étape dure bien plus que d'habitude (deux fois
+  sa durée habituelle, apprise sur tes dernières synchros), la barre de progression le dit : c'est le fournisseur d'IA
+  qui est lent, LifeLegend n'est pas bloqué.
+- **Une IA figée ne bloque plus la synchro** : si le fournisseur ne renvoie plus rien pendant 5 minutes, LifeLegend
+  coupe la requête et passe au modèle suivant (et sans modèle qui réponde, les discussions sur Kop sont sautées :
+  l'édition est publiée sans elles). Avant, la synchro pouvait attendre sans fin.
+
+Aucune requête d'IA en plus par synchro (la réponse de l'entraîneur est une requête, seulement quand tu fais la demande).
+
 ## 1.1.1 — 2026-11-16
 
 ### Corrigé

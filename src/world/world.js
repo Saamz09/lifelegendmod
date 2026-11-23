@@ -38,8 +38,9 @@ const { bindPromise, resolvePromises, openPromises } = require('./promises');
 const { mentionDirectory, findMentions, playerReaction, clubHandle, slugHandle } = require('./mentions');
 const { ensureAgent, extensionByStance, computeMarket, applyStance, reportDue, agentFacts, clubPrestige } = require('./agent');
 const { ensureInfluence, influenceScore, assess, decide, syncInfluence, influenceFacts, buildAux, requestFacts, fallbackReply, currentWindow, nextWindow, directorOf, playingTimeKnown } = require('./influence');
-const { applyFormation, applyTransfer } = require('../save/influenceWrite');
-const { applyUnavailable } = require('../save/conductWrite');
+const { usualTimes, addTimes, slowAfter } = require('./syncTimes');
+const { applyFormation, applyStyle, applyTransfer } = require('../save/influenceWrite');
+const { applySuspension } = require('../save/conductWrite');
 const { recordConduct, conductAtSync, conductFacts, sanctionActive, endedRecently } = require('./conduct');
 const { objectivesAtSync, objectivesFacts } = require('./objectives');
 const { describe: describeFormation, loadTemplates, formationOptions } = require('../save/formations');
@@ -72,7 +73,7 @@ const withTone = (settings, state) => ({ ...settings, tone: toneOf(state) });
 const { postTexts } = require('./postTexts');
 const { TOUR_KIND, competitionStories, tourAngle, longViewAngle, debateAngle, coverageOf, coverageProblems } = require('./competitionDesk');
 const { tidyArticle, fixArticle, ruleFlags, flagsProblem, paperProblems } = require('./paperRules');
-const { isNationalTeam, realTeam, matchesOf, compAccount, competitionPosts, previewPosts, competitionAccountsFacts, isCompetitionHandle, fakeLogos, competitionAccountsRev } = require('./competitions');
+const { isNationalTeam, realTeam, matchesOf, compAccount, setCompetitionNames, competitionPosts, previewPosts, competitionAccountsFacts, isCompetitionHandle, fakeLogos, competitionAccountsRev } = require('./competitions');
 
 const newId = () => crypto.randomBytes(6).toString('hex');
 const slug = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '');
@@ -388,9 +389,14 @@ function refreshEmblems({ state, career, settings, store }) {
 
   // Compétitions : logo, équipes engagées (sans les enregistrements isolés que la sauvegarde rattache parfois à une compétition).
   const comps = new Map();
+  // Logo de chaque compétition, par son nom : deux ligues peuvent avoir le même pseudo inventé (« BPL » : Bahreïn,
+  // Bangladesh et Botswana, vu avec le GigaPack le 2026-11-23), pas le même logo.
+  const logoByName = new Map();
   for (const [id, name] of career.competitions) {
     const a = compAccount(id, name);
     if (!a) continue;
+    const logo = career.competitionLogos?.get(id) ?? null;
+    if (logo != null && !logoByName.has(a.name)) logoByName.set(a.name, { logo, real: a.real });
     const h = a.handle.toLowerCase();
     const c = comps.get(h) || { handle: a.handle, name: a.name, real: a.real, logo: null, teams: new Set(), league: false };
     if (c.logo == null) c.logo = career.competitionLogos?.get(id) ?? null;
@@ -449,16 +455,20 @@ function refreshEmblems({ state, career, settings, store }) {
   } catch { /* faute de calcul, Kop garde ses ordres de grandeur */ }
   delete state.emblems;
 
-  // Comptes de compétitions : logo du jeu (un faux logo de PES seulement si la compétition n'a pas de vrai compte).
+  // Logos des compétitions : celui du jeu (un faux logo de PES seulement si la compétition n'a pas de vrai compte). Pour
+  // toutes, même sans compte sur Kop : une ligue ajoutée par un pack (le GigaPack : Bahreïn, Inde, Algérie…) n'a aucun
+  // club connu de LifeLegend, donc pas de compte, mais Scoreline et La Transversale l'affichent avec son logo.
+  const named = [...logoByName];
   const logoFiles = ensureCompetitionLogos({
     gameDir,
-    logos: compList.map(([, c]) => ({ logo: c.logo, fakeOk: !c.real })),
+    logos: [...compList.map(([, c]) => ({ logo: c.logo, fakeOk: !c.real })), ...named.map(([, x]) => ({ logo: x.logo, fakeOk: !x.real }))],
     fakeLogos,
     outDir,
   });
   for (const [h, c] of compList) {
     state.clubPages[h] = { kind: 'competition', handle: c.handle, name: c.name, emblem: logoFiles[c.logo] || null, teams: c.teams.size, clubs: compClubs.get(h) || [] };
   }
+  state.compLogos = Object.fromEntries(named.filter(([, x]) => logoFiles[x.logo]).map(([n, x]) => [n, logoFiles[x.logo]]));
 }
 
 // État de la carrière pour l'interface, mis à jour au besoin.
@@ -559,9 +569,15 @@ function loadState(store) {
   return state;
 }
 
+// Longueur d'un post, d'une réponse ou d'une citation du joueur sur Kop (même limite dans lifelegend/app.js ; 280 jusqu'au
+// 2026-11-23). Ses textes vont en entier à l'IA, pour qu'on réagisse à tout ce qu'il a écrit ; ceux des autres comptes,
+// écrits par l'IA, restent coupés court.
+const KOP_MAX = 1000;
+const kopText = (p, n) => String(p?.text || '').slice(0, p?.author?.isMe ? KOP_MAX : n);
+
 function memoryFor(state) {
-  const quoting = (p) => { const q = quotedIn(state, p); return q ? { handle: q.target.author.handle, text: String(q.target.text || '').slice(0, 200) } : undefined; };
-  const thread = (p) => ((p.replies || []).length ? (p.replies || []).slice(-2).map((r) => ({ handle: r.author.handle, text: String(r.text || '').slice(0, 140) })) : undefined);
+  const quoting = (p) => { const q = quotedIn(state, p); return q ? { handle: q.target.author.handle, text: kopText(q.target, 200) } : undefined; };
+  const thread = (p) => ((p.replies || []).length ? (p.replies || []).slice(-2).map((r) => ({ handle: r.author.handle, text: kopText(r, 140) })) : undefined);
   const posts = state.feed.filter((p) => p.author.isMe).slice(-12).map((p) => ({ id: p.id, date: p.gameDate, text: p.text, quoting: quoting(p), last_replies: thread(p), ...(p.poll ? { poll_result: p.poll.options.map((o, k) => `${o}: ${p.poll.percents[k]}%`).join(', ') } : {}) }));
   // Les derniers posts des autres comptes : on peut les citer ou relancer la discussion dessous (règle 30).
   const recent = state.feed.filter((p) => !p.author.isMe).slice(-14).map((p) => ({
@@ -657,16 +673,33 @@ function noteFollowers(state, before, reason) {
 }
 
 // Suivi d'une tâche pour le HUD de l'interface : étapes [libellé, taille de réponse attendue].
-function tracker(progress, task, steps) {
+// usual : durée habituelle de chaque étape (syncTimes.js). Une étape d'IA (attente > 0) qui dure bien plus que
+// d'habitude est signalée « lente » par le HUD (slowAfter, compté depuis stepStartedAt). times() : la durée de
+// chaque étape menée, pour apprendre l'habitude.
+function tracker(progress, task, steps, usual = null) {
   const startedAt = Date.now();
   let cur = { index: 0, expect: 0 };
+  let stepAt = startedAt, running = null;
+  const times = {};
+  const close = (now) => {
+    const name = running == null ? null : steps[running]?.[0];
+    if (name) times[name] = (times[name] || 0) + (now - stepAt);
+  };
   const send = (extra) => {
-    try { progress?.({ task, steps: steps.map((x) => x[0]), startedAt, index: cur.index, label: cur.label || steps[cur.index]?.[0], expect: cur.expect, ...extra }); } catch { /* HUD facultatif */ }
+    const slow = cur.expect > 0 && usual ? slowAfter(usual[steps[cur.index]?.[0]]) : 0;
+    try { progress?.({ task, steps: steps.map((x) => x[0]), startedAt, stepStartedAt: stepAt, slowAfter: slow, index: cur.index, label: cur.label || steps[cur.index]?.[0], expect: cur.expect, ...extra }); } catch { /* HUD facultatif */ }
   };
   return {
-    step(i, label = null) { cur = { index: i, expect: steps[i]?.[1] || 0, label }; send({ phase: 'start', chars: 0 }); },
+    step(i, label = null) {
+      const now = Date.now();
+      close(now);
+      running = i; stepAt = now;
+      cur = { index: i, expect: steps[i]?.[1] || 0, label };
+      send({ phase: 'start', chars: 0 });
+    },
     ai: (p) => send(p),
-    done(ok = true) { try { progress?.({ task, done: true, ok }); } catch { /* HUD facultatif */ } },
+    done(ok = true) { close(Date.now()); running = null; try { progress?.({ task, done: true, ok }); } catch { /* HUD facultatif */ } },
+    times: () => ({ ...times }),
   };
 }
 
@@ -875,9 +908,9 @@ async function writeDiscussions({ state, settings, apiKey, facts, fresh, people,
   const brief = (p, isNew) => {
     const q = quotedIn(state, p);
     return {
-      post_id: p.id, new: isNew || undefined, handle: p.author.handle, name: p.author.name, type: p.author.type, text: String(p.text || '').slice(0, 280),
-      quoting: q ? { handle: q.target.author.handle, text: String(q.target.text || '').slice(0, 160) } : undefined,
-      replies: (p.replies || []).slice(-6).map((r) => ({ handle: r.author.handle, text: String(r.text || '').slice(0, 160), reply_to: r.replyTo || undefined })),
+      post_id: p.id, new: isNew || undefined, handle: p.author.handle, name: p.author.name, type: p.author.type, text: kopText(p, 280),
+      quoting: q ? { handle: q.target.author.handle, text: kopText(q.target, 160) } : undefined,
+      replies: (p.replies || []).slice(-6).map((r) => ({ handle: r.author.handle, text: kopText(r, 160), reply_to: r.replyTo || undefined })),
     };
   };
   const freshIds = new Set(fresh.map((p) => p.id));
@@ -1473,7 +1506,8 @@ async function sync({ store, settings, log, progress }) {
   const steps = [['Lecture de la sauvegarde', 0], ['Rédaction de l’édition', 16000]];
   if (settings.factCheck !== false) steps.push(['Vérification des faits', 1200]);
   if (settings.tribuneThreads !== false) steps.push(['Discussions sur Kop', 2500]);
-  const t = tracker(progress, 'Synchronisation', steps);
+  const provider = settings.provider || 'aucun';
+  const t = tracker(progress, 'Synchronisation', steps, usualTimes(settings.syncTimes, provider));
   let ok = false;
   try {
     const state = await syncInner({ store, settings, log, t });
@@ -1481,6 +1515,10 @@ async function sync({ store, settings, log, progress }) {
     return state;
   } finally {
     t.done(ok);
+    // Les durées d'une synchro réussie deviennent le « d'habitude » des suivantes.
+    if (ok) {
+      try { store.saveSettings({ syncTimes: addTimes(store.getSettings().syncTimes, provider, t.times()) }); } catch { /* facultatif */ }
+    }
   }
 }
 
@@ -1488,11 +1526,31 @@ async function sync({ store, settings, log, progress }) {
 // (au lieu de « ENOENT » ou « EBUSY » de Windows).
 function readSave(savePath) {
   if (!fs.existsSync(savePath)) throw Object.assign(new Error(`Sauvegarde introuvable : ${savePath}`), { code: 'ENOENT' });
+  let career;
   try {
-    return readCareer(savePath);
+    career = readCareer(savePath);
   } catch (err) {
     if (['EBUSY', 'EPERM', 'EACCES'].includes(err.code)) throw Object.assign(new Error('La sauvegarde est occupée : le jeu est en train de l’écrire.'), { code: err.code });
     throw err;
+  }
+  setCompetitionNames(career.competitions); // pseudos des compétitions : un par ligue, même au sigle partagé
+  return career;
+}
+
+// Posts déjà signés par une compétition sous un pseudo partagé avec une autre (avant setCompetitionNames) : chacun
+// reprend le pseudo de la compétition qui le signe.
+function relinkCompetitionAuthors(state) {
+  for (const p of state.feed || []) {
+    let moved = null; // le post lui-même a changé de pseudo : { from, to }
+    for (const x of [p, ...(p.replies || [])]) {
+      if (x.author?.type !== 'competition') continue;
+      const a = compAccount(null, x.author.name);
+      if (!a || a.real || a.handle === x.author.handle) continue;
+      if (x === p) moved = { from: x.author.handle.toLowerCase(), to: a.handle };
+      x.author = { ...x.author, handle: a.handle };
+    }
+    // Les réponses adressées au post suivent son nouveau pseudo.
+    if (moved) for (const r of p.replies || []) if (r.replyTo?.toLowerCase() === moved.from) r.replyTo = moved.to;
   }
 }
 
@@ -1503,7 +1561,7 @@ function logSaveLayout(layout, log) {
   // readCareer rend déjà les grandes places en texte (« 0x3073a34 ») ; les petites (taille d'un jour) en nombre.
   const hex = (n) => (n == null ? 'introuvable' : typeof n === 'number' ? `0x${n.toString(16).toUpperCase()}` : String(n).toUpperCase().replace(/^0X/, '0x'));
   log(`Sauvegarde agrandie par des modules (FL Mod Studio ou un autre pack) : tables retrouvées par leur forme · joueur ${hex(layout.player)} · matchs ${hex(layout.match)} × ${layout.matchCount} · compétitions ${hex(layout.comp)} · entraîneurs ${hex(layout.coach)} · calendrier ${hex(layout.calendar)} (jour ${hex(layout.calendarDay)}) · début de carrière ${hex(layout.careerStart)}.`);
-  log('Lecture seule : LifeLegend n’écrit pas dans une sauvegarde agrandie (Influence, offres redirigées, mise à l’écart).');
+  log('Écritures : dans une sauvegarde agrandie, LifeLegend n’écrit que le style de jeu (Influence) et la mise à l’écart. Formation, transferts et offres redirigées : pas encore.');
   const missing = [layout.match == null && 'matchs', layout.calendar == null && 'mercato', layout.coach == null && 'entraîneurs', layout.comp == null && 'compétitions'].filter(Boolean);
   if (missing.length) log(`Introuvable dans cette sauvegarde : ${missing.join(', ')}. Envoie un rapport (Réglages › À propos) : on regardera.`);
 }
@@ -1539,6 +1597,7 @@ async function syncInner({ store, settings, log, t }) {
   if (!state.snapshot && settings.pendingBio?.savePath === settings.savePath) setBio(state, settings.pendingBio.text, settings.pendingBio.kind);
   migrateClubAccounts(state);
   migrateCompetitionAccounts(state);
+  relinkCompetitionAuthors(state);
   migratePageNames(state);
   migrateAccountIdentities(state, () => { try { fs.copyFileSync(store.careerFile(careerId), store.careerFile(careerId).replace(/state\.json$/, `state.avant-identites-v${IDENTITY_REV}.json`)); } catch { /* nouvelle carrière */ } });
   migratePaperName(state, () => { try { fs.copyFileSync(store.careerFile(careerId), store.careerFile(careerId).replace(/state\.json$/, 'state.avant-transversale.json')); } catch { /* nouvelle carrière */ } });
@@ -1648,9 +1707,11 @@ async function syncInner({ store, settings, log, t }) {
   const previousClubs = store.loadAux(careerId, 'clubs');
   const transfers = detectTransfers(previousClubs, clubs, career, { clubRef: snapshot.club.ref, leagueId: snapshot.league.id, nameOf, gameDate: snapshot.gameDate });
   state.transfers = [...(state.transfers || []), ...transfers].slice(-300);
-  // Influence : jauge, formation du club, et sort des décisions (mercato ouvert, écrites, gardées par le jeu ou non).
-  const myFormation = career.teams.get(snapshot.club.ref)?.formation;
-  const influenceNews = syncInfluence(state, snapshot, { formation: myFormation ? describeFormation(myFormation) : null, clubs, previousClubs });
+  // Influence : jauge, formation et style de jeu du club, et sort des décisions (mercato ouvert, écrites, gardées par le
+  // jeu ou non).
+  const myTeam = career.teams.get(snapshot.club.ref);
+  const myFormation = myTeam?.formation;
+  const influenceNews = syncInfluence(state, snapshot, { formation: myFormation ? describeFormation(myFormation) : null, style: myTeam?.style || null, clubs, previousClubs });
   if (influenceNews.length) log(`Influence : ${influenceNews.map((n) => n.kind).join(', ')}.`);
   // Progression des capacités du joueur, gardée pour Scoreline.
   if (changes.progress.length) {
@@ -2114,7 +2175,7 @@ function pollFallback(id, n) {
 async function postInner({ store, settings, text, quote, poll = null, t }) {
   const state = store.activeCareer();
   if (!state) throw new Error('Synchronise ta sauvegarde avant de poster.');
-  text = String(text || '').trim().slice(0, 280);
+  text = String(text || '').trim().slice(0, KOP_MAX);
   if (!text) throw new Error('Ton post est vide.');
   // Citation : un post du fil ou l'une de ses réponses ; elle compte comme un partage pour son auteur.
   const q = quote?.postId ? findInFeed(state, quote.postId, quote.replyId || null) : null;
@@ -2267,7 +2328,7 @@ async function replyToPost({ store, settings, postId, replyId, text, progress })
 async function replyToPostInner({ store, settings, postId, replyId, text, t }) {
   const state = store.activeCareer();
   if (!state) throw new Error('Synchronise ta sauvegarde avant de répondre.');
-  const clean = String(text || '').trim().slice(0, 280);
+  const clean = String(text || '').trim().slice(0, KOP_MAX);
   if (!clean) throw new Error('Ta réponse est vide.');
   const { post, target } = findInFeed(state, postId, replyId);
   const me = { handle: state.profile.handle, name: state.profile.displayName, type: 'me', isMe: true };
@@ -2837,6 +2898,8 @@ function influenceView({ store, settings }) {
     window: currentWindow(s),
     next: nextWindow(s),
     formations: aux.formations.map(({ phases, ...f }) => ({ ...f, assess: assess('formation', { key: f.key }, ctx) })),
+    // Style de jeu : les chances ne dépendent que du nombre de consignes changées (0 à 7).
+    style: inf.style ? { current: inf.style, odds: Array.from({ length: inf.style.length + 1 }, (_, n) => assess('style', { values: inf.style.map((v, i) => (i < n ? 1 - v : v)) }, ctx)) } : null,
     squad: aux.squad.map((p) => ({ ...p, sale: firstTarget === undefined ? null : assess('sale', { playerId: p.id, toRef: firstTarget }, ctx), keep: assess('keep', { playerId: p.id }, ctx) })),
     saleTargets: aux.saleTargets,
     depth: aux.depth || {},
@@ -2931,18 +2994,19 @@ function influenceApply({ store, settings, effectId }) {
   const career = readSave(settings.savePath);
   if (career.player.id !== state.snapshot.player.id) throw new Error('La sauvegarde suivie n’est plus celle de ce joueur : synchronise d’abord.');
   if (career.save.date && career.save.date !== state.snapshot.gameDate) throw new Error('Ta sauvegarde a avancé depuis la dernière synchro : synchronise d’abord.');
-  if (e.kind !== 'formation' && !currentWindow(state.snapshot)) throw new Error('Le mercato est fermé : la décision attend son ouverture.');
+  if (!['formation', 'style'].includes(e.kind) && !currentWindow(state.snapshot)) throw new Error('Le mercato est fermé : la décision attend son ouverture.');
   const backupDir = path.join(store.dir, 'careers', state.careerId, 'backups');
   const r = e.kind === 'formation'
     ? applyFormation({ savePath: settings.savePath, backupDir, clubRef: e.clubRef, phases: e.phases })
+    : e.kind === 'style' ? applyStyle({ savePath: settings.savePath, backupDir, clubRef: e.clubRef, values: e.values })
     : applyTransfer({ savePath: settings.savePath, backupDir, playerId: e.playerId, fromRef: e.fromRef, toRef: e.toRef, news: { clubRef: state.snapshot.club.ref, date: state.snapshot.gameDate } });
   Object.assign(e, { status: 'applied', appliedOn: state.snapshot.gameDate, backup: r.backup, changes: r.changes, ...(r.shirt ? { shirt: r.shirt } : {}) });
   store.saveCareer(state);
   return { state, result: { kind: e.kind, name: e.name, changes: r.changes, shirt: r.shirt || null } };
 }
 
-// Mise à l'écart décidée par le club : écrite dans la sauvegarde (ses jours d'indisponibilité jusqu'au lendemain du
-// dernier match de la sanction), jeu fermé, copie gardée. Seulement depuis la sauvegarde de la dernière synchro.
+// Mise à l'écart décidée par le club : écrite dans la sauvegarde comme une suspension du jeu (1 ou 2 matchs, que le jeu
+// décompte), jeu fermé, copie gardée. Seulement depuis la sauvegarde de la dernière synchro.
 function conductApply({ store, settings }) {
   const state = store.activeCareer();
   const p = state?.conduct?.pending;
@@ -2955,11 +3019,10 @@ function conductApply({ store, settings }) {
   const today = state.snapshot.gameDate;
   const last = p.matches.at(-1);
   if (last.date < today) throw new Error('Les matchs de la sanction sont déjà passés.');
-  const days = Math.round((Date.parse(`${last.date}T12:00:00Z`) - Date.parse(`${today}T12:00:00Z`)) / 864e5) + 1;
-  const r = applyUnavailable({ savePath: settings.savePath, backupDir: path.join(store.dir, 'careers', state.careerId, 'backups'), playerId: state.snapshot.player.id, days });
-  p.applied = { on: today, days: r.after, backup: r.backup };
+  const r = applySuspension({ savePath: settings.savePath, backupDir: path.join(store.dir, 'careers', state.careerId, 'backups'), playerId: state.snapshot.player.id, matches: p.count || p.matches.length });
+  p.applied = { on: today, matches: r.after, backup: r.backup };
   store.saveCareer(state);
-  return { state, result: { days: r.after, changes: r.changes } };
+  return { state, result: { matches: r.after, changes: r.changes } };
 }
 
 // Page profil de Kop, modifiable : textes, couleur de bannière, badge, photo et bannière.

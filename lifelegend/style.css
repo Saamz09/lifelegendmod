@@ -253,6 +253,8 @@ table { width: 100%; border-collapse: collapse; }
 .hud-bar::before { content: ""; position: absolute; inset: 0; z-index: 1; background: repeating-linear-gradient(90deg, transparent 0 calc(100% / var(--hud-steps, 1) - 2px), var(--night) calc(100% / var(--hud-steps, 1) - 2px) calc(100% / var(--hud-steps, 1))); }
 .ai-hud.waiting .hud-bar::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(240, 194, 75, .45), transparent); animation: ll-shimmer 1.4s linear infinite; }
 .hud-sub { margin-top: 7px; overflow: hidden; color: var(--night-ink-2); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+/* Étape bien plus longue que d'habitude : le fournisseur d'IA est lent, la synchro continue. */
+.hud-slow { margin-top: 6px; color: var(--gold-hi); font-size: 12px; line-height: 1.4; }
 
 /* Accueil (pas encore de synchro). */
 .k-welcome { display: grid; align-content: start; justify-items: center; min-height: calc(100vh - var(--chrome-h, 52px)); padding: 64px 24px 72px; background: var(--bg); color: var(--ink); }
@@ -305,6 +307,19 @@ table { width: 100%; border-collapse: collapse; }
 .k-modal h2 { margin: 0 0 10px; font-size: var(--fs-h4); font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
 .k-modal p { margin: 0 0 10px; color: var(--ink-2); }
 .k-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+/* Les nouveautés d'une mise à jour : une icône, un titre et une phrase par point ; la liste défile si elle est longue. */
+.ll-news { width: min(600px, 100%); }
+.ll-news-body { max-height: min(58vh, 520px); margin: 6px -8px 0; padding: 0 8px; overflow-y: auto; }
+.ll-news-v { margin: 16px 0 8px; color: var(--ink-3); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.ll-news-v:first-child { margin-top: 4px; }
+.ll-news-list { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
+.ll-news-list li { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 14px; align-items: start; }
+.ll-news-ic { display: grid; place-items: center; width: 38px; height: 38px; border-radius: var(--r-pill); background: var(--surface-2); color: var(--gold-ink); }
+.ll-news-ic .hi { width: 18px; height: 18px; }
+.ll-news-list b { display: block; color: var(--ink); font-size: 15px; line-height: 1.35; }
+.k-modal .ll-news-list p { margin: 3px 0 0; color: var(--ink-2); font-size: 14px; line-height: 1.5; }
+.ll-news .k-modal-actions { flex-wrap: wrap; justify-content: space-between; align-items: center; }
+.ll-news .k-modal-actions a { text-decoration: none; }
 
 /* Pages : chaque site occupe toute la largeur sous le cadre. */
 .site { max-width: 1200px; margin: 0 auto; padding: 24px 24px 64px; }
@@ -2272,6 +2287,12 @@ button.ib-person:disabled { cursor: default; }
 .ib-chance > span:not(.ib-why) { color: var(--ink-3); }
 .ib-chance .ib-why { max-width: none; font-size: 14px; text-align: left; }
 .ib-foot { display: flex; justify-content: flex-end; margin-top: 16px; }
+/* Style de jeu : une consigne par ligne, ses deux valeurs côte à côte (.ib-chip), la consigne changée en couleur. */
+.ib-srows { margin-top: 12px; border-top: 1px solid var(--line); }
+.ib-srow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; padding-block: 8px; border-bottom: 1px solid var(--line); }
+.ib-srow-label { color: var(--ink-2); font-size: 13px; font-weight: 600; }
+.ib-srow.changed .ib-srow-label { color: var(--gold-ink); font-weight: 700; }
+.ib-seg { display: flex; flex-wrap: wrap; gap: 6px; }
 
 @media (max-width: 1320px) {
 }
@@ -2620,6 +2641,12 @@ button.ib-person:disabled { cursor: default; }
 .sc-sc { text-align: center; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .sc-m-x { display: flex; align-items: center; justify-content: flex-end; gap: 8px; min-width: 34px; white-space: nowrap; }
 .sc-me-line { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); font-size: 12px; }
+/* Listes de matchs avec une colonne à droite (date, minutes, note) : toutes les lignes partagent la grille de la liste
+   (subgrid). Le score tombe ainsi sur la même colonne, quelle que soit la largeur de la colonne de droite de chaque
+   ligne (un match joué avec sa note est plus large qu'un match à venir). */
+.sc-mgrid { display: grid; grid-template-columns: 54px minmax(0, 1fr) 52px minmax(0, 1fr) auto; column-gap: 8px; }
+.sc-mgrid > * { grid-column: 1 / -1; }
+.sc-mgrid > .sc-m { grid-template-columns: subgrid; }
 .sc-day { padding: 9px 8px 4px; color: var(--ink-3); font-size: 12px; font-weight: 600; }
 .sc-day:first-letter { text-transform: uppercase; }
 .sc-gh { display: flex; align-items: center; gap: 8px; margin-top: 6px; padding: 8px; border-top: 1px solid var(--line); font-size: 13px; font-weight: 600; }
@@ -2982,6 +3009,8 @@ button.ib-person:disabled { cursor: default; }
 /* La fenêtre par défaut fait 1280 px : deux colonnes serrées, sans la forme dans le petit classement (le classement complet la garde). */
 @media (min-width: 1261px) and (max-width: 1360px) {
   .sc-cols .sc-m { grid-template-columns: 40px minmax(0, 1fr) 42px minmax(0, 1fr) auto; gap: 6px; padding: 7px 4px; font-size: 12px; }
+  .sc-cols .sc-mgrid { grid-template-columns: 40px minmax(0, 1fr) 42px minmax(0, 1fr) auto; column-gap: 6px; }
+  .sc-cols .sc-mgrid > .sc-m { grid-template-columns: subgrid; }
   .sc-col-side .sc-t th:last-child, .sc-col-side .sc-t td:last-child { display: none; }
 }
 @media (max-width: 1260px) {
@@ -3019,6 +3048,7 @@ button.ib-person:disabled { cursor: default; }
   .sc-tiles, .sc-tiles.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sc-abil, .sc-two, .sc-bars-grid, .sc-bars-grid.two { grid-template-columns: minmax(0, 1fr); }
   .sc-m { grid-template-columns: 40px minmax(0, 1fr) 42px minmax(0, 1fr); }
+  .sc-mgrid { grid-template-columns: 40px minmax(0, 1fr) 42px minmax(0, 1fr); }
   .sc-m-x { grid-column: 2 / -1; }
   .sc-mscore { gap: 10px; }
   .sc-mscore .sc-team b { font-size: 13px; }
@@ -3233,6 +3263,8 @@ button.ib-person:disabled { cursor: default; }
 .rg .fineprint { font-size: 13px; line-height: 1.5; }
 .rg code { font-size: 12px; }
 .rg .settings input:not([type=radio]):not([type=range]):not([type=checkbox]):not([type=color]), .rg .settings select, .rg .settings textarea { margin-top: 0; }
+/* « Autre modèle… » : le champ pour taper le nom s'ouvre sous la liste déroulante. */
+.rg .settings #model-pick + #model { margin-top: 8px; }
 .rg .settings label#baseurl-wrap { margin: 14px 0 0; }
 .rg .su-ask { margin: 0 0 10px; }
 .rg .su-kind { margin-bottom: 14px; }
@@ -3716,6 +3748,12 @@ button:active:not(:disabled), .btn:active:not(:disabled) { transform: scale(.97)
 .ib-panel .ib-sub { display: block; margin-bottom: 4px; }
 .ib-panel .ib-wish { background: color-mix(in srgb, var(--pg-0) 55%, transparent); border-color: rgba(30, 44, 66, .1); }
 .ib-panel .ib-wish:hover:not(:disabled) { border-color: var(--ib-accent); }
+.ib-style-now { margin: 0 0 10px; }
+.ib-style-now div { display: flex; justify-content: space-between; gap: 10px; padding-block: 5px; font-size: 13px; }
+.ib-style-now div + div { border-top: 1px solid var(--line); }
+.ib-style-now dt { color: var(--ink-3); }
+.ib-style-now dd { margin: 0; font-weight: 600; text-align: right; }
+.ib-style .btn { width: 100%; }
 
 /* Les joueurs et leur fiche. */
 .ib-squad { margin-top: 20px; scroll-margin-top: 12px; }

@@ -10,7 +10,7 @@ const A = require(path.join(__dirname, '..', 'src/world/awards.js'));
 
 // Postes joués : gardien, 4 défenseurs, 3 milieux, 3 attaquants (voir blReader). Note brute 35 = 7,0 ; 30 = 6,0.
 const POS = [0, 1, 1, 2, 2, 3, 4, 6, 8, 9, 9];
-const lineup = (base, raw = () => 30, extra = {}) => POS.map((pos, k) => ({ playerId: base + k, pos, ratingRaw: raw(k), minutes: 90, goals: 0, assists: 0, ...(extra[k] || {}) }));
+const lineup = (base, raw = () => 60, extra = {}) => POS.map((pos, k) => ({ playerId: base + k, pos, ratingRaw: raw(k), minutes: 90, goals: 0, assists: 0, ...(extra[k] || {}) }));
 const match = (round, home, away, opts = {}) => ({
   round, date: `2026-09-${String(10 + round).padStart(2, '0')}`, played: opts.played !== false,
   home: { ref: home, name: `Club ${home}` }, away: { ref: away, name: `Club ${away}` },
@@ -19,8 +19,8 @@ const match = (round, home, away, opts = {}) => ({
 
 test('équipe type : la dernière journée finie, en 4-3-3, sans les entrées en fin de match', () => {
   const ms = [
-    match(0, 1, 2, { homeRaw: (k) => (k === 10 ? 40 : 30) }), match(0, 3, 4),
-    match(1, 1, 3, { homeExtra: { 9: { minutes: 20, ratingRaw: 45 } } }), match(1, 2, 4, { played: false }),
+    match(0, 1, 2, { homeRaw: (k) => (k === 10 ? 80 : 60) }), match(0, 3, 4),
+    match(1, 1, 3, { homeExtra: { 9: { minutes: 20, ratingRaw: 90 } } }), match(1, 2, 4, { played: false }),
   ];
   const t = A.teamOfRound(ms);
   assert.strictEqual(t.round, 1, 'la 2e journée n’est pas finie');
@@ -33,14 +33,14 @@ test('équipe type : la dernière journée finie, en 4-3-3, sans les entrées en
 });
 
 test('classement : note moyenne des matchs d’au moins 45 minutes, buts de tous les matchs', () => {
-  const ms = [match(0, 1, 2, { homeRaw: (k) => (k === 10 ? 40 : 30), homeExtra: { 10: { goals: 2 } } }), match(1, 1, 2, { homeRaw: (k) => (k === 10 ? 35 : 30) })];
+  const ms = [match(0, 1, 2, { homeRaw: (k) => (k === 10 ? 80 : 60), homeExtra: { 10: { goals: 2 } } }), match(1, 1, 2, { homeRaw: (k) => (k === 10 ? 70 : 60) })];
   const r = A.playerRanking(ms, { minApps: 2 });
   assert.deepStrictEqual([r[0].id, r[0].avg, r[0].goals, r[0].line, r[0].rated], [110, 7.5, 2, 'att', 2]);
   assert.strictEqual(A.rankingMinApps(ms), 2);
 });
 
 test('trophées : seulement la saison finie ; meilleur joueur, buteur, passeur, gardien, équipe type', () => {
-  const ms = [match(0, 1, 2, { homeRaw: (k) => (k === 10 ? 40 : k === 0 ? 36 : 30), homeExtra: { 9: { goals: 3 }, 7: { assists: 2 } } }), match(1, 2, 1, { played: false })];
+  const ms = [match(0, 1, 2, { homeRaw: (k) => (k === 10 ? 80 : k === 0 ? 72 : 60), homeExtra: { 9: { goals: 3 }, 7: { assists: 2 } } }), match(1, 2, 1, { played: false })];
   assert.strictEqual(A.seasonAwards(ms), null);
   ms[1].played = true;
   const s = A.seasonAwards(ms);
@@ -50,7 +50,7 @@ test('trophées : seulement la saison finie ; meilleur joueur, buteur, passeur, 
 test('édition : la journée annoncée une seule fois, retenue s’il est dans l’équipe type ; trophées de la saison une fois', () => {
   const state = {};
   const opts = { season: '2026-2027', competition: 'Ligue 2 BKT', playerId: 110, nameOf: (id) => `Joueur ${id}` };
-  const ms = [match(0, 1, 2, { homeRaw: (k) => (k === 10 ? 40 : 30) }), match(1, 1, 2, { played: false })];
+  const ms = [match(0, 1, 2, { homeRaw: (k) => (k === 10 ? 80 : 60) }), match(1, 1, 2, { played: false })];
   const first = A.awardsNews(state, { ...opts, matches: ms });
   assert.deepStrictEqual(first.round, { competition: 'Ligue 2 BKT', round: 1, in_team: true, player_of_the_round: true, his_rating: 8 });
   assert.strictEqual(A.awardsNews(state, { ...opts, matches: ms }).round, null, 'déjà annoncée');

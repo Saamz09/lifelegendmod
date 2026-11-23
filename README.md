@@ -22,13 +22,13 @@ compétitions et visages des joueurs sont lus dans les fichiers de ton jeu à ch
 aucun. Un souci ? Réglages › À propos › « Préparer le rapport » (un fichier à relire, sans clé ni données
 personnelles ; rien ne part tout seul).
 
-> **Version 1.1.1.** LifeLegend est une fiction : les vrais joueurs, entraîneurs et clubs viennent de ton jeu,
+> **Version 1.2.0.** LifeLegend est une fiction : les vrais joueurs, entraîneurs et clubs viennent de ton jeu,
 > mais tout ce qu'on leur fait dire est écrit par l'IA. Ce ne sont pas leurs propos ; ne les leur attribue pas hors de
 > LifeLegend. Mod de fan non officiel, sans lien avec Konami, les auteurs de Football Life, les clubs ni les joueurs.
 
 ## Installer (joueurs)
 
-Télécharge le dossier portable de la dernière version (`LifeLegend-1.1.1-win-x64.zip`, page **Releases** du dépôt), décompresse-le
+Télécharge le dossier portable de la dernière version (`LifeLegend-1.2.0-win-x64.zip`, page **Releases** du dépôt), décompresse-le
 où tu veux et lance `LifeLegend.exe`. Le mode d'emploi complet est dans [docs/LISEZMOI.txt](docs/LISEZMOI.txt) (copié
 dans le dossier portable). Ce qui change d'une version à l'autre : [CHANGELOG.md](CHANGELOG.md).
 
@@ -39,9 +39,12 @@ chez Google AI Studio ou Groq).
 
 Par défaut, LifeLegend ne fait que **lire** ta sauvegarde. Deux options, à activer dans Réglages › Sauvegarde, lui
 permettent d'y écrire, jeu fermé et avec une copie de sécurité à chaque fois : les effets d'Influence (une formation
-acceptée par ton entraîneur, vérifiée dans Football Life 2027 ; un transfert accepté par ton club, encore expérimental)
-et la réorientation d'une offre reçue vers un autre club (expérimentale). Une sauvegarde agrandie par des modules du jeu
-(FL Mod Studio, GigaPack…) est lue normalement, mais LifeLegend n'y écrit jamais.
+ou un style de jeu acceptés par ton entraîneur, vérifiés dans Football Life 2027 ; un transfert accepté par ton club,
+encore expérimental)
+et la réorientation d'une offre reçue vers un autre club (expérimentale). Quand ton club te met à l'écart, le bouton
+« Appliquer dans le jeu » sous son mail écrit ta suspension, seulement si tu cliques dessus. Une sauvegarde agrandie par
+des modules du jeu (FL Mod Studio, GigaPack…) est lue normalement ; LifeLegend n'y écrit que le style de jeu et la
+suspension d'une mise à l'écart (essayés en jeu sur le GigaPack), rien d'autre.
 
 ## Développer
 
@@ -109,12 +112,14 @@ Portuguese and German (Settings › Appearance).
 Light or dark theme on every site, your own colours (five palettes or a colour picker). Crests, competition logos and
 player faces are read from your game files at each sync: LifeLegend ships none of them.
 
-**Version 1.1.1.** LifeLegend is fiction: real players, coaches and clubs come from your game, but everything
+**Version 1.2.0.** LifeLegend is fiction: real players, coaches and clubs come from your game, but everything
 they say here is written by AI and is not their words; never attribute it to them outside LifeLegend. Unofficial fan
 mod, not affiliated with Konami, the makers of Football Life, any club or player.
 
-Players: download the latest build (`LifeLegend-1.1.1-win-x64.zip`, **Releases** page), unzip it anywhere and run
+Players: download the latest build (`LifeLegend-1.2.0-win-x64.zip`, **Releases** page), unzip it anywhere and run
 `LifeLegend.exe`; see [docs/README.txt](docs/README.txt). By default LifeLegend only reads your save; two options
-(Settings › Save) let it write Influence effects (a formation agreed with your coach, verified in Football Life 2027; a
-transfer, still experimental) and offer redirects (experimental), with the game closed and a backup each time. Saves
-enlarged by game mods (FL Mod Studio, GigaPack…) are read normally, but LifeLegend never writes to them. Developers: `npm install`, `npm start`, `npm test`, `npm run dist`. MIT licence.
+(Settings › Save) let it write Influence effects (a formation or playing style agreed with your coach, verified in Football Life 2027; a
+transfer, still experimental) and offer redirects (experimental), with the game closed and a backup each time. When
+your club drops you, the "Apply in the game" button under its email writes your suspension, only if you click it. Saves
+enlarged by game mods (FL Mod Studio, GigaPack…) are read normally; the only things LifeLegend writes to them are the
+playing style and the suspension of a club sanction (tested in game on the GigaPack). Developers: `npm install`, `npm start`, `npm test`, `npm run dist`. MIT licence.

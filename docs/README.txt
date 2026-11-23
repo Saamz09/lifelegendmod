@@ -1,4 +1,4 @@
-LifeLegend 1.1.1 — how to use
+LifeLegend 1.2.0 — how to use
 ====================================
 
 LifeLegend reads your SP Football Life 2027 Become a Legend save and builds a world that reacts to every match: a national
@@ -44,13 +44,14 @@ WHAT YOU NEED
   https://www.pessmokepatch.com/p/customizations-and-mods.html
   Without it your save stays locked. PES 2021 does not need one.
 - An AI key. Free: Google AI Studio (https://aistudio.google.com) or Groq (https://console.groq.com).
-  Paid: Anthropic (Claude), OpenAI, OpenRouter, or any OpenAI-compatible service.
+  Paid: Anthropic (Claude), OpenAI, Mistral AI, DeepSeek, xAI (Grok), Cerebras, OpenRouter, or any OpenAI-compatible
+  service.
 - An Internet connection while syncing.
 
 
 INSTALL
 -------
-1. Unzip the LifeLegend-1.1.1-win-x64 folder anywhere (Documents, Desktop, a USB stick…), but not in "Program Files".
+1. Unzip the LifeLegend-1.2.0-win-x64 folder anywhere (Documents, Desktop, a USB stick…), but not in "Program Files".
    Nothing is installed in Windows.
 2. Run LifeLegend.exe.
 3. Windows may show "Windows protected your PC": LifeLegend is not digitally signed. Click "More info", then
@@ -83,11 +84,14 @@ AFTER THAT
 YOUR SAVE AND YOUR DATA
 -----------------------
 - LifeLegend READS your save; it does not change it. Two exceptions, off by default: "Offer redirection"
-  (experimental) and "Influence: real effects in the game" (formation verified in Football Life 2027, transfer
-  experimental) in Settings › Your save. If you turn them on, LifeLegend may
+  (experimental) and "Influence: real effects in the game" (formation and playing style verified in Football Life
+  2027, transfer experimental) in Settings › Your save. If you turn them on, LifeLegend may
   write to your save (only with the game closed) and keeps a copy. Leave them off if you don't want to take any risk.
-- A save enlarged by game mods (FL Mod Studio, GigaPack…) is read normally, but LifeLegend never writes to it, even
-  with these options on.
+- When your club drops you for what you said, the "Apply in the game" button under its email writes your suspension
+  (1 or 2 matches) into your save, just like after a red card. Nothing is written unless you click it.
+- A save enlarged by game mods (FL Mod Studio, GigaPack…) is read normally. The only things LifeLegend writes to it are
+  the playing style agreed with your coach and the suspension of a club sanction (tested in game on the GigaPack);
+  nothing else is ever written to it, even with these options on.
 - Your settings and careers are in %APPDATA%\LiveTweet\data (paste this path into File Explorer).
 - Your AI key is encrypted with your Windows account and only sent to the chosen provider. Your save key stays on this
   PC and is never sent anywhere.
@@ -108,7 +112,7 @@ stay: they are kept in %APPDATA%\LiveTweet, not in the LifeLegend folder.
 
 UNINSTALL
 ---------
-Delete the LifeLegend-1.1.1-win-x64 folder and, to erase your careers, the %APPDATA%\LiveTweet folder.
+Delete the LifeLegend-1.2.0-win-x64 folder and, to erase your careers, the %APPDATA%\LiveTweet folder.
 
 
 IF SOMETHING GOES WRONG

@@ -8,15 +8,18 @@ const fs = require('fs');
 const { decryptSave } = require('./pesCrypt');
 const { readPlayerProfile } = require('./playerProfile');
 const { readPhase } = require('./formations');
+const { readStyle } = require('./playStyle');
 const { readTraining } = require('./training');
 const { saveLayout } = require('./layout');
 
 const TEAM_STRIDE = 0x690;      // bloc équipe : ref u32 à +0x50, nom à +0x54, sigle à +0x9A, stade à +0xA0
 const ROSTER_OFFSET = 0x19C;    // effectif : paires [u32 numéro interne][u32 id joueur], 40 places au plus
 const ROSTER_MAX = 40;
+const rosterIdOk = (id) => (id >= 1000 && id < 4000000) || (id >= 0x80000000 && id - 0x80000000 < 4000000);
 const TACTIC_A = 0x4B0;         // tactiques A et B du club (+0x4B0, +0x550) : 3 phases de 33 octets puis 61 octets de réglages
 const COACH_TABLE = 0x133A38;   // nom de l'entraîneur de l'équipe 0 ; slot u32 à nom-8
 const COACH_STRIDE = 0x258;
+const COACH_TACTIC_1 = 0x48;    // 1re des 3 tactiques de l'entraîneur, depuis le début de sa fiche (nom - 0x10)
 const COMP_TABLE = 0x1F1DFE;    // nom de la 1re compétition ; id u16 à nom-2
 const COMP_STRIDE = 0x314;
 const MATCH_TABLE = 0x329B08;    // 1er match (même numérotation que le jeu)
@@ -110,26 +113,48 @@ function readTeams(d, L) {
     // Écusson importé par l'option file : numéro du fichier TEMBLEM de la sauvegarde (0xFFFF = aucun).
     const slot = d.readUInt16LE(o + 0x2E8);
     team.emblemSlot = slot === 0xFFFF ? null : slot;
+    // Effectif : la liste s'arrête à la première place sans id de joueur. Le numéro interne ne compte pas : dans une
+    // sauvegarde du GigaPack, il vaut 0xFFFF pour tous les joueurs (seul le joueur créé en a un), et s'y arrêter vidait
+    // 1 839 effectifs sur 4 096, dont celui du joueur (2026-11-23). Un joueur créé a un id au bit haut (0x80000000 + n).
     team.roster = [];
     for (let r = 0; r < ROSTER_MAX; r++) {
-      const e = o + ROSTER_OFFSET + 8 * r;
-      const slot = d.readUInt32LE(e) & 0xFFFF, pid = d.readUInt32LE(e + 4);
-      if (slot === 0xFFFF || pid < 1000 || pid > 1000000) break;
+      const pid = d.readUInt32LE(o + ROSTER_OFFSET + 8 * r + 4);
+      if (!rosterIdOk(pid)) break;
       team.roster.push(pid);
     }
     team.index = k;
     // Formation de la tactique A (1re phase), celle du plan de jeu : voir formations.js.
     team.formation = readPhase(d, o + TACTIC_A);
     const c = L.coach == null ? -1 : L.coach + COACH_STRIDE * team.slot;
-    if (c >= 8 && c + 0x40 < d.length && d.readUInt32LE(c - 8) === team.slot) team.coach = prettyName(cstr(d, c, 0x40)) || null;
+    const hasCoach = c >= 8 && c + 0x40 < d.length && d.readUInt32LE(c - 8) === team.slot;
+    if (hasCoach) team.coach = prettyName(cstr(d, c, 0x40)) || null;
+    // Style de jeu (playStyle.js) : celui que le jeu affiche, la 1re tactique de l'entraîneur, sinon la tactique A du club.
+    const coachTactic = c - 0x10 + COACH_TACTIC_1;
+    team.style = (hasCoach && readPhase(d, coachTactic) && readStyle(d, coachTactic)) || readStyle(d, o + TACTIC_A);
     teams.set(ref, team);
   }
   return teams;
 }
 
+// Les fiches des compétitions (la place de leur nom). La table a des places vides (nom vide) au milieu : 21 dans une
+// sauvegarde du GigaPack, 3 dans celle de Nancy (relevé le 2026-11-23). LifeLegend s'arrêtait à la première : 48 245
+// matchs sur 59 664 restaient sans compétition dans le GigaPack (dont tous les siens, EFL League Two, fiche 328), 2 958
+// sur 10 289 pour Nancy. On saute donc les places vides, et la table s'arrête à la première fiche qui n'est ni un nom
+// ni vide (fiche 2002 du GigaPack, 302 d'une sauvegarde du jeu sans modules).
+const MAX_COMPS = 4096;
+function compRecords(d, L) {
+  const out = [];
+  for (let o = L.comp ?? d.length, k = 0; o + 0x80 <= d.length && k < MAX_COMPS; o += COMP_STRIDE, k++) {
+    if (d[o] === 0) continue;
+    if (d[o] < 0x20 || d[o] >= 0xF8) break;
+    out.push(o);
+  }
+  return out;
+}
+
 function readCompetitions(d, L) {
   const comps = new Map();
-  for (let o = L.comp ?? d.length; o < d.length && d[o] >= 0x20 && d[o] < 0xF8; o += COMP_STRIDE) {
+  for (const o of compRecords(d, L)) {
     const id = d.readUInt16LE(o - 2);
     if (!comps.has(id)) comps.set(id, cstr(d, o, 0x46));
   }
@@ -139,7 +164,7 @@ function readCompetitions(d, L) {
 // Logo de chaque compétition : numéro du fichier emblemLc du jeu (u16 à nom+0x7E).
 function readCompetitionLogos(d, L) {
   const logos = new Map();
-  for (let o = L.comp ?? d.length; o < d.length && d[o] >= 0x20 && d[o] < 0xF8; o += COMP_STRIDE) {
+  for (const o of compRecords(d, L)) {
     const id = d.readUInt16LE(o - 2);
     if (!logos.has(id)) logos.set(id, d.readUInt16LE(o + 0x7E));
   }
@@ -152,23 +177,30 @@ function readLineup(d, o) {
     const e = o + 16 * k;
     const slot = d.readUInt32LE(e), playerId = d.readUInt32LE(e + 4);
     if (slot === 0xFFFF || playerId === 0) continue;
-    const events = d.readUInt32LE(e + 8), packed = d.readUInt32LE(e + 12);
-    out.push({
-      playerId,
-      // Titulaire : bit 21. Les 11 premières places de la feuille de match ne sont pas toujours les titulaires
-      // (vérifié sur 1 032 compositions : 11 titulaires à chaque fois avec ce bit, la moitié fausses avec les places).
-      starter: ((packed >>> 21) & 1) === 1,
-      // Poste joué dans ce match (bits 14-17) : 0 gardien, 1 défenseur central, 2 latéral, 3 milieu défensif,
-      // 4 milieu central, 5 milieu latéral, 6 milieu offensif, 7 second attaquant, 8 ailier, 9 avant-centre.
-      // Le côté (gauche, droite) n'est pas dans ce champ.
-      pos: (packed >>> 14) & 0xF,
-      minutes: packed & 0x7F,
-      ratingRaw: (packed >>> 8) & 0x3F, // échelle encore à calibrer
-      goals: events & 0xFF,
-      assists: (events >>> 8) & 0xFF,
-    });
+    out.push(sheetEntry(playerId, d.readUInt32LE(e + 8), d.readUInt32LE(e + 12)));
   }
   return out;
+}
+
+// Une ligne de feuille de match : [slot][id][événements][packed] (u32 chacun).
+function sheetEntry(playerId, events, packed) {
+  return {
+    playerId,
+    // Titulaire : bit 21. Les 11 premières places de la feuille de match ne sont pas toujours les titulaires
+    // (vérifié sur 1 032 compositions : 11 titulaires à chaque fois avec ce bit, la moitié fausses avec les places).
+    starter: ((packed >>> 21) & 1) === 1,
+    // Poste joué dans ce match (bits 14-17) : 0 gardien, 1 défenseur central, 2 latéral, 3 milieu défensif,
+    // 4 milieu central, 5 milieu latéral, 6 milieu offensif, 7 second attaquant, 8 ailier, 9 avant-centre.
+    // Le côté (gauche, droite) n'est pas dans ce champ.
+    pos: (packed >>> 14) & 0xF,
+    minutes: packed & 0x7F,
+    // Note en dixièmes, 7 bits (7 à 13) : 58 = 5,8. Relevé le 2026-11-23 : les 22 notes de l'écran de fin de match du
+    // jeu (Accrington – Colchester, GigaPack, module fair_rating) tombent toutes juste. Avant, LifeLegend ne lisait que
+    // les bits 8 à 13 et arrondissait au demi-point.
+    ratingRaw: (packed >>> 7) & 0x7F,
+    goals: events & 0xFF,
+    assists: (events >>> 8) & 0xFF,
+  };
 }
 
 function readMatches(d, teams, comps, L) {
@@ -546,4 +578,4 @@ function peekSave(savePath) {
   return { fileType: file.fileType, game: file.gameVersion, ...readDescription(file.description) };
 }
 
-module.exports = { readCareer, peekSave, competitionMatches, leagueTable, scorers, prettyName, readPlayerOfYear, headerDates, PLAYER_REC };
+module.exports = { readCareer, peekSave, competitionMatches, leagueTable, scorers, prettyName, readPlayerOfYear, headerDates, readTeams, sheetEntry, readCompetitions, PLAYER_REC };

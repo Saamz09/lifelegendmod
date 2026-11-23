@@ -62,6 +62,18 @@ test('sauvegarde agrandie : pas d’écriture, et un message clair si la fiche d
   assert.throws(() => saveLayout(d, { playerName: 'Quelqu’un d’autre' }), (e) => e.code === 'SAVE_LAYOUT');
 });
 
+// Écritures : refusées dans une sauvegarde agrandie, sauf celles essayées en jeu sur ce genre de sauvegarde (le style
+// de jeu, 2026-11-23 sur le GigaPack), qui reçoivent la table des entraîneurs retrouvée par sa forme.
+test('sauvegarde agrandie : écriture seulement si permise, avec la table des entraîneurs retrouvée', () => {
+  const { writePlaces } = require(path.join(ROOT, 'src/save/layout.js'));
+  const d = moddedSave();
+  assert.throws(() => writePlaces(d), (e) => e.code === 'SAVE_LAYOUT' && /n’y écrit pas/.test(e.message));
+  assert.deepStrictEqual(writePlaces(d, { enlarged: true }), { standard: false, coach: AT.coach, player: null });
+  assert.deepStrictEqual(writePlaces(d, { enlarged: true, playerName: 'Iker Bravo' }), { standard: false, coach: AT.coach, player: AT.player });
+  const noCoach = moddedSave(); noCoach.writeUInt32LE(99, AT.coach + 0x258 * 3 - 8);
+  assert.deepStrictEqual(writePlaces(noCoach, { enlarged: true, playerName: 'Quelqu’un d’autre' }), { standard: false, coach: null, player: null });
+});
+
 test('sauvegarde du jeu sans modules : places connues, et la détection retombe dessus', { skip: !(fs.existsSync(SAVE) && fs.existsSync(KEY)) && 'fichiers de référence absents' }, () => {
   const { setSaveKeys, decryptSave } = require(path.join(ROOT, 'src/save/pesCrypt.js'));
   const { peekSave } = require(path.join(ROOT, 'src/save/blReader.js'));
@@ -70,6 +82,8 @@ test('sauvegarde du jeu sans modules : places connues, et la détection retombe 
   const name = peekSave(SAVE).player;
   assert.strictEqual(saveLayout(d, { playerName: name }).standard, true);
   assert.doesNotThrow(() => assertStandard(d, name));
+  const { writePlaces } = require(path.join(ROOT, 'src/save/layout.js'));
+  assert.deepStrictEqual(writePlaces(d), { standard: true, coach: STANDARD.coach, player: STANDARD.player });
   const { matchCount, standard, ...found } = detectLayout(d, name);
   const { matchCount: total, ...known } = STANDARD;
   assert.deepStrictEqual(found, known);

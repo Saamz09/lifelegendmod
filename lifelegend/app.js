@@ -175,6 +175,7 @@ let state = null;
 let settings = null;
 let providers = {};
 let appVersion = '';
+let appNews = { show: [], last: null }; // nouveautés de la mise à jour (src/news.js) : à montrer, et celles à revoir
 let current = 'national';
 const view = { edition: null, thread: null, openPost: null };
 
@@ -576,6 +577,17 @@ function renderSetup(page) {
     if (ta) ta.oninput = () => { su.bio = ta.value; $('#su-count').textContent = `${ta.value.length} / ${BIO_MAX}`; };
     $('#su-publish').onclick = setupPublish;
   }
+}
+
+// Modèles proposés dans les réglages pour un fournisseur : sa liste, puis les autres qu'on peut choisir (src/ai/providers.js),
+// puis ceux que le fournisseur a donnés quand on les lui a demandés (src/ai/modelList.js).
+const modelChoices = (id) => [...new Set([...(providers[id]?.models || []), ...(providers[id]?.more || []), ...(settings.modelLists?.[id]?.models || [])])];
+// Les options de la liste déroulante « Modèle » : le modèle choisi (même absent des listes), les autres, puis « Autre
+// modèle… » pour en taper un à la main (choisi d'office quand aucun modèle ne l'est).
+const MODEL_OTHER = '__autre';
+function modelOptions(id, current) {
+  const list = modelChoices(id), all = current && !list.includes(current) ? [current, ...list] : list;
+  return `${all.map((m) => `<option value="${esc(m)}"${m === current ? ' selected' : ''}>${esc(m)}</option>`).join('')}<option value="${MODEL_OTHER}"${current ? '' : ' selected'}>${tr('Autre modèle…')}</option>`;
 }
 
 // Boîte de confirmation de la mod, à la place de confirm() (qui ouvrirait une fenêtre système). Échap ou un clic à
@@ -2751,13 +2763,17 @@ const fullStamp = (p, parent = null) => {
   return `${m != null ? `${hhmm(m)} · ` : ''}${date ? fmtDate(date, { day: 'numeric', month: 'short', year: 'numeric' }) : ''}`;
 };
 
+// Longueur d'un post, d'une réponse ou d'une citation du joueur sur Kop : 1 000 caractères, comme les messages privés
+// (280 jusqu'au 2026-11-23, trop court d'après un joueur sur Discord). Même limite dans world.js.
+const KOP_MAX = 1000;
+
 // Compteur de caractères en cercle, comme sur X (le nombre restant apparaît à 20 caractères de la limite).
 function charRing(len) {
   if (!len) return '';
-  const left = 280 - len, c = 2 * Math.PI * 9;
+  const left = KOP_MAX - len, c = 2 * Math.PI * 9;
   // Couleur par la feuille de style (encre, puis or près de la limite, rouge au-delà).
   const level = left <= 0 ? ' over' : left <= 20 ? ' near' : '';
-  return `<span class="tw-ring" title="${len}/280"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" class="tw-ring-bg"/><circle cx="12" cy="12" r="9" class="tw-ring-fg${level}" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${(c * (1 - Math.min(1, len / 280))).toFixed(2)}"/></svg>${left <= 20 ? `<b${left <= 0 ? ' class="over"' : ''}>${left}</b>` : ''}</span>`;
+  return `<span class="tw-ring" title="${len}/${KOP_MAX}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" class="tw-ring-bg"/><circle cx="12" cy="12" r="9" class="tw-ring-fg${level}" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${(c * (1 - Math.min(1, len / KOP_MAX))).toFixed(2)}"/></svg>${left <= 20 ? `<b${left <= 0 ? ' class="over"' : ''}>${left}</b>` : ''}</span>`;
 }
 
 // Vues : Kop ne les compte pas ; un ordre de grandeur stable tiré des j'aime et des partages.
@@ -2771,7 +2787,7 @@ function replyBoxHtml(handle) {
   return `<div class="tw-replybox">${avatar(me)}
     <div class="tw-replybox-main">
       <p class="tw-replying">${tr('En réponse à')} <span>@${esc(handle)}</span></p>
-      <textarea id="tw-reply-text" rows="1" maxlength="280" placeholder="${tr('Poste ta réponse')}">${esc(draft)}</textarea>
+      <textarea id="tw-reply-text" rows="1" maxlength="${KOP_MAX}" placeholder="${tr('Poste ta réponse')}">${esc(draft)}</textarea>
       <div class="tw-replybox-foot"><button type="button" class="tw-form-emoji" id="tw-reply-emoji" title="${tr('Émojis')}" aria-label="${tr('Émojis')}">${hi('smile')}</button><div class="hd-pop hidden" id="tw-reply-emoji-pop"></div><span class="tw-chars" id="tw-reply-chars">${charRing(draft.length)}</span><button class="tw-btn tw-btn-sm" id="tw-reply-send"${draft.trim() ? '' : ' disabled'}>${tr('Répondre')}</button></div>
     </div></div>`;
 }
@@ -3764,7 +3780,7 @@ function openQuoteComposer(postId, replyId) {
     <div class="tw-modal-head"><button class="tw-iconbtn tw-modal-x" data-close aria-label="${tr('Fermer')}">${hi('xmark')}</button><h2>${tr('Citer')}</h2></div>
     <div class="tw-modal-body"><div class="tw-qc-row">${avatar(me0())}
       <div class="tw-qc-main">
-        <textarea id="tw-qc-text" rows="2" maxlength="280" placeholder="${tr('Ajouter un commentaire')}"></textarea>
+        <textarea id="tw-qc-text" rows="2" maxlength="${KOP_MAX}" placeholder="${tr('Ajouter un commentaire')}"></textarea>
         ${quotedHtml({ root, target }, { link: false })}
         <div class="tw-qc-foot"><span class="tw-chars" id="tw-qc-chars">${charRing(0)}</span><button class="tw-btn" id="tw-qc-send" disabled>${tr('Poster')}</button></div>
       </div></div></div></div>`;
@@ -4002,7 +4018,7 @@ function renderTribune(page) {
         <div class="tw-panel-title"><h2>${tr('Comptes')}</h2></div>${accounts.map(twWhoHtml).join('')}</div>`
     : `${home && !author && !view.twQuery ? `<div class="tw-form">${avatar(me)}
           <div class="tw-form-main">
-            <div class="tw-form-input"><textarea id="composer" rows="1" maxlength="280" placeholder="${tr('Quoi de neuf ?')}">${esc(drafts.post)}</textarea>
+            <div class="tw-form-input"><textarea id="composer" rows="1" maxlength="${KOP_MAX}" placeholder="${tr('Quoi de neuf ?')}">${esc(drafts.post)}</textarea>
               <div class="mention-pop hidden" id="mention-pop"></div></div>
             <div class="mention-warn hidden" id="mention-warn"></div>${twPollEditHtml()}
             <div class="tw-form-foot">
@@ -4539,7 +4555,7 @@ function emojiPop(pop, insert, scrollTop = 0) {
 function bindKopEmoji(btn, pop, ta) {
   if (!btn || !pop || !ta) return;
   hdEmojiWarm();
-  const max = ta.maxLength > 0 ? ta.maxLength : 280;
+  const max = ta.maxLength > 0 ? ta.maxLength : KOP_MAX;
   const insert = (e) => {
     if (ta.value.length + e.length > max) return;
     const a = ta.selectionStart ?? ta.value.length, b = ta.selectionEnd ?? a;
@@ -5183,7 +5199,16 @@ let influenceLoading = false;
 let influenceHits = null;   // résultats de la recherche de recrue
 // Postes officiels du jeu (codes PES 0-12, dans l'ordre de POS_CODES), pour le poste à renforcer.
 const INF_POS = ['Gardien', 'Défenseur central', 'Arrière gauche', 'Arrière droit', 'Milieu défensif', 'Milieu central', 'Milieu gauche', 'Milieu droit', 'Milieu offensif', 'Ailier gauche', 'Ailier droit', 'Second attaquant', 'Avant-centre'];
-const INF_KIND = { formation: 'Plan de jeu', signing: 'Recrue', sale: 'Départ', undo: 'Vente refusée', keep: 'Retenir', future: 'Ton avenir' };
+const INF_KIND = { formation: 'Plan de jeu', style: 'Style de jeu', signing: 'Recrue', sale: 'Départ', undo: 'Vente refusée', keep: 'Retenir', future: 'Ton avenir' };
+// Style de jeu : les 7 consignes de l'écran du jeu « Tactiques définies », dans son ordre, avec leurs deux valeurs
+// (0 puis 1, comme dans la sauvegarde : voir src/save/playStyle.js).
+const IB_STYLE = [
+  ['Style offensif', ['Contre-attaque', 'Jeu de possession']], ['Construction', ['Passe longue', 'Passe courte']],
+  ['Zone d’attaque', ['Écarté', 'Centre']], ['Placement', ['Conserver la formation', 'Flexible']],
+  ['Style défensif', ['Pressing attaquants', 'Défense totale']], ['Zone de pressing', ['Centre', 'Écarté']], ['Pressing constant', ['Agressif', 'Prudent']],
+];
+// Les consignes qui changent, avec leur nouvelle valeur (« Jeu de possession, Défense totale »).
+const styleChanges = (values, previous) => (Array.isArray(values) ? IB_STYLE.flatMap(([, vals], i) => (previous && previous[i] === values[i] ? [] : [tr(vals[values[i]])])).join(', ') : '');
 const INF_STATUS = { waiting: 'En attente du mercato', ready: 'Prête à écrire', applied: 'Écrite dans ta sauvegarde', confirmed: 'Gardée par le jeu', reverted: 'Pas gardée par le jeu', expired: 'Expirée', cancelled: 'Annulée' };
 const INF_REASON = {
   same: 'C’est déjà le plan de jeu du club.', cooldown: 'Tu as fait une demande de ce genre il y a peu : laisse passer quelques semaines.', pending: 'Une décision de ce genre est déjà en cours.',
@@ -5194,6 +5219,7 @@ const INF_REASON = {
   squad_big: 'l’effectif est déjà chargé', in_form: 'tu es en forme', out_of_form: 'ta forme n’est pas bonne', average_form: 'ta forme est moyenne', long_contract: 'ton contrat court encore plus de trois ans',
   thin_position: 'ton club manque de joueurs à ce poste', deep_position: 'ton club a déjà du monde à ce poste',
   contract_ending: 'ton contrat se termine bientôt', low_influence: 'tu n’as pas encore assez de poids dans le vestiaire',
+  same_style: 'Ce sont déjà les consignes de l’équipe.', winning_style: 'l’équipe gagne avec ses consignes actuelles', recent_style_change: 'les consignes viennent de changer',
 };
 // Formation : le nom affiché par le jeu d'abord (celui du plan de jeu), le nom courant ensuite s'il diffère.
 const fmName = (f) => (!f ? '—' : f.name && f.name !== f.gameName ? `${f.gameName} (≈ ${f.name})` : f.gameName);
@@ -5201,6 +5227,7 @@ const infWhy = (a) => (a && !a.blocked && a.reasons?.length ? `${tr('Ce qui joue
 const infDay = (iso) => fmtDate(iso, { day: 'numeric', month: 'long', year: 'numeric' });
 function effectLabel(e) {
   if (e.kind === 'formation') return tr('Plan de jeu : {name}', { name: fmName(e) });
+  if (e.kind === 'style') return tr('Style de jeu : {list}', { list: styleChanges(e.values, e.previous) });
   if (e.kind === 'signing') return tr('Recrue : {name} ({club})', { name: e.name, club: e.from || '?' });
   if (e.kind === 'sale') return tr('Départ : {name} vers {club}', { name: e.name, club: e.to || '?' });
   return tr('Vente refusée : {name} reste au club', { name: e.name });
@@ -5448,6 +5475,12 @@ function influencePage() {
           ${fac('calendar', tr('Ancienneté'), pts.seniority, 15, joined ? tr('au club depuis le {d}', { d: infDay(joined) }) : '')}
           ${p.track || p.fans ? `<p class="fineprint">${[p.track ? `${tr('Bilan de tes demandes')}${colon()} ${p.track > 0 ? `+${p.track}` : p.track}` : '', p.fans ? tr('Supporters : {n}', { n: p.fans }) : ''].filter(Boolean).map(esc).join(' · ')}</p>` : ''}
         </section>
+        <section class="ib-panel ib-style"><h3>${tr('Style de jeu')}</h3>
+          ${d.style ? `<dl class="ib-style-now">${IB_STYLE.map(([label, vals], i) => `<div><dt>${esc(tr(label))}</dt><dd>${esc(tr(vals[d.style.current[i]]))}</dd></div>`).join('')}</dl>
+          <button type="button" class="btn" data-infopen="style"${d.style.odds[1]?.blocked ? ' disabled' : ''}>${tr('Proposer d’autres consignes')}</button>
+          ${d.style.odds[1]?.blocked ? `<p class="fineprint">${reason(d.style.odds[1].blocked)}</p>` : ''}`
+    : `<span class="ib-sub">${tr('Synchronise ta sauvegarde : LifeLegend y lira les consignes de ton entraîneur.')}</span>`}
+        </section>
         <section class="ib-panel"><h3>${tr('Ton avenir')}</h3>
           ${s.player.contractUntil ? `<span class="ib-sub">${esc(tr('Contrat jusqu’au {d}', { d: infDay(s.player.contractUntil) }))}</span>` : ''}
           ${wish('extend', tr('Une prolongation'))}${wish('leave', tr('Ton départ'))}
@@ -5474,7 +5507,9 @@ function influencePage() {
 
 // Chaque carte du mercato ouvre sa fenêtre, avec ses seuls champs ; la demande part de là.
 let infBox = null;
-const IB_PANELS = { signing: 'Recommander une recrue', sale: 'Demander un départ', keep: 'Retenir un coéquipier', extend: 'Une prolongation', leave: 'Ton départ' };
+// Qui reçoit la demande : l'entraîneur pour le style de jeu, le directeur sportif pour le reste.
+const infTo = (d, kind) => (kind === 'style' ? d.coach || tr('ton entraîneur') : d.director);
+const IB_PANELS = { style: 'Style de jeu', signing: 'Recommander une recrue', sale: 'Demander un départ', keep: 'Retenir un coéquipier', extend: 'Une prolongation', leave: 'Ton départ' };
 function closeInfModal() {
   if (!infBox) return;
   infBox.remove();
@@ -5484,7 +5519,7 @@ function closeInfModal() {
 }
 function openInfModal(kind, pick = null) {
   if (infBox) return;
-  Object.assign(view, { infPanel: kind, infPick: pick });
+  Object.assign(view, { infPanel: kind, infPick: pick, infStyle: null });
   infBox = document.createElement('div');
   infBox.className = 'ib-modal-back ll-open';
   setTimeout(() => infBox?.classList.remove('ll-open'), 400);
@@ -5499,7 +5534,19 @@ function infPanelBody(d, kind) {
   const dates = windowDates(state.snapshot);
   const mercato = `<p class="fineprint">${d.window ? esc(tr('Le mercato est ouvert {dates} : une décision acceptée peut être écrite tout de suite.', { dates })) : esc(tr('Le mercato est fermé ({dates}) : une décision acceptée attendra son ouverture.', { dates }))}</p>`;
   const arg = `<input class="ib-input" data-msg="${kind}" maxlength="300" placeholder="${tr('Ton argument (facultatif)')}">`;
-  const go = (on) => `<button class="btn primary" data-infsend${on ? '' : ' disabled'}>${esc(tr('Demander à {name}', { name: d.director }))}</button>`;
+  const go = (on) => `<button class="btn primary" data-infsend${on ? '' : ' disabled'}>${esc(tr('Demander à {name}', { name: infTo(d, kind) }))}</button>`;
+  if (kind === 'style') {
+    // Une consigne par ligne, ses deux valeurs côte à côte ; les chances suivent le nombre de consignes changées.
+    const cur = d.style.current, pick = view.infStyle || cur;
+    const n = pick.filter((v, i) => v !== cur[i]).length, a = d.style.odds[n];
+    const rows = IB_STYLE.map(([label, vals], i) => `<div class="ib-srow${pick[i] !== cur[i] ? ' changed' : ''}"><span class="ib-srow-label">${esc(tr(label))}</span>
+      <div class="ib-seg" role="radiogroup" aria-label="${esc(tr(label))}">${vals.map((v, j) => `<button type="button" class="ib-chip${pick[i] === j ? ' on' : ''}" role="radio" aria-checked="${pick[i] === j}" data-infstyle="${i}:${j}">${esc(tr(v))}${cur[i] === j ? `<small>${tr('actuel')}</small>` : ''}</button>`).join('')}</div></div>`).join('');
+    return `<p class="fineprint">${tr('Les consignes de l’écran « Tactiques définies » du jeu. Change celles que tu veux : plus tu en changes, plus c’est dur à obtenir.')}</p>
+      <div class="ib-srows">${rows}</div>
+      <div class="ib-chance">${!n ? `<span>${tr('Change au moins une consigne.')}</span>` : a.blocked ? ibOdds(a) : `<b>${pct(a.chance)}</b><span>${tr('de chances')}</span>`}</div>
+      ${n && infWhy(a) ? `<p class="fineprint">${infWhy(a)}</p>` : ''}
+      <div class="ib-send">${arg}${go(n > 0 && !a.blocked)}</div>`;
+  }
   if (kind === 'extend' || kind === 'leave') {
     const a = d.future[kind];
     return `<div class="ib-chance">${a.blocked ? ibOdds(a) : `<b>${pct(a.chance)}</b><span>${tr('de chances')}</span>`}</div>
@@ -5531,7 +5578,7 @@ function paintInfModal() {
   const draft = infBox.querySelector('[data-msg]')?.value || '';
   infBox.innerHTML = `<div class="ib-modal" role="dialog" aria-modal="true" aria-labelledby="ib-modal-title" tabindex="-1">
     <button class="ib-modal-x" data-infclose aria-label="${tr('Fermer')}" title="${tr('Fermer')}">${hi('xmark')}</button>
-    <span class="ib-eyebrow">${esc(tr('Demande à {name}', { name: d.director }))}</span><h2 id="ib-modal-title">${esc(tr(IB_PANELS[kind]))}</h2>
+    <span class="ib-eyebrow">${esc(tr('Demande à {name}', { name: infTo(d, kind) }))}</span><h2 id="ib-modal-title">${esc(tr(IB_PANELS[kind]))}</h2>
     ${infPanelBody(d, kind)}</div>`;
   const field = infBox.querySelector('[data-msg]');
   if (field) field.value = draft;
@@ -5541,6 +5588,7 @@ function paintInfModal() {
 function requestLabel(r) {
   const sm = r.summary || {};
   if (r.kind === 'formation') return fmName(sm);
+  if (r.kind === 'style') return styleChanges(sm.values, sm.previous) || tr('Style de jeu');
   if (r.kind === 'signing') return `${sm.name || '?'}${sm.from ? ` (${sm.from})` : ''}${Number.isInteger(sm.position) ? ` · ${posLabel(POS_CODES[sm.position])}` : ''}`;
   if (r.kind === 'sale') return `${sm.name || '?'}${sm.to ? ` → ${sm.to}` : ''}`;
   if (r.kind === 'keep') return sm.name || '?';
@@ -5581,7 +5629,8 @@ function adviceCard(t) {
 }
 
 // Mise à l'écart décidée par le club (src/world/conduct.js) : sous son mail, le bouton qui l'écrit dans la sauvegarde
-// (jeu fermé), puis où elle en est.
+// (jeu fermé, une suspension du jeu), puis où elle en est. applied.days : une sanction écrite avant le 2026-11-23, en jours
+// d'indisponibilité.
 // Dans une phrase : « jeudi 14 janvier » sans majuscule (fmtDate en met une, pour les débuts de ligne).
 const cdMatch = (m) => { const [y, mo, d] = m.date.split('-').map(Number); return `${m.home} – ${m.away}, ${new Date(y, mo - 1, d).toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' })}`; };
 function conductCard(t) {
@@ -5591,8 +5640,9 @@ function conductCard(t) {
   if (!p) return '';
   const matches = p.matches.map(cdMatch).join(' · ');
   const body = p.ended ? `<p>${esc(p.applied ? tr('Sanction purgée.') : tr('Sanction terminée sans avoir été écrite dans le jeu.'))}</p>`
-    : p.applied ? `<p>${esc(trn(p.applied.days, 'C’est écrit : tu es indisponible {n} jour dans le jeu, le temps de la sanction.', 'C’est écrit : tu es indisponible {n} jours dans le jeu, le temps de la sanction.'))}</p><p class="sm-conduct-note">${tr('Le jeu l’affiche peut-être comme une blessure.')}</p>`
-      : `<p>${esc(tr('Pour que la sanction compte dans le jeu, LifeLegend écrit dans ta sauvegarde que tu es indisponible jusqu’au lendemain du dernier match : {matches}.', { matches }))}</p>
+    : p.applied?.days ? `<p>${esc(trn(p.applied.days, 'C’est écrit : tu es indisponible {n} jour dans le jeu, le temps de la sanction.', 'C’est écrit : tu es indisponible {n} jours dans le jeu, le temps de la sanction.'))}</p><p class="sm-conduct-note">${tr('Le jeu l’affiche peut-être comme une blessure.')}</p>`
+    : p.applied ? `<p>${esc(trn(p.applied.matches, 'C’est écrit : tu es suspendu {n} match dans le jeu.', 'C’est écrit : tu es suspendu {n} matchs dans le jeu.'))}</p><p class="sm-conduct-note">${tr('Le jeu l’affiche dans l’écran Composition et décompte les matchs tout seul. Tant que tu es suspendu, le calendrier du menu montre chaque match en double : c’est l’affichage du jeu, comme après un carton rouge.')}</p>`
+      : `<p>${esc(trn(p.count || p.matches.length, 'Pour que la sanction compte dans le jeu, LifeLegend écrit dans ta sauvegarde que tu es suspendu {n} match, comme après un carton rouge : {matches}.', 'Pour que la sanction compte dans le jeu, LifeLegend écrit dans ta sauvegarde que tu es suspendu {n} matchs, comme après un carton rouge : {matches}.', { matches }))}</p>
         <p class="sm-conduct-note">${tr('Le jeu doit être fermé : sauvegarde ta partie et quitte le jeu avant de continuer. LifeLegend garde une copie de ta sauvegarde.')}</p>
         <div class="sm-advice-btns"><button class="sm-btn sm-btn-primary" data-conductapply>${tr('Appliquer dans le jeu')}</button></div>`;
   return `<div class="sm-msg"><div class="sm-advice sm-conduct">${body}</div></div>`;
@@ -5695,7 +5745,7 @@ function bindInfluence(page) {
       const e = d.effects.find((x) => x.id === b.dataset.infapply);
       const ok = await kConfirm({
         title: tr('Écrire cette décision dans ta sauvegarde ?'),
-        body: `${effectLabel(e)}\n\n${e.kind === 'formation' ? '' : `${tr('Le transfert est encore expérimental : il n’a pas été vérifié dans Football Life 2027.')}\n\n`}${tr('Le jeu doit être fermé : sauvegarde ta partie et quitte le jeu avant de continuer. LifeLegend garde une copie de ta sauvegarde.')}`,
+        body: `${effectLabel(e)}\n\n${e.kind === 'formation' || e.kind === 'style' ? '' : `${tr('Le transfert est encore expérimental : il n’a pas été vérifié dans Football Life 2027.')}\n\n`}${tr('Le jeu doit être fermé : sauvegarde ta partie et quitte le jeu avant de continuer. LifeLegend garde une copie de ta sauvegarde.')}`,
         ok: tr('Écrire dans ma sauvegarde'),
       });
       if (!ok) return;
@@ -5706,7 +5756,8 @@ function bindInfluence(page) {
         influenceData = null;
         render();
         toast(r.result.kind === 'formation' ? tr('C’est écrit : lance le jeu, le plan de jeu de {club} a changé.', { club: state.snapshot.club.name })
-          : tr('C’est écrit : lance le jeu, {name} a changé de club.', { name: r.result.name }));
+          : r.result.kind === 'style' ? tr('C’est écrit : lance le jeu, les consignes de {club} ont changé.', { club: state.snapshot.club.name })
+            : tr('C’est écrit : lance le jeu, {name} a changé de club.', { name: r.result.name }));
       } catch (err) { b.disabled = false; toast(err.message, true); }
     };
   });
@@ -5727,9 +5778,19 @@ function bindInfModal(d, kind) {
       send.disabled = false;
     };
   });
+  box.querySelectorAll('[data-infstyle]').forEach((b) => {
+    b.onclick = () => {
+      const [i, j] = b.dataset.infstyle.split(':').map(Number);
+      view.infStyle = [...(view.infStyle || d.style.current)];
+      view.infStyle[i] = j;
+      paintInfModal();
+      infBox?.querySelector(`[data-infstyle="${i}:${j}"]`)?.focus();
+    };
+  });
   if (send) {
     send.onclick = () => {
-      if (kind === 'sale') sendInfluence('sale', { playerId: view.infPick, toRef: Number(box.querySelector('#inf-sale-to').value) }, 'sale', send);
+      if (kind === 'style') sendInfluence('style', { values: view.infStyle }, 'style', send);
+      else if (kind === 'sale') sendInfluence('sale', { playerId: view.infPick, toRef: Number(box.querySelector('#inf-sale-to').value) }, 'sale', send);
       else if (kind === 'keep') sendInfluence('keep', { playerId: view.infPick }, 'keep', send);
       else sendInfluence('future', { wish: kind }, null, send);
     };
@@ -6101,7 +6162,8 @@ function renderMail(page) {
 }
 
 // Logo d'une compétition d'après son nom (fiches lues dans le jeu).
-const compEmblem = (name) => emblemUrl(Object.values(state.clubPages || {}).find((p) => p.kind === 'competition' && p.name === name)?.emblem);
+// Le logo du compte Kop de la compétition, sinon celui de toute compétition du jeu (une ligue d'un pack, sans compte).
+const compEmblem = (name) => emblemUrl(Object.values(state.clubPages || {}).find((p) => p.kind === 'competition' && p.name === name)?.emblem || state.compLogos?.[name]);
 const fmtRating = (r) => (Number.isFinite(r) ? r.toLocaleString(locale(), { minimumFractionDigits: 1, maximumFractionDigits: 2 }) : '—');
 
 const monthYear = (ym) => { if (!ym) return '—'; const [y, m] = ym.split('-').map(Number); return new Date(y, m - 1, 1).toLocaleDateString(locale(), { month: 'long', year: 'numeric' }); };
@@ -6813,7 +6875,7 @@ function scH2h(d, i) {
   const m = d.matches[i], [h, a] = [m[4], m[5]];
   const met = (d.byTeam.get(h) || []).filter((k) => k !== i && (d.matches[k][4] === a || d.matches[k][5] === a));
   const form = (ref) => { const done = (d.byTeam.get(ref) || []).filter((k) => skPlayed(d, k) && d.matches[k][0] <= m[0]).slice(-5); return `<div class="sc-form"><span>${scCrest(skName(d, ref), 22)}<b>${esc(skName(d, ref))}</b></span><span class="sfa-form">${done.map((k) => skBadge(skRes(d, k, ref))).join('') || '—'}</span></div>`; };
-  return `${scCard(tr('Forme'), form(h) + form(a))}${scCard(tr('Autres rencontres cette saison'), met.map((k) => scRow(d, k, `<small>${esc(shortDate(d.matches[k][0]))} · ${esc(gzShort(d.comps[d.matches[k][2]].name))}</small>`)).join('') || `<p class="sc-fine">${tr('Aucune autre rencontre cette saison.')}</p>`)}`;
+  return `${scCard(tr('Forme'), form(h) + form(a))}${scCard(tr('Autres rencontres cette saison'), met.length ? `<div class="sc-mgrid">${met.map((k) => scRow(d, k, `<small>${esc(shortDate(d.matches[k][0]))} · ${esc(gzShort(d.comps[d.matches[k][2]].name))}</small>`)).join('')}</div>` : `<p class="sc-fine">${tr('Aucune autre rencontre cette saison.')}</p>`)}`;
 }
 
 // Saison du joueur, tous clubs confondus : les clubs quittés en cours de saison (archivés par LifeLegend, avec leurs
@@ -7162,7 +7224,8 @@ function scPlayer(d) {
     const simple = (f) => `<div class="sc-m"><span class="sc-st${f.played ? '' : ' up'}">${f.played ? tr('Fin') : f.hour != null ? hh(f.hour) : '—'}</span><span class="sc-m-h"><span>${esc(f.home)}</span>${scCrest(f.home, 18)}</span><b class="sc-sc">${f.played ? `${f.score[0]} - ${f.score[1]}` : '-'}</b><span class="sc-m-a">${scCrest(f.away, 18)}<span>${esc(f.away)}</span></span><span class="sc-m-x">${myExtra(f)}</span></div>`;
     const byComp = comps.map((c) => [c, shown.filter((f) => f.competition === c)]).filter(([, fs]) => fs.length);
     const pastGroups = past.filter((c) => fl === 'all' || fl === `club:${c.club}`).map((c) => `<div class="sc-gh"><span>${scCrest(c.club, 20)}${esc(tr('Avec {club}', { club: c.club }))}</span><small>${trn(c.stats.apps, '{n} match joué', '{n} matchs joués')}</small></div>${c.matches.length ? c.matches.map(simple).join('') : `<p class="sc-fine">${esc(tr('Détail des matchs non conservé : seuls les totaux de la saison avec {club} sont connus.', { club: c.club }))}</p>`}`).join('');
-    body = scCard(tr('Mes matchs'), `${byComp.map(([c, fs]) => `<div class="sc-gh"><span>${skLogo(c, 20)}${esc(c)}</span><small>${trn(fs.filter((f) => f.played).length, '{n} joué sur {total}', '{n} joués sur {total}', { total: fs.length })}</small></div>${fs.map((f) => { const i = d?.byKey?.get(`${f.date}|${f.homeRef}|${f.awayRef}`); return i !== undefined ? scRow(d, i, myExtra(f)) : simple(f); }).join('')}`).join('')}${pastGroups}` || scEmpty(tr('Aucun match')), { end: scPills(chips, fl, 'pfilter') });
+    const mine = `${byComp.map(([c, fs]) => `<div class="sc-gh"><span>${skLogo(c, 20)}${esc(c)}</span><small>${trn(fs.filter((f) => f.played).length, '{n} joué sur {total}', '{n} joués sur {total}', { total: fs.length })}</small></div>${fs.map((f) => { const i = d?.byKey?.get(`${f.date}|${f.homeRef}|${f.awayRef}`); return i !== undefined ? scRow(d, i, myExtra(f)) : simple(f); }).join('')}`).join('')}${pastGroups}`;
+    body = scCard(tr('Mes matchs'), mine ? `<div class="sc-mgrid">${mine}</div>` : scEmpty(tr('Aucun match')), { end: scPills(chips, fl, 'pfilter') });
   } else if (tab === 'skills') {
     let gainedSum = 0;
     const progress = (state.progressLog || []).map((x) => { gainedSum += x.to - x.from; return { date: x.gameDate, value: gainedSum, valueText: `${gainedSum > 0 ? '+' : ''}${gainedSum}`, label: `${tr(x.ability)} ${x.from} → ${x.to}`, sub: fmtDate(x.gameDate, { day: 'numeric', month: 'long', year: 'numeric' }) }; });
@@ -7207,7 +7270,7 @@ function scTeam(d) {
   if (tab === 'results') {
     const up = ms.filter((i) => !skPlayed(d, i) && d.matches[i][0] >= d.gameDate).slice(0, 8), last = done.slice(-15).reverse();
     const rows = (list) => list.map((i) => scRow(d, i, `${skBadge(skRes(d, i, ref))}<small>${esc(shortDate(d.matches[i][0]))} · ${esc(gzShort(d.comps[d.matches[i][2]].name))}</small>`)).join('');
-    body = scCard('', `${up.length ? `<div class="sc-gh"><span>${tr('Prochains matchs')}</span></div>${rows(up)}` : ''}${last.length ? `<div class="sc-gh"><span>${tr('Derniers résultats')}</span></div>${rows(last)}` : ''}${!up.length && !last.length ? scEmpty(tr('Aucun match cette saison')) : ''}`);
+    body = scCard('', up.length || last.length ? `<div class="sc-mgrid">${up.length ? `<div class="sc-gh"><span>${tr('Prochains matchs')}</span></div>${rows(up)}` : ''}${last.length ? `<div class="sc-gh"><span>${tr('Derniers résultats')}</span></div>${rows(last)}` : ''}</div>` : scEmpty(tr('Aucun match cette saison')));
   } else if (tab === 'squad') {
     if (ref === d.clubRef && state.snapshot.squad?.length) {
       body = scCard('', `<table class="sc-t"><thead><tr><th>${tr('Joueur')}</th>${['MJ', 'Min', 'B', 'PD', 'Note'].map((x) => `<th class="n">${tr(x)}</th>`).join('')}</tr></thead><tbody>
@@ -7558,7 +7621,10 @@ async function renderSettings(page) {
   ])}
     ${panel('ai', [
     rgRow('rg-ai', tr('Fournisseur'), `<select id="provider" aria-label="${tr('Fournisseur')}">${Object.entries(providers).map(([id, p]) => `<option value="${id}"${id === settings.provider ? ' selected' : ''}>${esc(tr(p.label))}</option>`).join('')}</select>`),
-    rgRow('', tr('Modèle'), `<input id="model" list="models" aria-label="${tr('Modèle')}" value="${esc(settings.model)}"><datalist id="models">${(prov.models || []).map((m) => `<option value="${esc(m)}">`).join('')}</datalist>
+    rgRow('', tr('Modèle'), `<select id="model-pick" aria-label="${tr('Modèle')}">${modelOptions(settings.provider, settings.model)}</select>
+      <input id="model" class="${settings.model ? 'hidden' : ''}" aria-label="${tr('Nom exact du modèle')}" placeholder="${tr('Nom exact du modèle')}" spellcheck="false" value="${esc(settings.model)}">
+      <button class="btn" id="model-refresh" type="button">${tr('Actualiser la liste')}</button>
+      <p class="fineprint" id="model-refresh-out" role="status">${tr('« Actualiser la liste » demande au fournisseur ses modèles du moment, avec ta clé. Rien d’autre n’est envoyé.')}</p>
       <label id="baseurl-wrap" class="${settings.provider === 'custom' ? '' : 'hidden'}">${tr('Adresse (Base URL)')}<input id="baseurl" value="${esc(settings.baseUrl)}" placeholder="https://…/v1"></label>`),
     rgRow('', tr('Clé API'), `<input id="apikey" type="password" aria-label="${tr('Clé API')}" placeholder="${settings.savedKeys.includes(settings.provider) ? tr('Clé enregistrée — colle une nouvelle clé pour la remplacer') : esc(prov.keyHint || tr('Colle ta clé ici'))}">
       <p class="fineprint">${tr('La clé est chiffrée avec ton compte Windows et n’est envoyée qu’au fournisseur choisi. Clés gratuites : Google AI Studio (aistudio.google.com) ou Groq (console.groq.com).')}</p>`),
@@ -7592,6 +7658,7 @@ async function renderSettings(page) {
       <p class="fineprint">${tr(REAL_PEOPLE_NOTE)}</p>
       <p class="fineprint">${tr('LifeLegend est publié sous licence MIT. Polices, icônes et mises en page reprises ont leurs propres licences : voir LICENSE et THIRD-PARTY-NOTICES.txt dans le dossier de LifeLegend.')}</p>`),
     rgRow('rg-update', tr('Mises à jour'), `${rgSwitch('updatenotify', settings.updateNotify !== false, tr('Me prévenir quand une nouvelle version sort'))}<button class="btn" id="rg-update-btn" type="button">${tr('Vérifier les mises à jour')}</button><p class="fineprint" id="rg-update-out" role="status"></p>`, tr('LifeLegend regarde la dernière version publiée sur sa page GitHub : à chaque ouverture si la case est cochée, sinon seulement quand tu cliques. Rien d’autre n’est envoyé.')),
+    ...(appNews.last ? [rgRow('rg-news', tr('Nouveautés'), `<button class="btn" id="rg-news-btn" type="button">${tr('Voir les nouveautés')}</button>`, tr('Ce qui a changé avec la version {v}, comme à la première ouverture après la mise à jour.', { v: appNews.last.version }))] : []),
     ...(introAvailable ? [rgRow('rg-intro', tr('Animation d’ouverture'), `<button class="btn" id="rg-intro-btn" type="button">${tr('Revoir')}</button>`, tr('La courte vidéo qui ouvre LifeLegend au premier lancement. Animation réalisée avec Profounder (profounder.com), qui n’a pas de lien avec LifeLegend.'))] : []),
     rgRow('rg-report', tr('Signaler un problème'), `<button class="btn" id="rg-report-btn" type="button">${tr('Préparer le rapport')}</button>`,
       tr('LifeLegend prépare un fichier texte avec sa version, tes réglages utiles et ses derniers messages d’erreur, sans ta clé d’IA, ton adresse e-mail ni tes textes. Relis-le, puis envoie-le toi-même : rien ne part tout seul.')),
@@ -7603,6 +7670,7 @@ async function renderSettings(page) {
   page.querySelectorAll('[data-rgtab]').forEach((b) => { b.onclick = () => rgShowTab(b.dataset.rgtab); });
   rgTabInView();
   if ($('#rg-intro-btn')) $('#rg-intro-btn').onclick = () => playIntro({ save: false });
+  if ($('#rg-news-btn')) $('#rg-news-btn').onclick = () => showNews([appNews.last]);
   // Vérifier les mises à jour : la réponse sous le bouton, avec le lien de la nouvelle version s'il y en a une.
   const upd = $('#rg-update-btn');
   if (upd) {
@@ -7653,11 +7721,20 @@ async function renderSettings(page) {
 
   $('#provider').onchange = () => {
     const p = providers[$('#provider').value];
-    $('#models').innerHTML = (p.models || []).map((m) => `<option value="${esc(m)}">`).join('');
     $('#model').value = p.models?.[0] || '';
+    $('#model-pick').innerHTML = modelOptions($('#provider').value, $('#model').value);
+    $('#model').classList.toggle('hidden', Boolean($('#model').value));
     $('#baseurl-wrap').classList.toggle('hidden', $('#provider').value !== 'custom');
     $('#apikey').placeholder = settings.savedKeys.includes($('#provider').value) ? tr('Clé enregistrée — colle une nouvelle clé pour la remplacer') : (p.keyHint || tr('Colle ta clé ici'));
+    autoRefreshModels();
   };
+  $('#model-pick').onchange = () => {
+    const other = $('#model-pick').value === MODEL_OTHER;
+    $('#model').classList.toggle('hidden', !other);
+    if (other) { $('#model').value = ''; $('#model').focus(); } else $('#model').value = $('#model-pick').value;
+  };
+  $('#model-refresh').onclick = () => refreshModels();
+  autoRefreshModels();
   $('#browse').onclick = async () => {
     try {
       const r = await live.browseSave();
@@ -7720,6 +7797,40 @@ async function renderSettings(page) {
   }
 }
 
+// Les modèles du moment du fournisseur choisi (src/ai/modelList.js), demandés avec la clé tapée ou enregistrée : au clic
+// sur « Actualiser la liste », et tout seul à l'ouverture des réglages quand une clé est enregistrée et que la liste a
+// plus d'une semaine (une fois par session et par fournisseur ; sans message si ça échoue).
+const modelsAsked = new Set();
+async function refreshModels({ quiet = false } = {}) {
+  const id = $('#provider')?.value;
+  if (!id) return;
+  modelsAsked.add(id);
+  const out = $('#model-refresh-out'), btn = $('#model-refresh');
+  const name = id === 'custom' ? tr('le fournisseur') : tr(providers[id]?.label || '').split(' ')[0];
+  if (btn) btn.disabled = true;
+  if (out && !quiet) out.textContent = tr('Liste des modèles demandée à {provider}…', { provider: name });
+  try {
+    const r = await live.listModels({ provider: id, apiKey: $('#apikey')?.value || '', baseUrl: $('#baseurl')?.value || '' });
+    settings.modelLists = r.modelLists;
+    if ($('#provider')?.value !== id) return;
+    // La liste se refait autour du modèle choisi ; pendant la saisie d'un « Autre modèle… », celle-ci reste ouverte.
+    if ($('#model-pick').value !== MODEL_OTHER) $('#model-pick').innerHTML = modelOptions(id, $('#model').value);
+    if (out) out.textContent = r.models.length
+      ? trn(r.models.length, '{n} modèle trouvé chez {provider} : ouvre la liste du champ « Modèle » pour le choisir.', '{n} modèles trouvés chez {provider} : ouvre la liste du champ « Modèle » pour en choisir un.', { provider: name })
+      : tr('{provider} n’a donné aucun modèle : la liste de LifeLegend reste proposée.', { provider: name });
+  } catch (err) {
+    if (out && !quiet && $('#provider')?.value === id) out.textContent = err.message;
+  } finally {
+    if (btn && $('#provider')?.value === id) btn.disabled = false;
+  }
+}
+function autoRefreshModels() {
+  const id = $('#provider')?.value, list = settings.modelLists?.[id];
+  if (!id || id === 'custom' || modelsAsked.has(id) || !settings.savedKeys.includes(id)) return;
+  if (list && Date.now() - list.at < 7 * 864e5) return;
+  refreshModels({ quiet: true });
+}
+
 let pendingSave = null;
 let pendingGameDir = null;
 let pendingClipsDir = null;
@@ -7768,9 +7879,20 @@ async function saveSettings() {
 
 // ---------- HUD : progression de l'IA ----------
 
-const hud = { timer: null, startedAt: 0, model: '' };
+const hud = { timer: null, startedAt: 0, model: '', stepAt: 0, slowAfter: 0 };
 const fmtElapsed = (ms) => { const s = Math.max(0, Math.round(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
-const hudTick = () => { $('#hud-time').textContent = fmtElapsed(Date.now() - hud.startedAt); };
+// « Google est lent en ce moment » : le nom court du fournisseur choisi (Google, Groq, Anthropic…).
+function slowNotice() {
+  const name = settings?.provider === 'custom' ? '' : String(providers[settings?.provider]?.label || '').split(' ')[0];
+  return name ? tr('{name} est lent en ce moment : la synchro continue.', { name }) : tr('L’IA répond lentement en ce moment : la synchro continue.');
+}
+const hudTick = () => {
+  $('#hud-time').textContent = fmtElapsed(Date.now() - hud.startedAt);
+  // Une étape d'IA bien plus longue que d'habitude (durée apprise sur les synchros précédentes) : on le dit.
+  const slow = $('#hud-slow');
+  const isSlow = hud.slowAfter > 0 && Date.now() - hud.stepAt > hud.slowAfter;
+  if (slow && slow.hidden === isSlow) { slow.hidden = !isSlow; slow.textContent = isSlow ? slowNotice() : ''; }
+};
 
 function onAiProgress(ev) {
   // Vestiaire montre déjà « Quelqu’un écrit… » dans la conversation : pas de vignette par-dessus le champ de saisie.
@@ -7779,6 +7901,8 @@ function onAiProgress(ev) {
   if (ev.done) {
     clearInterval(hud.timer);
     hud.timer = null;
+    hud.slowAfter = 0;
+    $('#hud-slow').hidden = true;
     box.classList.remove('waiting');
     box.classList.toggle('error', !ev.ok);
     $('#hud-label').textContent = ev.ok ? tr('✓ Terminé') : `✕ ${tr('Interrompu (voir le message)')}`;
@@ -7789,6 +7913,8 @@ function onAiProgress(ev) {
   }
   box.classList.remove('hidden', 'error');
   if (ev.startedAt) hud.startedAt = ev.startedAt;
+  hud.stepAt = ev.stepStartedAt || ev.startedAt || Date.now();
+  hud.slowAfter = ev.slowAfter || 0;
   if (!hud.timer) hud.timer = setInterval(hudTick, 1000);
   hudTick();
   if (ev.phase === 'start' && ev.index === 0) hud.model = '';
@@ -7935,6 +8061,7 @@ async function init() {
   settings = s.settings;
   providers = s.providers;
   appVersion = s.version || '';
+  appNews = s.news || appNews;
   applyTheme();
   localizeChrome();
   // Ce que le cadre prend sur la hauteur de la fenêtre : les sites en carte remplissent exactement ce qui reste.
@@ -7973,7 +8100,45 @@ async function init() {
   introAvailable = await probeIntro();
   if (introAvailable && !settings.introSeen && setupActive()) playIntro();
   if (introAvailable && current === 'settings') render();
+  newsNotice();
   updateNotice();
+}
+
+// ----- Les nouveautés d'une mise à jour (src/news.js) : une fenêtre à la première ouverture après l'installation, puis
+// dans Réglages › À propos. Fermée, la version est notée (newsSeen) et la fenêtre ne revient pas. Une nouvelle
+// installation ne la voit pas : la version est notée tout de suite.
+const NEWS_PAGE = 'https://github.com/Saamz09/lifelegendmod/releases';
+
+function showNews(entries, { onClose } = {}) {
+  if (!entries?.length || document.querySelector('.ll-news')) return;
+  const many = entries.length > 1;
+  const list = entries.map((n) => `${many ? `<h3 class="ll-news-v">${esc(tr('Version {v}', { v: n.version }))}</h3>` : ''}
+    <ul class="ll-news-list">${n.items.map((it) => `<li><span class="ll-news-ic">${hi(it.icon)}</span><div><b>${esc(tr(it.title))}</b><p>${esc(tr(it.text))}</p></div></li>`).join('')}</ul>`).join('');
+  const box = document.createElement('div');
+  box.className = 'k-modal-back';
+  box.innerHTML = `<div class="k-modal ll-news" role="dialog" aria-modal="true" aria-labelledby="ll-news-title">
+    <p class="k-eyebrow">${tr('Mise à jour installée')}</p>
+    <h2 id="ll-news-title">${esc(tr('LifeLegend {v} : ce qui change', { v: entries[0].version }))}</h2>
+    <div class="ll-news-body">${list}</div>
+    <div class="k-modal-actions"><a class="k-btn k-btn-ghost" href="${NEWS_PAGE}" target="_blank" rel="noopener">${tr('Tout le détail sur GitHub')}</a><button class="k-btn" type="button" data-ok>${tr('C’est parti')}</button></div></div>`;
+  document.body.appendChild(box);
+  const done = () => { box.remove(); document.removeEventListener('keydown', onKey, true); onClose?.(); };
+  const onKey = (ev) => { if (ev.key === 'Escape') { ev.preventDefault(); ev.stopPropagation(); done(); } };
+  document.addEventListener('keydown', onKey, true);
+  box.querySelector('[data-ok]').onclick = done;
+  box.onclick = (ev) => { if (ev.target === box) done(); };
+  box.querySelector('[data-ok]').focus();
+}
+
+async function newsNotice() {
+  const seen = () => {
+    if (!appVersion || settings.newsSeen === appVersion) return;
+    live.saveSettings({ newsSeen: appVersion }).then((s) => { settings = s; }).catch(() => {});
+  };
+  if (!appNews.show.length) { seen(); return; }
+  // Après l'animation d'ouverture et la fenêtre de démarrage d'une carrière.
+  while (document.querySelector('.ll-intro') || setupActive()) await new Promise((ok) => setTimeout(ok, 500));
+  showNews(appNews.show, { onClose: seen });
 }
 
 // Nouvelle version publiée sur GitHub : une petite carte en bas à droite, à chaque ouverture, quelques secondes après le
@@ -7985,7 +8150,7 @@ async function updateNotice() {
   let r;
   try { r = await live.checkUpdate(); } catch { return; }
   if (!r?.newer || settings.updateSkip === r.latest || settings.updateNotify === false) return;
-  while (document.querySelector('.ll-intro')) await new Promise((ok) => setTimeout(ok, 500));
+  while (document.querySelector('.ll-intro, .ll-news')) await new Promise((ok) => setTimeout(ok, 500));
   if (document.querySelector('.ll-update')) return;
   const box = document.createElement('aside');
   box.className = 'll-update';

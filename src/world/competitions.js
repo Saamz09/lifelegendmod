@@ -39,7 +39,38 @@ function compAccount(id, gameName) {
   const name = compName(id, gameName);
   if (!name) return null;
   const known = DATA.accounts[name];
-  return { key: name, name: known?.display || name, handle: known?.handle || `${madeUpHandle(name)}_officiel`, real: Boolean(known?.handle) };
+  return { key: name, name: known?.display || name, handle: known?.handle || `${ownHandles.get(name) || madeUpHandle(name)}_officiel`, real: Boolean(known?.handle) };
+}
+
+// Deux compétitions de la carrière dont le pseudo fabriqué serait le même (« BPL » : Bahraini, Bangladesh et Botswana
+// Premier League ; « SPL » : Syrian et Singapore Premier League, vu avec le GigaPack le 2026-11-23) auraient un seul
+// compte pour deux ligues. Chacune reçoit alors le sien : son premier mot et le sigle du reste (BahrainiPL), sinon son nom
+// collé, sinon un numéro. Relevé à chaque lecture de la sauvegarde (entries : [[id, nom dans le jeu]]).
+let ownHandles = new Map();
+function setCompetitionNames(entries) {
+  const byBase = new Map();
+  for (const [id, gameName] of entries || []) {
+    const name = compName(id, gameName);
+    if (!name || DATA.accounts[name]?.handle) continue;
+    const base = madeUpHandle(name).toLowerCase();
+    if (!byBase.has(base)) byBase.set(base, new Set());
+    byBase.get(base).add(name);
+  }
+  const taken = new Set([...byBase.keys(), ...Object.values(DATA.accounts).filter((a) => a.handle).map((a) => a.handle.toLowerCase())]);
+  const own = new Map();
+  for (const names of byBase.values()) {
+    if (names.size < 2) continue;
+    for (const name of [...names].sort()) {
+      const words = String(name).normalize('NFD').replace(/[̀-ͯ]/g, '').split(/[^A-Za-z0-9]+/).filter(Boolean);
+      const first = slugHandle(words[0]);
+      const acr = words.slice(1).filter((w) => w.length > 2).map((w) => w[0].toUpperCase()).join('');
+      let h = [`${first}${acr}`.slice(0, 16), slugHandle(name).slice(0, 16)].find((x) => x && !taken.has(x.toLowerCase()));
+      for (let n = 2; !h; n++) if (!taken.has(`${first.slice(0, 13)}${n}`.toLowerCase())) h = `${first.slice(0, 13)}${n}`;
+      taken.add(h.toLowerCase());
+      own.set(name, h);
+    }
+  }
+  ownHandles = own;
 }
 
 // Pseudo fabriqué : le nom collé s'il est court, sinon son sigle (« Liga Profesional de Fútbol » -> LPF), sinon son dernier mot.
@@ -276,4 +307,4 @@ function competitionAccountsFacts(career, snapshot) {
   return [...seen.values()].slice(0, 16);
 }
 
-module.exports = { deName, isNationalTeam, realTeam, matchesOf, compAccount, compName, competitionPosts, previewPosts, competitionAccountsFacts, isCompetitionHandle, fakeLogos: new Set(DATA.fakeLogos), competitionAccountsRev: DATA.rev };
+module.exports = { deName, isNationalTeam, realTeam, matchesOf, compAccount, compName, setCompetitionNames, competitionPosts, previewPosts, competitionAccountsFacts, isCompetitionHandle, fakeLogos: new Set(DATA.fakeLogos), competitionAccountsRev: DATA.rev };

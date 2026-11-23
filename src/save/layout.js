@@ -3,8 +3,8 @@
 // connues ; des modules Lua du jeu (ceux de FL Mod Studio, le GigaPack de Matozanato : 2026-11-16, retour d'un joueur et
 // sa propre sauvegarde BL00000001) agrandissent la sauvegarde (736 équipes, plus de compétitions et de matchs, des jours
 // de calendrier plus longs) et chaque section se décale différemment. Ici, chaque table est retrouvée par sa forme quand
-// les places connues ne tiennent pas. Lecture seule : LifeLegend n'écrit pas dans une sauvegarde de ce genre (voir
-// assertStandard).
+// les places connues ne tiennent pas. LifeLegend n'y écrit que ce qui a été essayé en jeu sur ce genre de sauvegarde :
+// le style de jeu et la suspension (voir writePlaces). Le reste est refusé (assertStandard).
 
 // Les places du jeu sans modules.
 const STANDARD = {
@@ -168,4 +168,15 @@ function assertStandard(d, playerName = null) {
   }
 }
 
-module.exports = { saveLayout, detectLayout, assertStandard, standardFits, STANDARD };
+// Où écrire. Sauvegarde du jeu sans modules : les places connues. Sauvegarde agrandie : seulement pour une écriture déjà
+// essayée en jeu sur ce genre de sauvegarde (enlarged), avec la table des entraîneurs et la fiche du joueur (son nom :
+// playerName, celui de l'en-tête) retrouvées par leur forme (null si introuvables). Essais du 2026-11-23 sur le GigaPack
+// de Matozanato (Accrington) : le style de jeu et une suspension écrits ont été affichés, puis gardés par la sauvegarde
+// du jeu.
+function writePlaces(d, { enlarged = false, playerName = null } = {}) {
+  if (standardFits(d)) return { standard: true, coach: STANDARD.coach, player: STANDARD.player };
+  if (!enlarged) assertStandard(d);
+  return { standard: false, coach: findCoach(d), player: findPlayer(d, playerName) };
+}
+
+module.exports = { saveLayout, detectLayout, assertStandard, standardFits, writePlaces, STANDARD };
