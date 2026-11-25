@@ -43,7 +43,7 @@ test('les nouveautés écrites : versions rangées, points traduits, icônes qui
   for (let i = 1; i < NEWS.length; i++) assert.ok(compareVersions(NEWS[i - 1].version, NEWS[i].version) > 0, 'la plus récente en premier');
   const app = fs.readFileSync(path.join(ROOT, 'lifelegend/app.js'), 'utf8');
   const hi = app.slice(app.indexOf('const HI = {'), app.indexOf('\n};', app.indexOf('const HI = {')));
-  for (const lang of ['en', 'es', 'it', 'pt', 'de']) {
+  for (const lang of ['en', 'es', 'it', 'pt', 'de', 'ru', 'vi']) {
     const ctx = vm.createContext({ window: {} });
     vm.runInContext(fs.readFileSync(path.join(ROOT, `lifelegend/i18n/${lang}.js`), 'utf8'), ctx);
     const dict = ctx.window.LL_I18N[lang];

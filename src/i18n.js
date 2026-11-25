@@ -7,7 +7,7 @@ const path = require('path');
 const vm = require('vm');
 
 const DIR = path.join(__dirname, '..', 'lifelegend', 'i18n');
-const LANGS = ['en', 'es', 'it', 'pt', 'de'];
+const LANGS = ['en', 'es', 'it', 'pt', 'de', 'ru', 'vi'];
 const cache = {};
 
 function dict(lang) {
@@ -24,7 +24,9 @@ function dict(lang) {
 }
 
 const fill = (s, p) => (p ? String(s).replace(/\{(\w+)\}/g, (m, k) => (p[k] ?? m)) : s);
-const tr = (lang, fr, params) => fill(LANGS.includes(lang) ? dict(lang)[fr] ?? fr : fr, params);
+// Une traduction russe au pluriel est un objet { few, many } : ici (textes sans nombre), on garde le texte d'origine.
+const word = (lang, fr) => { const v = LANGS.includes(lang) ? dict(lang)[fr] : null; return typeof v === 'string' ? v : fr; };
+const tr = (lang, fr, params) => fill(word(lang, fr), params);
 
 // Messages qui contiennent un nom (club, fournisseur d'IA, fichier) : reconnus par leur motif français.
 const PATTERNS = [
@@ -52,10 +54,10 @@ function trError(lang, msg) {
   const text = String(msg ?? '');
   if (!LANGS.includes(lang)) return text;
   const d = dict(lang);
-  if (d[text]) return d[text];
+  if (typeof d[text] === 'string') return d[text];
   for (const [re, key, names] of PATTERNS) {
     const m = text.match(re);
-    if (m && d[key]) return fill(d[key], Object.fromEntries(names.map((n, i) => [n, m[i + 1]])));
+    if (m && typeof d[key] === 'string') return fill(d[key], Object.fromEntries(names.map((n, i) => [n, m[i + 1]])));
   }
   return text;
 }

@@ -3,11 +3,13 @@
 // clubs et des compétitions, ralentis et vidéos, réponses types des joueurs mentionnés, promesses, brief du matin.
 // Une table par langue, avec la grammaire de chacune (élision, ordinaux, genre) ; le français est la référence.
 
-const LOCALES = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES', it: 'it-IT', pt: 'pt-BR', de: 'de-DE' };
+const LOCALES = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES', it: 'it-IT', pt: 'pt-BR', de: 'de-DE', ru: 'ru-RU', vi: 'vi-VN' };
 const langOf = (l) => (LOCALES[l] ? l : 'fr');
 const dateOf = (iso) => { const [y, m, d] = String(iso).split('-').map(Number); return new Date(y, m - 1, d); };
 const hh = (h) => `${String(h).padStart(2, '0')}:00`;
 const plural = (n, one, many) => (n > 1 ? many : one);
+// Russe : 1 матч, 2 матча, 5 матчей (11 à 14 : матчей).
+const ruPl = (n, one, few, many) => { const a = Math.abs(Number(n)) % 100, b = a % 10; return a > 10 && a < 20 ? many : b === 1 ? one : b >= 2 && b <= 4 ? few : many; };
 // « de » élidé devant une voyelle : « la 20e journée d’Eredivisie », pas « de Eredivisie ».
 const deName = (n) => (/^[aeiouyhéèêàâîïôû]/i.test(String(n)) ? `d’${n}` : `de ${n}`);
 // « de » devant une personne ou un club : élidé devant une voyelle (« d’Ilan Morel »), avec l'article des clubs qui
@@ -719,6 +721,232 @@ const T = {
       yourClub: 'dein Verein',
     },
     agentSubject: { offer: 'Angebot erhalten', open: 'Das Transferfenster ist offen', eve: 'Letzter Tag des Transferfensters' },
+  },
+
+  ru: {
+    win: '✅ ПОБЕДА!', draw: '🤝 Ничья.', loss: '❌ Поражение.', fullTime: 'ФИНАЛЬНЫЙ СВИСТОК',
+    feat: { hat: 'ХЕТ-ТРИК', brace: 'ДУБЛЬ', goal: 'ГОЛ', assist: 'ГОЛЕВАЯ ПЕРЕДАЧА' },
+    featLine: (what, who, both, opp) => `${what}: ${who}${both} в матче против ${opp}!`,
+    alsoAssists: (a) => (a > 1 ? ` и ${a} ${ruPl(a, 'голевая передача', 'голевые передачи', 'голевых передач')}` : ' и голевая передача'),
+    seasonGoal: (n) => `Его ${n}-й гол в сезоне.`,
+    motm: (who, r) => `⭐ Лучший игрок матча: ${who}${r ? `, оценка ${r}` : ''}.`,
+    fanVote: (month, who, pct) => `🗳️ Игрок месяца (${month}): вы проголосовали!\n\n🏆 ${who}: ${pct}% голосов. Поздравляем!`,
+    joins: (name, club, from) => `✍️ ОФИЦИАЛЬНО | ${name} переходит в ${club}${from ? ` из ${from}` : ''}. Добро пожаловать!`,
+    leavesFor: (name, from, to) => `👋 ${name} покидает ${from} и переходит в ${to}. Спасибо и удачи!`,
+    leaves: (name, club, to) => `👋 ${name} покидает ${club}${to ? ` и переходит в ${to}` : ''}. Спасибо и удачи!`,
+    extends: (who, club, date) => `✍️ ОФИЦИАЛЬНО | ${who} продлевает контракт с ${club} до ${date}!`,
+    ended: 'МАТЧ ОКОНЧЕН',
+    round: (n) => `${n}-й тур`,
+    resultsRound: (round) => `Результаты · ${round}`,
+    resultsDay: (acc, day) => `${acc} · результаты за ${day}`,
+    more: (n) => `… и ещё ${n} ${ruPl(n, 'матч', 'матча', 'матчей')}`,
+    tableAfter: (round) => `Турнирная таблица · ${round}`,
+    pts: (n) => `${n} ${ruPl(n, 'очко', 'очка', 'очков')}`,
+    scorers: (acc) => `Лучшие бомбардиры · ${acc}`,
+    ntList: (team, match) => `Состав сборной ${team}${match ? ` на матч ${match}` : ''}`,
+    huddle: {
+      nextMatch: (opp, day, hour, place) => `Следующий матч: ${opp}, ${day}${hour != null ? ` в ${hour}:00` : ''}${place ? `, ${place}` : ''}. Не опаздывайте.`,
+    },
+    conduct: {
+      warningSubject: () => 'Насчёт твоего поведения',
+      warning: ({ quote, target }) => `Твои слова ${{ press: 'на пресс-конференции', kop: 'в Kop', huddle: 'в общем чате' }[quote.source]}: «${quote.quote}». ${{ coach: 'Можешь не соглашаться с моими решениями, но неуважения я не потерплю.', teammates: 'Своих партнёров мы не трогаем.', club: 'Так не говорят о клубе, за который ты играешь.' }[target]} В этот раз я разберусь с этим сам, между нами. В следующий раз клуб примет меры.`,
+      leftOutSubject: (n) => (n > 1 ? 'Дисциплинарное решение: без заявки на два матча' : 'Дисциплинарное решение: без заявки на один матч'),
+      leftOut: ({ quote, labels }) => `После твоих слов ${{ press: 'на пресс-конференции', kop: 'в Kop', huddle: 'в общем чате' }[quote.source]} («${quote.quote}») и несмотря на предупреждения, клуб решил не включать тебя в заявку на ${labels.length > 1 ? `два следующих матча: ${labels.join(' и ')}` : `следующий матч: ${labels[0]}`}. Решение окончательное, что бы ни стояло на кону. Поговорим после этого.`,
+    },
+    objectives: {
+      item: (it, set) => {
+        const n = it.target, x = ((v) => String(v).replace('.', ','))(it.target);
+        if (it.kind === 'apps') return set.window ? `Сыграть минимум в ${n} из ${set.window} следующих матчей` : `Сыграть минимум ${n} ${ruPl(n, 'матч', 'матча', 'матчей')} в чемпионате`;
+        if (it.kind === 'goals') return `Забить ${n} ${ruPl(n, 'гол', 'гола', 'голов')} в чемпионате`;
+        if (it.kind === 'ga') return `Отличиться ${n} ${ruPl(n, 'раз', 'раза', 'раз')} в чемпионате (голы и голевые передачи)`;
+        if (it.kind === 'clean') return `${n} ${ruPl(n, 'матч', 'матча', 'матчей')} в чемпионате без пропущенных голов, когда ты на поле`;
+        return set.window ? `Средняя оценка не ниже ${x} в этих матчах` : `Средняя оценка не ниже ${x} в чемпионате`;
+      },
+      value: (it) => (it.kind === 'rating' ? (it.value == null ? '–' : ((v) => String(v).replace('.', ','))(it.value)) : String(it.value ?? 0)),
+      setSubject: (kind) => ({ season: 'Твои задачи на сезон', second_half: 'Твои задачи до конца сезона', comeback: 'Твои задачи после возвращения' }[kind]),
+      setBody: ({ kind, lines }) => `${{ season: 'Вот чего я жду от тебя в этом сезоне:', second_half: 'До конца сезона я жду от тебя вот чего:', comeback: 'Рад, что ты вернулся. После возвращения я жду от тебя вот чего:' }[kind]}\n\n${lines.map((l) => `• ${l}`).join('\n')}\n\n${kind === 'comeback' ? 'Возвращайся в своём темпе, но возвращайся сильным. Поговорим после этих матчей.' : 'Тебе это по силам. Подведём итоги в конце сезона.'}`,
+      reviewSubject: (kind) => (kind === 'comeback' ? 'Твоё возвращение: итоги' : 'Твои задачи: итоги'),
+      review: ({ lines, verdict }) => `Как обстоят дела с твоими задачами:\n\n${lines.map((l) => `${l.met ? '✓' : '✗'} ${l.text} (${l.value})`).join('\n')}\n\n${{ all: 'Всё выполнено: именно этого я от тебя и ждал.', most: 'Большая часть выполнена. Продолжай в том же духе.', some: 'Начало положено, но этого мало.', none: 'Мы далеки от цели. Я жду реакции.' }[verdict]}`,
+    },
+    dmInbound: {
+      teammateGoal: (opp) => `Классный гол в матче с ${opp}. Продолжай, ты нам нужен.`,
+      teammateAssist: (opp) => `Отличная передача в матче с ${opp}. Корми нас так и дальше.`,
+      fanGood: (opp) => `Какой матч против ${opp}! Спасибо за всё, что ты отдаёшь клубу.`,
+      fanAngry: (opp) => `Честно, против ${opp} это было слабо. Мы ждём от тебя гораздо большего.`,
+    },
+    coachAdvice: {
+      subject: (area) => `Тренировки: ${{ shooting: 'завершение атак', stamina: 'выносливость', passing: 'передачи', defending: 'игра в обороне', dribbling: 'дриблинг', goalkeeping: 'игра вратаря' }[area]}`,
+      body: ({ area, reason: r }) => (r.form != null ? 'Сейчас у тебя спад формы, и это видно на поле. Добавь выносливости в план тренировок, чтобы вернуть свежесть.' : r.rating != null ? `Средняя оценка ${r.rating} за последние ${r.matches} ${ruPl(r.matches, 'матч', 'матча', 'матчей')}: это ниже того, чего я жду. Вложи больше очков в эту область в плане тренировок, и всё быстро вернётся.` : {
+        shooting: `Ты выходишь на хорошие позиции, но ${r.goals} ${ruPl(r.goals, 'гол', 'гола', 'голов')} за последние ${r.matches} ${ruPl(r.matches, 'матч', 'матча', 'матчей')} — мало для нападающего. Поработай над завершением: добавь очков в удары в плане тренировок. Вернёмся к этому через несколько недель.`,
+        stamina: `Когда ты выходишь в стартовом составе, тебя меняют в среднем на ${r.minutes}-й минуте. Мне нужен игрок на все 90 минут: подтяни выносливость в плане тренировок.`,
+        passing: `Ни одной голевой передачи за последние ${r.matches} ${ruPl(r.matches, 'матч', 'матча', 'матчей')}. В полузащите ты должен подключать партнёров к игре: поработай над передачами на тренировках.`,
+        defending: `Мы пропустили ${r.conceded} ${ruPl(r.conceded, 'гол', 'гола', 'голов')} за последние ${r.matches} ${ruPl(r.matches, 'матч', 'матча', 'матчей')}, и всё начинается с работы каждого. Сделай упор на оборону в плане тренировок.`,
+      }[area]),
+      replyFollow: 'Понял, тренер. На этой неделе меняю план.',
+      replyIgnore: 'Спасибо за совет, тренер, но пока я оставлю свой план.',
+    },
+    teamOfRound: (round) => `Символическая сборная · ${round}`,
+    playerOfRound: (name, club, rating) => `Игрок тура: ${name} (${club}) · ${rating}`,
+    lines: { gk: 'ВР', def: 'ЗАЩ', mid: 'ПЗ', att: 'НАП' },
+    awards: (acc, season) => `Награды ${acc} ${season}`,
+    awardNames: { bestPlayer: 'Игрок сезона', topScorer: 'Лучший бомбардир', topAssists: 'Лучший ассистент', bestKeeper: 'Вратарь сезона', xi: 'Символическая сборная сезона' },
+    matchday: 'ДЕНЬ МАТЧА', tomorrowCaps: 'ЗАВТРА',
+    preview: (round, acc) => `${acc} · ${round}`,
+    today: 'Сегодня', tomorrow: 'Завтра', hour: hh,
+    replayPlain: (m) => `🎥 Повтор: ${m}.`,
+    replay: [
+      (min, who, m) => `🎥 ${min}' — ${who} забивает! ${m}`,
+      (min, who, m) => `⚽ Пересмотрите гол: ${who} (${min}'), матч ${m}.`,
+    ],
+    clip: (who, min, m) => `📹 Видео: гол ${who} (${min}'), ${m}.`,
+    clipPlain: (m) => `📹 Кадры матча ${m}.`,
+    canned: {
+      teammate: { praise: ['Спасибо, брат 🙏', 'Вместе 💪', 'Продолжаем!', '❤️', 'Всегда за тебя 🤝', 'Труд окупается 👊'], neutral: ['👊', '🙌', 'За работу 💪'], question: ['Посмотрим 😉', 'Думаем о следующем матче.', 'Все готовы 💪'], trash: [] },
+      opponent: { praise: ['Респект 🤝', 'Спасибо, удачи.', '🙏'], neutral: ['👊', 'Увидимся на поле.'], question: ['Поле ответит.', 'Всё решит матч.'], trash: ['Поговорим на поле.', '😂😂', 'До встречи на поле.', 'Меньше слов, больше игры.', '🥱'] },
+    },
+    promise: {
+      goal: (c, opp) => `забить ${c > 1 ? `${c} ${ruPl(c, 'гол', 'гола', 'голов')} ` : ''}в матче против ${opp}`,
+      assist: (c, opp) => `отдать ${c > 1 ? `${c} ${ruPl(c, 'голевую передачу', 'голевые передачи', 'голевых передач')}` : 'голевую передачу'} в матче против ${opp}`,
+      goal_or_assist: (c, opp) => `отличиться в матче против ${opp}`,
+      win: (c, opp) => `обыграть ${opp}`,
+      unbeaten: (c, opp) => `не проиграть ${opp}`,
+      clean_sheet: (c, opp) => `сыграть на ноль против ${opp}`,
+      season_goals: (c) => `забить ${c} ${ruPl(c, 'гол', 'гола', 'голов')} в этом сезоне`,
+      season_assists: (c) => `отдать ${c} ${ruPl(c, 'голевую передачу', 'голевые передачи', 'голевых передач')} в этом сезоне`,
+      title: (c, opp, league) => `выиграть ${league || 'чемпионат'}`,
+    },
+    judge: {
+      otherClub: 'он уже не играл за этот клуб', didNotPlay: 'он не сыграл в этом матче', notTracked: 'сезон не отслеживается', noMatch: 'матч не найден',
+      goals: (n) => `${n} ${ruPl(n, 'гол', 'гола', 'голов')}`, assists: (n) => `${n} ${ruPl(n, 'голевая передача', 'голевые передачи', 'голевых передач')}`,
+      either: (n) => `голы и голевые передачи: ${n}`, season: (n) => `${n} в этом сезоне`, champion: 'чемпион',
+      finalPos: (p) => `${p}-е место в итоговой таблице`, endOfSeason: (n) => `${n} по итогам сезона`,
+    },
+    brief: {
+      subject: (d) => `Утренняя сводка · ${d}`,
+      hello: 'Здравствуйте!',
+      intro: (d) => `Главное от La Transversale на ${d}.`,
+      last: (m, comp) => `Последний матч: ${m}${comp ? ` (${comp})` : ''}.`,
+      table: (club, pos, league, pts) => `Таблица: ${club} — ${pos}-е место ${league ? `(${league})` : 'в чемпионате'}, ${pts} ${ruPl(pts, 'очко', 'очка', 'очков')}.`,
+      next: (m, day, h) => `Следующий матч: ${m}, ${day}${h != null ? ` в ${hh(h)}` : ''}.`,
+      heads: (list) => `Главные новости:\n${list}`,
+      signoff: 'Приятного чтения!\nРедакция La Transversale',
+      footer: 'Вы получаете эту сводку, потому что подписались на latransversale.foot. Отписаться можно по ссылке «Отписаться» внизу главной страницы.',
+      yourClub: 'твой клуб',
+    },
+    agentSubject: { offer: 'Получено предложение', open: 'Трансферное окно открыто', eve: 'Последний день трансферного окна' },
+  },
+
+  vi: {
+    win: '✅ CHIẾN THẮNG!', draw: '🤝 Hòa.', loss: '❌ Thất bại.', fullTime: 'HẾT GIỜ',
+    feat: { hat: 'HAT-TRICK', brace: 'CÚ ĐÚP', goal: 'BÀN THẮNG', assist: 'KIẾN TẠO' },
+    featLine: (what, who, both, opp) => `${what}: ${who}${both} trong trận gặp ${opp}!`,
+    alsoAssists: (a) => (a > 1 ? ` cùng ${a} pha kiến tạo` : ' cùng một pha kiến tạo'),
+    seasonGoal: (n) => `Bàn thắng thứ ${n} của anh ấy mùa này.`,
+    motm: (who, r) => `⭐ Cầu thủ xuất sắc nhất trận: ${who}${r ? `, điểm ${r}` : ''}.`,
+    fanVote: (month, who, pct) => `🗳️ Cầu thủ của tháng (${month}): bạn đã bình chọn!\n\n🏆 ${who}, với ${pct}% số phiếu. Chúc mừng!`,
+    joins: (name, club, from) => `✍️ CHÍNH THỨC | ${name} gia nhập ${club}${from ? ` từ ${from}` : ''}. Chào mừng!`,
+    leavesFor: (name, from, to) => `👋 ${name} rời ${from} để gia nhập ${to}. Cảm ơn và chúc may mắn!`,
+    leaves: (name, club, to) => `👋 ${name} rời ${club}${to ? ` để gia nhập ${to}` : ''}. Cảm ơn và chúc may mắn!`,
+    extends: (who, club, date) => `✍️ CHÍNH THỨC | ${who} gia hạn hợp đồng với ${club} đến ${date}!`,
+    ended: 'KẾT THÚC',
+    round: (n) => `Vòng ${n}`,
+    resultsRound: (round) => `Kết quả ${round}`,
+    resultsDay: (acc, day) => `${acc} · kết quả ngày ${day}`,
+    more: (n) => `… và ${n} trận khác`,
+    tableAfter: (round) => `Bảng xếp hạng sau ${round}`,
+    pts: (n) => `${n} điểm`,
+    scorers: (acc) => `Danh sách ghi bàn · ${acc}`,
+    ntList: (team, match) => `Danh sách đội tuyển ${team}${match ? ` cho trận ${match}` : ''}`,
+    huddle: {
+      nextMatch: (opp, day, hour, place) => `Trận tiếp theo: ${opp}, ${day}${hour != null ? ` lúc ${hour}:00` : ''}${place ? `, ${place}` : ''}. Mọi người nhớ đúng giờ.`,
+    },
+    conduct: {
+      warningSubject: () => 'Về cách cư xử của cậu',
+      warning: ({ quote, target }) => `Những gì cậu nói ${{ press: 'trong buổi họp báo', kop: 'trên Kop', huddle: 'trong nhóm chat' }[quote.source]}: “${quote.quote}”. ${{ coach: 'Cậu có thể không đồng ý với lựa chọn của tôi, nhưng không được thiếu tôn trọng tôi.', teammates: 'Chúng ta không công kích đồng đội của mình.', club: 'Không ai nói như vậy về câu lạc bộ đang cho mình ra sân.' }[target]} Lần này tôi xử lý chuyện này riêng giữa hai chúng ta. Lần sau, câu lạc bộ sẽ có biện pháp.`,
+      leftOutSubject: (n) => (n > 1 ? 'Quyết định kỷ luật: bị loại khỏi danh sách hai trận' : 'Quyết định kỷ luật: bị loại khỏi danh sách một trận'),
+      leftOut: ({ quote, labels }) => `Sau những lời cậu nói ${{ press: 'trong buổi họp báo', kop: 'trên Kop', huddle: 'trong nhóm chat' }[quote.source]} (“${quote.quote}”), dù đã được cảnh báo, câu lạc bộ quyết định loại cậu khỏi danh sách thi đấu ${labels.length > 1 ? `hai trận tới: ${labels.join(' và ')}` : `trận tới: ${labels[0]}`}. Quyết định này là cuối cùng, dù trận đấu quan trọng thế nào. Chúng ta sẽ nói chuyện sau đó.`,
+    },
+    objectives: {
+      item: (it, set) => {
+        const n = it.target, x = ((v) => String(v).replace('.', ','))(it.target);
+        if (it.kind === 'apps') return set.window ? `Ra sân ít nhất ${n} trong ${set.window} trận tới` : `Ra sân ít nhất ${n} trận ở giải vô địch`;
+        if (it.kind === 'goals') return `Ghi ${n} bàn ở giải vô địch`;
+        if (it.kind === 'ga') return `Tạo dấu ấn ${n} lần ở giải vô địch (bàn thắng và kiến tạo)`;
+        if (it.kind === 'clean') return `${n} trận ở giải vô địch không thủng lưới khi cậu ra sân`;
+        return set.window ? `Điểm trung bình ít nhất ${x} trong các trận đó` : `Điểm trung bình ít nhất ${x} ở giải vô địch`;
+      },
+      value: (it) => (it.kind === 'rating' ? (it.value == null ? '–' : ((v) => String(v).replace('.', ','))(it.value)) : String(it.value ?? 0)),
+      setSubject: (kind) => ({ season: 'Mục tiêu của cậu trong mùa giải', second_half: 'Mục tiêu của cậu đến cuối mùa', comeback: 'Mục tiêu của cậu khi trở lại' }[kind]),
+      setBody: ({ kind, lines }) => `${{ season: 'Đây là những gì tôi mong đợi ở cậu mùa này:', second_half: 'Từ giờ đến cuối mùa, đây là những gì tôi mong đợi ở cậu:', comeback: 'Mừng cậu trở lại. Khi trở lại, đây là những gì tôi mong đợi:' }[kind]}\n\n${lines.map((l) => `• ${l}`).join('\n')}\n\n${kind === 'comeback' ? 'Cứ trở lại theo nhịp của mình, nhưng phải trở lại thật mạnh mẽ. Chúng ta sẽ nói chuyện sau những trận đó.' : 'Cậu hoàn toàn làm được. Chúng ta sẽ đánh giá vào cuối mùa giải.'}`,
+      reviewSubject: (kind) => (kind === 'comeback' ? 'Sự trở lại của cậu: đánh giá' : 'Mục tiêu của cậu: đánh giá'),
+      review: ({ lines, verdict }) => `Tình hình mục tiêu của cậu:\n\n${lines.map((l) => `${l.met ? '✓' : '✗'} ${l.text} (${l.value})`).join('\n')}\n\n${{ all: 'Hoàn thành tất cả: đúng như tôi mong đợi.', most: 'Phần lớn đã hoàn thành. Cứ tiếp tục như vậy.', some: 'Đó là một khởi đầu, nhưng chưa đủ.', none: 'Còn rất xa mục tiêu. Tôi chờ một phản ứng.' }[verdict]}`,
+    },
+    dmInbound: {
+      teammateGoal: (opp) => `Bàn thắng đẹp vào lưới ${opp}. Cứ thế nhé, đội cần cậu.`,
+      teammateAssist: (opp) => `Đường kiến tạo tuyệt vời trong trận gặp ${opp}. Cứ chuyền cho bọn mình như thế.`,
+      fanGood: (opp) => `Trận đấu tuyệt vời trước ${opp}! Cảm ơn vì tất cả những gì bạn cống hiến cho CLB.`,
+      fanAngry: (opp) => `Thật lòng mà nói, trận gặp ${opp} chưa đủ tốt. Chúng tôi kỳ vọng nhiều hơn ở bạn.`,
+    },
+    coachAdvice: {
+      subject: (area) => `Tập luyện: ${{ shooting: 'dứt điểm', stamina: 'thể lực', passing: 'chuyền bóng', defending: 'phòng ngự', dribbling: 'rê bóng', goalkeeping: 'kỹ năng thủ môn' }[area]}`,
+      body: ({ area, reason: r }) => (r.form != null ? 'Phong độ của cậu đang đi xuống, và điều đó thể hiện trên sân. Hãy tăng thể lực trong giáo án tập luyện để lấy lại sức.' : r.rating != null ? `Điểm trung bình ${r.rating} trong ${r.matches} trận gần nhất: chưa đạt mức tôi mong đợi. Hãy dồn thêm điểm vào mảng này trong giáo án, phong độ sẽ sớm trở lại.` : {
+        shooting: `Cậu chiếm được vị trí tốt, nhưng ${r.goals} bàn trong ${r.matches} trận gần nhất là chưa đủ với một tiền đạo. Tôi muốn thấy cậu cải thiện khả năng dứt điểm: dồn thêm điểm vào sút trong giáo án. Vài tuần nữa chúng ta nói lại.`,
+        stamina: `Khi đá chính, cậu thường rời sân quanh phút ${r.minutes}. Tôi cần một cầu thủ trụ được 90 phút: hãy tăng thể lực trong giáo án.`,
+        passing: `Không có kiến tạo nào trong ${r.matches} trận gần nhất. Ở tuyến giữa, cậu phải kết nối các đồng đội: hãy tập chuyền bóng nhiều hơn.`,
+        defending: `Chúng ta thủng lưới ${r.conceded} bàn trong ${r.matches} trận gần nhất, và mọi thứ bắt đầu từ sự đóng góp của từng người. Hãy chú trọng phòng ngự trong giáo án.`,
+      }[area]),
+      replyFollow: 'Rõ rồi thầy. Tuần này em sẽ đổi giáo án.',
+      replyIgnore: 'Cảm ơn lời khuyên của thầy, nhưng tạm thời em vẫn giữ giáo án của mình.',
+    },
+    teamOfRound: (round) => `Đội hình tiêu biểu ${round}`,
+    playerOfRound: (name, club, rating) => `Cầu thủ xuất sắc nhất vòng: ${name} (${club}) · ${rating}`,
+    lines: { gk: 'TM', def: 'HV', mid: 'TV', att: 'TĐ' },
+    awards: (acc, season) => `Giải thưởng ${acc} ${season}`,
+    awardNames: { bestPlayer: 'Cầu thủ xuất sắc nhất mùa', topScorer: 'Vua phá lưới', topAssists: 'Vua kiến tạo', bestKeeper: 'Thủ môn xuất sắc nhất mùa', xi: 'Đội hình tiêu biểu mùa' },
+    matchday: 'NGÀY THI ĐẤU', tomorrowCaps: 'NGÀY MAI',
+    preview: (round, acc) => `${acc} · ${round}`,
+    today: 'Hôm nay', tomorrow: 'Ngày mai', hour: hh,
+    replayPlain: (m) => `🎥 Xem lại: ${m}.`,
+    replay: [
+      (min, who, m) => `🎥 Phút ${min} — ${who} ghi bàn! ${m}`,
+      (min, who, m) => `⚽ Xem lại bàn thắng của ${who} (phút ${min}) trong trận ${m}.`,
+    ],
+    clip: (who, min, m) => `📹 Video: bàn thắng của ${who} (phút ${min}), ${m}.`,
+    clipPlain: (m) => `📹 Hình ảnh trận ${m}.`,
+    canned: {
+      teammate: { praise: ['Cảm ơn người anh em 🙏', 'Cùng nhau 💪', 'Tiếp tục nào!', '❤️', 'Luôn bên cậu 🤝', 'Chăm chỉ sẽ được đền đáp 👊'], neutral: ['👊', '🙌', 'Quay lại tập luyện thôi 💪'], question: ['Để xem 😉', 'Tập trung cho trận tới.', 'Mọi người đã sẵn sàng 💪'], trash: [] },
+      opponent: { praise: ['Tôn trọng 🤝', 'Cảm ơn, chúc may mắn.', '🙏'], neutral: ['👊', 'Hẹn gặp trên sân.'], question: ['Sân cỏ sẽ trả lời.', 'Trận đấu sẽ quyết định.'], trash: ['Nói chuyện trên sân đi.', '😂😂', 'Hẹn gặp lúc bóng lăn.', 'Nói ít thôi, đá nhiều vào.', '🥱'] },
+    },
+    promise: {
+      goal: (c, opp) => `ghi ${c > 1 ? `${c} bàn ` : 'bàn '}vào lưới ${opp}`,
+      assist: (c, opp) => `có ${c > 1 ? `${c} kiến tạo` : 'một kiến tạo'} trước ${opp}`,
+      goal_or_assist: (c, opp) => `tạo dấu ấn trước ${opp}`,
+      win: (c, opp) => `đánh bại ${opp}`,
+      unbeaten: (c, opp) => `không thua ${opp}`,
+      clean_sheet: (c, opp) => `giữ sạch lưới trước ${opp}`,
+      season_goals: (c) => `ghi ${c} bàn mùa này`,
+      season_assists: (c) => `có ${c} kiến tạo mùa này`,
+      title: (c, opp, league) => `vô địch ${league || 'giải đấu'}`,
+    },
+    judge: {
+      otherClub: 'anh ấy không còn chơi cho CLB này', didNotPlay: 'anh ấy không ra sân trận này', notTracked: 'mùa giải không được theo dõi', noMatch: 'không tìm thấy trận đấu',
+      goals: (n) => `${n} bàn`, assists: (n) => `${n} kiến tạo`,
+      either: (n) => `${n} bàn thắng hoặc kiến tạo`, season: (n) => `${n} mùa này`, champion: 'vô địch',
+      finalPos: (p) => `hạng ${p} chung cuộc`, endOfSeason: (n) => `${n} vào cuối mùa`,
+    },
+    brief: {
+      subject: (d) => `Bản tin buổi sáng · ${d}`,
+      hello: 'Xin chào,',
+      intro: (d) => `Những điểm chính từ La Transversale ngày ${d}.`,
+      last: (m, comp) => `Trận gần nhất: ${m}${comp ? ` (${comp})` : ''}.`,
+      table: (club, pos, league, pts) => `Bảng xếp hạng: ${club} đứng thứ ${pos} ${league ? `tại ${league}` : 'tại giải đấu'} với ${pts} điểm.`,
+      next: (m, day, h) => `Trận tiếp theo: ${m}, ${day}${h != null ? ` lúc ${hh(h)}` : ''}.`,
+      heads: (list) => `Tin nổi bật:\n${list}`,
+      signoff: 'Chúc bạn đọc vui,\nBan biên tập La Transversale',
+      footer: 'Bạn nhận bản tin này vì đã đăng ký trên latransversale.foot. Để hủy: nhấn “Hủy đăng ký” ở cuối trang nhất.',
+      yourClub: 'CLB của bạn',
+    },
+    agentSubject: { offer: 'Đã nhận lời đề nghị', open: 'Kỳ chuyển nhượng đã mở', eve: 'Ngày cuối của kỳ chuyển nhượng' },
   },
 };
 

@@ -1,5 +1,5 @@
 'use strict';
-// Les mails des contrats d'équipementier (src/world/sponsors.js), écrits sans IA, dans les six langues du jeu.
+// Les mails des contrats d'équipementier (src/world/sponsors.js), écrits sans IA, dans les huit langues de l'interface.
 // o : { first, club, brand, person, agent, fee, bonus, until, deadline } ; les montants et les dates sont déjà mis en forme.
 
 const T = {
@@ -68,6 +68,30 @@ const T = {
     no: { direct: (o) => `${o.agent} hat sich gemeldet, aber weiter können wir nicht gehen. Unser Angebot gilt bis zum ${o.deadline}.\n\n${o.person}`, agent: (o) => `Ich habe es versucht, aber ${o.brand} bewegt sich nicht. Das Angebot gilt bis zum ${o.deadline}.\n\n${o.agent}` },
     lapsed: { direct: (o) => `Da wir nichts von dir gehört haben, ziehen wir unser Angebot zurück. Die Tür bleibt für später offen.\n\n${o.person}`, agent: (o) => `${o.brand} hat das Angebot mangels Antwort zurückgezogen. Es kommt wieder, wenn du so weitermachst.\n\n${o.agent}` },
     ended: { direct: (o) => `Unser Vertrag ist ausgelaufen. Danke für diese Saisons, ${o.first}.\n\n${o.person}`, agent: (o) => `Dein Vertrag mit ${o.brand} ist ausgelaufen. Ich behalte die nächsten Marken im Auge.\n\n${o.agent}` },
+  },
+
+  ru: {
+    subject: (o) => `${o.brand}: предложение экипировочного контракта`,
+    direct: (o) => `Здравствуйте, ${o.first}!\n\nЯ работаю с игроками в ${o.brand}. Ваши матчи за ${o.club} не остались незамеченными, и мы хотели бы вас экипировать.\n\nНаше предложение: ${o.fee} за сезон и ${o.bonus} за каждый гол или голевую передачу, до ${o.until}. Оно действует до ${o.deadline}.\n\nВы можете ответить нам напрямую или поручить обсуждение условий ${o.agent}.\n\n${o.person}\n${o.brand}`,
+    agent: (o) => `${o.first},\n\nсо мной связались из ${o.brand}: они хотят тебя экипировать. С их стороны этим занимается ${o.person}.\n\nПредложение: ${o.fee} за сезон и ${o.bonus} за каждый гол или голевую передачу, до ${o.until}. Ответ нужен до ${o.deadline}.\n\nСкажи, соглашаемся ли мы, торгуемся или отказываемся.\n\n${o.agent}`,
+    accepted: { direct: (o) => `Спасибо, ${o.first}, контракт подписан. Добро пожаловать в ${o.brand}! Он действует до ${o.until}.\n\n${o.person}`, agent: (o) => `Контракт с ${o.brand} подписан, до ${o.until}. Бумаги беру на себя.\n\n${o.agent}` },
+    declined: { direct: (o) => `Понятно, спасибо, что нашли время ответить. Удачи до конца сезона.\n\n${o.person}`, agent: (o) => `Понял, передам ${o.brand}, что мы отказываемся.\n\n${o.agent}` },
+    up: { direct: (o) => `${o.agent} связался с нами. Мы можем предложить до ${o.fee} за сезон и ${o.bonus} за каждый гол или голевую передачу. Это наше последнее слово.\n\n${o.person}`, agent: (o) => `Я поговорил с ${o.person}: они поднимают до ${o.fee} за сезон и ${o.bonus} за каждый гол или голевую передачу. Лучше, думаю, уже не будет.\n\n${o.agent}` },
+    no: { direct: (o) => `${o.agent} связался с нами, но дальше мы пойти не можем. Наше предложение действует до ${o.deadline}.\n\n${o.person}`, agent: (o) => `Я пытался, но ${o.brand} не уступает. Предложение действует до ${o.deadline}.\n\n${o.agent}` },
+    lapsed: { direct: (o) => `Не получив ответа, мы отзываем наше предложение. Дверь остаётся открытой на будущее.\n\n${o.person}`, agent: (o) => `${o.brand} отозвал предложение: ответа так и не было. Если продолжишь в том же духе, они вернутся.\n\n${o.agent}` },
+    ended: { direct: (o) => `Наш контракт подошёл к концу. Спасибо за эти сезоны, ${o.first}.\n\n${o.person}`, agent: (o) => `Твой контракт с ${o.brand} закончился. Я присматриваюсь к следующим брендам.\n\n${o.agent}` },
+  },
+
+  vi: {
+    subject: (o) => `${o.brand}: đề nghị hợp đồng tài trợ giày`,
+    direct: (o) => `Chào ${o.first},\n\nTôi phụ trách các cầu thủ tại ${o.brand}. Những trận đấu của bạn cho ${o.club} không hề bị bỏ qua, và chúng tôi muốn tài trợ trang bị cho bạn.\n\nĐề nghị của chúng tôi: ${o.fee} mỗi mùa và ${o.bonus} cho mỗi bàn thắng hoặc kiến tạo, đến ${o.until}. Đề nghị có hiệu lực đến ${o.deadline}.\n\nBạn có thể trả lời trực tiếp, hoặc để ${o.agent} thương lượng các điều khoản.\n\n${o.person}\n${o.brand}`,
+    agent: (o) => `${o.first},\n\n${o.brand} đã liên hệ với tôi: họ muốn tài trợ trang bị cho cậu. Bên họ, ${o.person} phụ trách việc này.\n\nĐề nghị: ${o.fee} mỗi mùa và ${o.bonus} cho mỗi bàn thắng hoặc kiến tạo, đến ${o.until}. Họ cần câu trả lời trước ${o.deadline}.\n\nCho tôi biết chúng ta đồng ý, thương lượng hay từ chối.\n\n${o.agent}`,
+    accepted: { direct: (o) => `Cảm ơn ${o.first}, hợp đồng đã được ký. Chào mừng đến với ${o.brand}! Hợp đồng có hiệu lực đến ${o.until}.\n\n${o.person}`, agent: (o) => `Đã ký với ${o.brand}, đến ${o.until}. Tôi sẽ lo phần giấy tờ.\n\n${o.agent}` },
+    declined: { direct: (o) => `Đã rõ, cảm ơn bạn đã dành thời gian trả lời. Chúc bạn phần còn lại của mùa giải thuận lợi.\n\n${o.person}`, agent: (o) => `Hiểu rồi, tôi sẽ báo ${o.brand} là chúng ta từ chối.\n\n${o.agent}` },
+    up: { direct: (o) => `${o.agent} đã liên hệ với chúng tôi. Chúng tôi có thể nâng lên ${o.fee} mỗi mùa và ${o.bonus} cho mỗi bàn thắng hoặc kiến tạo. Đó là lời cuối của chúng tôi.\n\n${o.person}`, agent: (o) => `Tôi đã nói chuyện với ${o.person}: họ nâng lên ${o.fee} mỗi mùa và ${o.bonus} cho mỗi bàn thắng hoặc kiến tạo. Tôi nghĩ khó có mức tốt hơn.\n\n${o.agent}` },
+    no: { direct: (o) => `${o.agent} đã liên hệ với chúng tôi, nhưng chúng tôi không thể đi xa hơn. Đề nghị vẫn có hiệu lực đến ${o.deadline}.\n\n${o.person}`, agent: (o) => `Tôi đã cố, nhưng ${o.brand} không nhượng bộ. Đề nghị có hiệu lực đến ${o.deadline}.\n\n${o.agent}` },
+    lapsed: { direct: (o) => `Không nhận được phản hồi, chúng tôi rút lại đề nghị. Cánh cửa vẫn rộng mở cho sau này.\n\n${o.person}`, agent: (o) => `${o.brand} đã rút lại đề nghị vì không có câu trả lời. Họ sẽ quay lại nếu cậu giữ được phong độ này.\n\n${o.agent}` },
+    ended: { direct: (o) => `Hợp đồng của chúng ta đã kết thúc. Cảm ơn bạn vì những mùa giải vừa qua, ${o.first}.\n\n${o.person}`, agent: (o) => `Hợp đồng của cậu với ${o.brand} đã kết thúc. Tôi đang để mắt đến các thương hiệu tiếp theo.\n\n${o.agent}` },
   },
 };
 

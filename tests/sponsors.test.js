@@ -155,9 +155,9 @@ test('sans agent : la marque écrit directement, et on ne peut pas négocier', (
   assert.throws(() => answerSponsor(state, 'negotiate', { language: 'fr', gameDate: offer.on }), /pas d’agent/);
 });
 
-test('les six langues ont tous leurs textes, sans trou', () => {
+test('les huit langues ont tous leurs textes, sans trou', () => {
   const o = { first: 'Ilan', club: 'Nancy', brand: 'Marque', person: 'Clara', agent: 'Lucas', fee: '10 €', bonus: '1 €', until: '30 juin', deadline: '1 mai' };
-  assert.strictEqual(SPONSOR_LANGUAGES.length, 6);
+  assert.strictEqual(SPONSOR_LANGUAGES.length, 8);
   for (const lang of SPONSOR_LANGUAGES) {
     const L = sponsorTexts(lang);
     const all = [L.subject(o), L.direct(o), L.agent(o), ...['accepted', 'declined', 'up', 'no', 'lapsed', 'ended'].flatMap((k) => [L[k].direct(o), L[k].agent(o)])];

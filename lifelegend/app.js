@@ -12,7 +12,7 @@ const linkify = (text) => esc(text).replace(/(^|\s)(@\w+)/g, '$1<span class="men
 // dans le code ; tr() les traduit avec le dictionnaire de la langue (i18n/<langue>.js, clé = texte français), {nom}
 // étant remplacé par la valeur donnée. trn() choisit la forme selon le nombre, avec les règles de la langue (en
 // français 0 et 1 sont au singulier, en anglais seul 1). Un texte absent du dictionnaire reste en français.
-const LOCALES = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES', it: 'it-IT', pt: 'pt-BR', de: 'de-DE' };
+const LOCALES = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES', it: 'it-IT', pt: 'pt-BR', de: 'de-DE', ru: 'ru-RU', vi: 'vi-VN' };
 const lang = () => (LOCALES[settings?.language] ? settings.language : 'fr');
 const locale = () => LOCALES[lang()];
 // Italien : l'article devant un nom de club s'accorde à sa première lettre (« dell’Heerenveen », « lo Sparta »).
@@ -41,8 +41,14 @@ function tr(fr, params) {
   if (out == null) i18nMissing.add(fr);
   return fill(out ?? fr, params);
 }
+// Russe : trois formes (1 матч, 2 матча, 5 матчей). Dans ru.js, la traduction de la forme « plusieurs » est alors un
+// objet { few, many } (et other pour les nombres à virgule), choisi selon la catégorie de Intl.PluralRules.
 function trn(n, one, other, params) {
-  return tr(new Intl.PluralRules(locale()).select(Number(n)) === 'one' ? one : other, { n, ...params });
+  const cat = new Intl.PluralRules(locale()).select(Number(n));
+  if (cat === 'one') return tr(one, { n, ...params });
+  const out = lang() === 'fr' ? null : window.LL_I18N?.[lang()]?.[other];
+  if (out && typeof out === 'object') return fill(out[cat] ?? out.other ?? out.many ?? Object.values(out)[0], { n, ...params });
+  return tr(other, { n, ...params });
 }
 // Heure d'un match : « 21h » en français, « 21:00 » ailleurs.
 const hh = (h) => (lang() === 'fr' ? `${h}h` : `${String(h).padStart(2, '0')}:00`);
@@ -59,7 +65,7 @@ const fmtNote = (r) => r.toLocaleString(locale(), { minimumFractionDigits: 1, ma
 
 const fmtNum = (n) => Number(n || 0).toLocaleString(locale());
 const euros = (n) => Number(n || 0).toLocaleString(locale(), { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-const pct = (n) => (lang() === 'fr' || lang() === 'de' || lang() === 'es' ? `${n} %` : `${n}%`);
+const pct = (n) => (lang() === 'fr' || lang() === 'de' || lang() === 'es' || lang() === 'ru' ? `${n} %` : `${n}%`);
 
 function fmtDate(iso, opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) {
   if (!iso) return '—';
@@ -6199,6 +6205,9 @@ const POS_BY_LANG = {
   it: ['PT', 'DC', 'TS', 'TD', 'MED', 'CC', 'ES', 'ED', 'TRQ', 'AS', 'AD', 'SP', 'P'],
   pt: ['GO', 'ZC', 'LE', 'LD', 'VOL', 'MC', 'ME', 'MD', 'MAT', 'PE', 'PD', 'SA', 'CA'],
   de: ['TW', 'IV', 'LV', 'RV', 'DM', 'ZM', 'LM', 'RM', 'OM', 'LF', 'RF', 'HS', 'MS'],
+  ru: ['ВР', 'ЦЗ', 'ЛЗ', 'ПЗ', 'ОПЗ', 'ЦПЗ', 'ЛПЗ', 'ППЗ', 'АПЗ', 'ЛФ', 'ПФ', 'ОФ', 'ЦФ'],
+  // vietnamien : les sigles anglais, ceux des jeux de foot au Vietnam
+  vi: ['GK', 'CB', 'LB', 'RB', 'DMF', 'CMF', 'LMF', 'RMF', 'AMF', 'LWF', 'RWF', 'SS', 'CF'],
 };
 const posLabel = (code) => { const i = POS_CODES.indexOf(code); return i >= 0 && POS_BY_LANG[lang()] ? POS_BY_LANG[lang()][i] : code; };
 const ARROW_ICON = { 'Très mauvaise': '⬇', Mauvaise: '↘', Normale: '➡', Bonne: '↗', Excellente: '⬆' };
@@ -6560,6 +6569,8 @@ const SK_POS_BY_LANG = {
   it: ['PT', 'DC', 'TER', 'MED', 'CC', 'EST', 'TRQ', 'SP', 'ALA', 'P'],
   pt: ['GO', 'ZC', 'LAT', 'VOL', 'MC', 'MEI', 'MAT', 'SA', 'PON', 'CA'],
   de: ['TW', 'IV', 'AV', 'DM', 'ZM', 'AM', 'OM', 'HS', 'FL', 'MS'],
+  ru: ['ВР', 'ЦЗ', 'КЗ', 'ОПЗ', 'ЦПЗ', 'КПЗ', 'АПЗ', 'ОФ', 'КФ', 'ЦФ'],
+  vi: ['GK', 'CB', 'FB', 'DMF', 'CMF', 'WM', 'AMF', 'SS', 'WF', 'CF'],
 };
 const skPos = (k) => (SK_POS_BY_LANG[lang()] || SK_POS_BY_LANG.fr)[k];
 // Lignes du terrain, du but vers l'attaque : gardien, défense, milieu défensif, milieu, milieu offensif, attaque.
@@ -7548,8 +7559,8 @@ addEventListener('scroll', ptScrollSpy, { passive: true, capture: true });
 // Réglages (refonte du 2026-11-09, sur sa référence « Settings ») : un titre, des onglets, et dans chaque onglet des
 // lignes (l'intitulé à gauche, le réglage et son explication à droite) ; en bas, Annuler et Enregistrer. Tous les
 // onglets restent dans la page (cachés) : Enregistrer prend aussi ce qui a changé dans un autre onglet.
-const LANGS = [['fr', 'Français'], ['en', 'English'], ['es', 'Español'], ['it', 'Italiano'], ['pt', 'Português'], ['de', 'Deutsch']];
-const LANG_FLAGS = { fr: '🇫🇷', en: '🇬🇧', es: '🇪🇸', it: '🇮🇹', pt: '🇧🇷', de: '🇩🇪' };
+const LANGS = [['fr', 'Français'], ['en', 'English'], ['es', 'Español'], ['it', 'Italiano'], ['pt', 'Português'], ['de', 'Deutsch'], ['ru', 'Русский'], ['vi', 'Tiếng Việt']];
+const LANG_FLAGS = { fr: '🇫🇷', en: '🇬🇧', es: '🇪🇸', it: '🇮🇹', pt: '🇧🇷', de: '🇩🇪', ru: '🇷🇺', vi: '🇻🇳' };
 const RG_TABS = [
   ['save', 'Sauvegarde', 'Où LifeLegend lit ta carrière, et ce qu’il a le droit d’y écrire.'],
   ['ai', 'Intelligence artificielle', 'Le fournisseur, le modèle et la clé qui écrivent ton monde.'],

@@ -2,7 +2,7 @@
 // Instructions envoyées à l'IA. Les faits viennent de la sauvegarde ; l'IA n'écrit que la mise en forme.
 
 const LANGUAGES = {
-  fr: 'French', en: 'English', es: 'Spanish', it: 'Italian', pt: 'Portuguese', de: 'German',
+  fr: 'French', en: 'English', es: 'Spanish', it: 'Italian', pt: 'Portuguese', de: 'German', ru: 'Russian', vi: 'Vietnamese',
 };
 
 // La langue (2026-11-14, joueurs réglés en anglais qui recevaient du français) : une consigne nette en fin de chaque
@@ -62,6 +62,9 @@ const OWN_WORDS = {
   es: ['el', 'los', 'las', 'que', 'de', 'en', 'y', 'es', 'un', 'una', 'por', 'con', 'para', 'no', 'se', 'lo', 'su', 'al', 'del', 'muy', 'hoy', 'pero'],
   it: ['il', 'di', 'che', 'e', 'la', 'per', 'non', 'un', 'una', 'del', 'della', 'con', 'si', 'lo', 'gli', 'al', 'ma', 'anche', 'oggi', 'sono'],
   pt: ['o', 'os', 'as', 'que', 'de', 'em', 'e', 'é', 'um', 'uma', 'por', 'com', 'para', 'não', 'se', 'do', 'da', 'no', 'na', 'hoje', 'mas'],
+  // russe : écrit en cyrillique, aucun mot ne passe le découpage latin ; un texte en français y est donc toujours repéré
+  ru: ['и', 'в', 'не', 'на', 'что', 'с', 'он', 'мы', 'это', 'как', 'но', 'за', 'по', 'его', 'матч'],
+  vi: ['và', 'là', 'không', 'có', 'với', 'cho', 'trong', 'một', 'này', 'anh', 'trận', 'bàn', 'đội', 'mùa', 'thắng'],
 };
 function wrongLanguage(text, language) {
   const own = OWN_WORDS[language];
@@ -567,7 +570,7 @@ ${JSON.stringify(flags.map(({ item, field, sentence, passages, rules }) => ({ it
 
 // Vouvoiement et tutoiement des journalistes, dans la seule langue choisie : la règle citait « vous » et le français à
 // tout le monde, et un joueur réglé en anglais recevait ses questions en français (2026-11-16, retours sur Evoweb).
-const PRESS_FORMAL = { fr: ['"vous" (never "tu", "te", "ton", "ta", "tes")', '"tu"'], es: ['"usted"', '"tú"'], it: ['"Lei"', '"tu"'], de: ['"Sie"', '"du"'], pt: ['"o senhor"', '"tu"'] };
+const PRESS_FORMAL = { fr: ['"vous" (never "tu", "te", "ton", "ta", "tes")', '"tu"'], es: ['"usted"', '"tú"'], it: ['"Lei"', '"tu"'], de: ['"Sie"', '"du"'], pt: ['"o senhor"', '"tu"'], ru: ['"вы" (never "ты")', '"ты"'], vi: ['"anh" (polite; never "mày" or "cậu")', '"cậu"'] };
 function pressAddress(language) {
   const blog = 'the supporters\' blog writer, when he is on the panel';
   if (language === 'en') return `ADDRESS: an entry with address "formal" speaks like a professional journalist: polite and neutral, never matey. Only an entry with address "familiar" (${blog}) may sound casual: he speaks like the fans he writes for, without slang or insults.`;

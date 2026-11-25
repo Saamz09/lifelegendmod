@@ -8,6 +8,12 @@ const { compareVersions } = require('./update');
 
 const NEWS = [
   {
+    version: '1.3.0',
+    items: [
+      { icon: 'language', title: 'LifeLegend parle russe et vietnamien', text: 'Deux nouvelles langues : русский et Tiếng Việt, pour l’interface, les textes de LifeLegend et tout ce que l’IA écrit. À choisir dans Réglages › Apparence.' },
+    ],
+  },
+  {
     version: '1.2.0',
     items: [
       { icon: 'clipboard', title: 'Propose ton style de jeu à ton entraîneur', text: 'Dans Influence, propose-lui d’autres consignes : style offensif, construction, pressing… S’il accepte, LifeLegend les écrit dans ta sauvegarde et le plan de jeu les affiche quand tu relances le jeu.' },

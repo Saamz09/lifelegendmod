@@ -1903,4 +1903,6 @@ window.LL_I18N.pt = {
   "Scoreline plus juste": "Um Scoreline mais preciso",
   "Les notes sont au dixième près, comme dans le jeu (5,8 au lieu de 6,0). Dans le GigaPack, tous tes matchs et toutes les ligues apparaissent enfin.": "As notas são exatas até o décimo, como no jogo (5,8 em vez de 6,0). Com o GigaPack, todos os seus jogos e todas as ligas finalmente aparecem.",
   "Ce que le monde sait de ton joueur. Son nom, son pseudo, son poste et sa photo se changent sur Kop : Profil › Éditer le profil.": "O que o mundo sabe sobre seu jogador. O nome, o usuário, a posição e a foto se mudam no Kop: Perfil › Editar perfil.",
+  "LifeLegend parle russe et vietnamien": "O LifeLegend fala russo e vietnamita",
+  "Deux nouvelles langues : русский et Tiếng Việt, pour l’interface, les textes de LifeLegend et tout ce que l’IA écrit. À choisir dans Réglages › Apparence.": "Dois novos idiomas: русский e Tiếng Việt, para a interface, os textos do LifeLegend e tudo o que a IA escreve. Escolha em Configurações › Aparência.",
 };

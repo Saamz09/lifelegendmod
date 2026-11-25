@@ -1,4 +1,4 @@
-LifeLegend 1.2.0 — mode d'emploi
+LifeLegend 1.3.0 — mode d'emploi
 =======================================
 
 LifeLegend lit ta sauvegarde Become a Legend de SP Football Life 2027 et en tire un monde qui réagit à chaque match :
@@ -53,7 +53,7 @@ CE QU'IL TE FAUT
 
 INSTALLER
 ---------
-1. Décompresse le dossier LifeLegend-1.2.0-win-x64 où tu veux (Documents, Bureau, une clé USB…), mais pas dans
+1. Décompresse le dossier LifeLegend-1.3.0-win-x64 où tu veux (Documents, Bureau, une clé USB…), mais pas dans
    « Program Files ». Rien n'est installé dans Windows.
 2. Lance LifeLegend.exe.
 3. Windows peut afficher « Windows a protégé votre ordinateur » : LifeLegend n'est pas signé numériquement.
@@ -117,7 +117,7 @@ LifeLegend.
 
 DÉSINSTALLER
 ------------
-Supprime le dossier LifeLegend-1.2.0-win-x64, et si tu veux effacer tes carrières, le dossier %APPDATA%\LiveTweet.
+Supprime le dossier LifeLegend-1.3.0-win-x64, et si tu veux effacer tes carrières, le dossier %APPDATA%\LiveTweet.
 
 
 SI QUELQUE CHOSE NE VA PAS

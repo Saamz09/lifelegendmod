@@ -10,7 +10,7 @@ const vm = require('vm');
 
 const ROOT = path.join(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
-const LANGS = ['en', 'es', 'it', 'pt', 'de'];
+const LANGS = ['en', 'es', 'it', 'pt', 'de', 'ru', 'vi'];
 const unq = (s) => s.replace(/\\(['"\\])/g, '$1').replace(/\\n/g, '\n');
 const params = (s) => [...String(s).matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort().join(',');
 
@@ -83,8 +83,13 @@ test('les cinq dictionnaires ont exactement les mêmes textes', () => {
 test('chaque traduction garde les paramètres {x} du texte français et n’est pas vide', () => {
   for (const l of LANGS) {
     for (const [k, v] of Object.entries(dicts[l])) {
-      assert.ok(String(v).trim(), `${l} : traduction vide pour ${JSON.stringify(k)}`);
-      assert.strictEqual(params(v), params(k), `${l} : paramètres de ${JSON.stringify(k)} → ${JSON.stringify(v)}`);
+      // Russe : une forme plurielle est un objet { few, many } (voir trn dans app.js) ; chaque forme est vérifiée.
+      const forms = typeof v === 'string' ? [v] : Object.values(v);
+      if (typeof v !== 'string') assert.ok(v.few && v.many, `${l} : pluriel incomplet pour ${JSON.stringify(k)}`);
+      for (const f of forms) {
+        assert.ok(String(f).trim(), `${l} : traduction vide pour ${JSON.stringify(k)}`);
+        assert.strictEqual(params(f), params(k), `${l} : paramètres de ${JSON.stringify(k)} → ${JSON.stringify(f)}`);
+      }
     }
   }
 });

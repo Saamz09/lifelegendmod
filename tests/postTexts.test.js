@@ -12,7 +12,7 @@ const { clubPosts } = require(path.join(ROOT, 'src/world/clubPosts'));
 const { bindPromise, resolvePromises } = require(path.join(ROOT, 'src/world/promises'));
 const { transversaleBrief } = require(path.join(ROOT, 'src/world/world'));
 
-const LANGS = ['fr', 'en', 'es', 'it', 'pt', 'de'];
+const LANGS = ['fr', 'en', 'es', 'it', 'pt', 'de', 'ru', 'vi'];
 const FRENCH = /\b(journée|résultats|classement|demain|aujourd’hui|victoire|défaite|rejoint|bienvenue|prolonge|marquer|contre|cette saison|essentiel|rédaction|bonjour|homme du match|passe décisive)\b/i;
 
 const snapshot = {

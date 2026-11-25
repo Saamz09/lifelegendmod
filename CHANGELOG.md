@@ -1,5 +1,16 @@
 # Journal des changements
 
+## 1.3.0 — 2026-11-25
+
+### Langues
+- **Le russe** (demandé par un joueur) : septième langue de LifeLegend, pour l'interface (1 898 textes), les textes
+  écrits sans IA (posts des clubs, mails du club et des équipementiers, brief du matin) et tout ce que l'IA écrit
+  (journaux, Kop, Vestiaire, conférences de presse). Le russe a trois formes au pluriel (1 матч, 2 матча, 5 матчей) :
+  LifeLegend les gère maintenant. Postes en abréviations russes (ВР, ЦЗ, ОПЗ, ЦФ…). Traduction à relire par un
+  russophone avant la sortie.
+- **Le vietnamien** : huitième langue, de la même façon (interface, textes écrits sans IA, ce que l'IA écrit).
+  Pas de pluriel en vietnamien ; postes avec les sigles anglais, comme dans les jeux de foot au Vietnam.
+
 ## 1.2.0 — 2026-11-23
 
 ### Influence
